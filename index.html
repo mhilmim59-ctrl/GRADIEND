@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GRADIEND — Generasi Dakwah Islam Enam Dua</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main>
+<section class="hero">
+<div class="container hero-grid">
+  <div class="reveal">
+    <span class="kicker"><i class="fa-solid fa-star-and-crescent"></i> Rohis SMAN 62 Jakarta</span>
+    <h1>Belajar. <span>Bertumbuh.</span> Berdakwah.</h1>
+    <p class="hero-lead">GRADIEND menjadi ruang digital Generasi Dakwah Islam Enam Dua untuk mengenal kegiatan Rohis, membaca artikel, mengatur waktu ibadah, dan menemukan pengingat kecil di tengah kesibukan sekolah.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="event.html"><i class="fa-solid fa-newspaper"></i> Baca Event</a>
+      <a class="btn btn-secondary" href="jadwal-salat.html"><i class="fa-solid fa-mosque"></i> Waktu Salat</a>
+    </div>
+  </div>
+  <div class="hero-art reveal">
+    <div class="moon"></div><div class="stars"><i></i><i></i><i></i><i></i><i></i></div>
+    <i class="fa-solid fa-mosque mosque"></i>
+    <div class="hero-copy"><div class="arabic">فَاذْكُرُونِي أَذْكُرْكُمْ</div><small>“Maka ingatlah kepada-Ku, niscaya Aku ingat kepadamu.”<br>QS. Al-Baqarah: 152</small></div>
+  </div>
+</div>
+</section>
+
+<section class="section alt">
+<div class="container">
+  <div class="section-head reveal"><div><div class="eyebrow">GRADIEND Features</div><h2 class="section-title">Satu website, beberapa ruang kebaikan.</h2></div></div>
+  <div class="feature-grid">
+    <a class="card feature reveal" href="jadwal-salat.html"><div class="feature-icon"><i class="fa-solid fa-clock"></i></div><h3>Waktu Salat</h3><p>Gunakan lokasi perangkat untuk menyesuaikan jadwal salat berdasarkan wilayah terdekat.</p></a>
+    <a class="card feature reveal" href="qibla.html"><div class="feature-icon"><i class="fa-solid fa-compass"></i></div><h3>Arah Kiblat</h3><p>Kompas kiblat interaktif dengan dukungan geolocation dan sensor perangkat.</p></a>
+    <a class="card feature reveal" href="tasbih.html"><div class="feature-icon"><i class="fa-solid fa-fingerprint"></i></div><h3>Tasbih</h3><p>Counter dzikir sederhana dengan target 33, 99, 100, atau bebas.</p></a>
+    <a class="card feature reveal" href="hijriah.html"><div class="feature-icon"><i class="fa-solid fa-calendar-days"></i></div><h3>Hijriah & Quote</h3><p>Lihat tanggal Hijriah dan pengingat Islami yang berubah secara interaktif.</p></a>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+  <div class="section-head reveal"><div><div class="eyebrow">Latest</div><h2 class="section-title">Event terbaru</h2></div><a class="btn btn-secondary" href="event.html">Lihat semua</a></div>
+  <div id="latest-events" class="event-grid"><div class="empty">Memuat event...</div></div>
+</div>
+</section>
+
+<section class="section alt">
+<div class="container">
+  <div class="card quote reveal">
+    <div><div class="eyebrow">Daily reminder</div><div class="quote-text" id="quote-text">“Allah tidak menyia-nyiakan kebaikan orang-orang yang berbuat baik.”</div><div class="quote-credit" id="quote-credit">QS. At-Taubah: 120</div></div>
+    <button class="btn btn-primary" id="shuffle-quote"><i class="fa-solid fa-shuffle"></i> Quote lain</button>
+  </div>
+</div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="qibla.html">Arah Kiblat</a><br>
+    <a href="tasbih.html">Tasbih</a><br>
+    <a href="hijriah.html">Hijriah</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a><br>
+    <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded",async()=>{
+ const q=[
+  ["“Maka ingatlah kepada-Ku, niscaya Aku ingat kepadamu.”","QS. Al-Baqarah: 152"],
+  ["“Sesungguhnya bersama kesulitan ada kemudahan.”","QS. Al-Insyirah: 6"],
+  ["“Allah tidak membebani seseorang melainkan sesuai kesanggupannya.”","QS. Al-Baqarah: 286"],
+  ["“Dan barang siapa bertakwa kepada Allah, niscaya Dia akan mengadakan baginya jalan keluar.”","QS. At-Talaq: 2"],
+  ["“Dan berbuat baiklah, sungguh Allah menyukai orang-orang yang berbuat baik.”","QS. Al-Baqarah: 195"]
+ ];
+ const setQ=()=>{const x=q[Math.floor(Math.random()*q.length)];document.getElementById("quote-text").textContent=x[0];document.getElementById("quote-credit").textContent=x[1]};
+ document.getElementById("shuffle-quote").onclick=setQ;
+
+ const box=document.getElementById("latest-events");
+ if(!GRADIEND.configured){box.innerHTML='<div class="empty">Hubungkan Supabase di <b>js/config.js</b> untuk menampilkan event online.</div>';return}
+ const sb=await GRADIEND.client();
+ const {data,error}=await sb.from("events").select("id,title,event_date,category,excerpt,image_url,author_name").eq("status","published").order("event_date",{ascending:false}).limit(3);
+ if(error){box.innerHTML='<div class="empty">Event belum dapat dimuat.</div>';return}
+ box.innerHTML=(data||[]).map(e=>`<article class="card event-card" onclick="location.href='artikel.html?id=${encodeURIComponent(e.id)}'">
+  <div class="event-cover">${e.image_url?`<img src="${e.image_url}" alt="">`:'<div class="cover-icon"><i class="fa-solid fa-mosque"></i></div>'}</div>
+  <div class="event-body"><div class="meta">${escapeHtml(e.category)} · ${dateID(e.event_date)}</div><h3>${escapeHtml(e.title)}</h3><p>${escapeHtml(e.excerpt||"")}</p>
+  <div class="author"><span class="avatar">${initials(e.author_name)}</span>${escapeHtml(e.author_name||"Admin")}</div></div>
+ </article>`).join("") || '<div class="empty">Belum ada event.</div>';
+});
+</script></body></html>
