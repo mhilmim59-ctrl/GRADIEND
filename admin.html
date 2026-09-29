@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — GRADIEND</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main class="section"><div class="container">
+ <div id="login-card" class="card reveal" style="max-width:480px;margin:30px auto;padding:28px">
+  <div class="eyebrow">Restricted Area</div><h1 class="section-title">Admin GRADIEND</h1>
+  <p class="section-sub">Panel untuk mengelola event dan artikel.</p>
+  <form id="login-form">
+   <label style="display:block;font-size:10px;font-weight:800;margin:14px 0 6px">USERNAME</label>
+   <input class="input" id="username" autocomplete="username" placeholder="rohis62" required>
+   <label style="display:block;font-size:10px;font-weight:800;margin:14px 0 6px">PASSWORD</label>
+   <input class="input" id="password" type="password" autocomplete="current-password" placeholder="Password admin" required>
+   <button class="btn btn-primary" style="width:100%;margin-top:16px"><i class="fa-solid fa-right-to-bracket"></i> Masuk</button>
+  </form>
+  <div class="notice" style="margin-top:16px">Username yang ditampilkan: <b>rohis62</b>. Password diverifikasi oleh Supabase Auth; jangan tulis password di GitHub.</div>
+ </div>
+
+ <div id="admin-panel" style="display:none">
+  <div class="section-head"><div><div class="eyebrow">Dashboard</div><h1 class="section-title">Kelola artikel</h1><p class="section-sub">Tambah, edit, publish, draft, atau hapus event.</p></div><button id="logout" class="btn btn-secondary"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button></div>
+  <div class="admin-layout">
+   <div class="card" style="padding:22px">
+    <h3 id="form-title">Tambah Event</h3>
+    <form id="event-form">
+     <input type="hidden" id="edit-id">
+     <div class="form-grid">
+      <div><label>Judul</label><input id="title" class="input" required></div>
+      <div><label>Tanggal</label><input id="event-date" type="date" class="input" required></div>
+      <div><label>Kategori</label><select id="category" class="select"><option>Kajian</option><option>Keislaman</option><option>Sosial</option><option>Kegiatan</option><option>Lainnya</option></select></div>
+      <div><label>Status</label><select id="status" class="select"><option value="published">Published</option><option value="draft">Draft</option></select></div>
+      <div><label>Penulis</label><input id="author-name" class="input" value="Admin" required></div>
+      <div><label>Gambar cover</label><input id="image" type="file" accept="image/*"></div>
+      <div class="span-2"><label>Ringkasan</label><textarea id="excerpt" rows="3" class="textarea"></textarea></div>
+      <div class="span-2"><label>Isi artikel</label><textarea id="content" rows="10" class="textarea" placeholder="Pisahkan antar paragraf dengan satu baris kosong." required></textarea></div>
+     </div>
+     <div class="actions"><button class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan</button><button type="button" class="btn btn-secondary" id="clear">Bersihkan</button></div>
+    </form>
+   </div>
+   <div class="card" style="padding:18px;overflow:auto"><table class="admin-table"><thead><tr><th>Cover</th><th>Judul</th><th>Penulis</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="rows"></tbody></table></div>
+  </div>
+ </div>
+</div></main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="qibla.html">Arah Kiblat</a><br>
+    <a href="tasbih.html">Tasbih</a><br>
+    <a href="hijriah.html">Hijriah</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a><br>
+    <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+<script>
+(() => {
+ let sb=null,currentUser=null,editId=null,currentImagePath=null;
+ const $=id=>document.getElementById(id);
+ function showLogin(){$("login-card").style.display="block";$("admin-panel").style.display="none"}
+ function showPanel(){$("login-card").style.display="none";$("admin-panel").style.display="block";loadRows()}
+ async function getUser(){return (await sb.auth.getUser()).data.user}
+ async function isAdmin(){const u=await getUser();if(!u)return false;const {data}=await sb.from("profiles").select("role").eq("id",u.id).maybeSingle();return data?.role==="admin"}
+ async function boot(){
+   if(!GRADIEND.configured){toast("Isi js/config.js dahulu.");return}
+   sb=await GRADIEND.client();const {data:{session}}=await sb.auth.getSession();
+   if(session&&await isAdmin())showPanel();else showLogin();
+ }
+ $("login-form").onsubmit=async e=>{
+   e.preventDefault();if(!GRADIEND.configured){toast("Supabase belum dikonfigurasi.");return}
+   const username=$("username").value.trim(),password=$("password").value;
+   if(username.toLowerCase()!==String(GRADIEND.config.adminUsername||"rohis62").toLowerCase()){toast("Username atau password salah.");return}
+   const {error}=await sb.auth.signInWithPassword({email:GRADIEND.config.adminAuthEmail,password});
+   if(error){toast("Username atau password salah.");return}
+   if(await isAdmin()){showPanel()}else{await sb.auth.signOut();toast("Akun ini belum diberi role admin.");}
+ };
+ $("logout").onclick=async()=>{await sb.auth.signOut();showLogin()};
+ const clear=()=>{editId=null;currentImagePath=null;$("edit-id").value="";$("event-form").reset();$("author-name").value="Admin";$("status").value="published";$("form-title").textContent="Tambah Event"};
+ $("clear").onclick=clear;
+ async function upload(file){
+   if(!file)return null;const ext=(file.name.split(".").pop()||"jpg").replace(/[^a-z0-9]/gi,"")||"jpg",path=`${crypto.randomUUID()}.${ext}`;
+   const {error}=await sb.storage.from(GRADIEND.config.eventBucket).upload(path,file,{contentType:file.type,upsert:false});
+   if(error)throw error;const {data}=sb.storage.from(GRADIEND.config.eventBucket).getPublicUrl(path);return {path,url:data.publicUrl}
+ }
+ $("event-form").onsubmit=async e=>{
+   e.preventDefault();try{
+    const u=await getUser();if(!(await isAdmin())){toast("Akun bukan admin.");return}
+    const payload={title:$("title").value.trim(),event_date:$("event-date").value,category:$("category").value,status:$("status").value,author_name:$("author-name").value.trim(),excerpt:$("excerpt").value.trim(),content:$("content").value.trim(),author_id:u.id};
+    const file=$("image").files[0];if(file){const img=await upload(file);payload.image_url=img.url;payload.image_path=img.path;if(currentImagePath)await sb.storage.from(GRADIEND.config.eventBucket).remove([currentImagePath])}
+    let res=editId?await sb.from("events").update(payload).eq("id",editId):await sb.from("events").insert(payload);
+    if(res.error)throw res.error;toast(editId?"Event diperbarui.":"Event ditambahkan.");clear();loadRows();
+   }catch(err){console.error(err);toast(err.message||"Gagal menyimpan.")}
+ };
+ async function loadRows(){
+   const {data,error}=await sb.from("events").select("id,title,event_date,status,author_name,image_url,image_path").order("created_at",{ascending:false});
+   if(error){$("rows").innerHTML='<tr><td colspan="5">Gagal memuat data.</td></tr>';return}
+   $("rows").innerHTML=(data||[]).map(e=>`<tr><td><img class="thumb" src="${e.image_url||"assets/gradiend-logo.png"}"></td><td><b>${escapeHtml(e.title)}</b><div>${dateID(e.event_date)}</div></td><td>${escapeHtml(e.author_name||"Admin")}</td><td>${escapeHtml(e.status)}</td><td><button class="icon-btn" onclick='window.editRow(${JSON.stringify(e)})'><i class="fa-solid fa-pen"></i></button> <button class="icon-btn" onclick="window.deleteRow('${e.id}','${escapeHtml(e.image_path||"")}')"><i class="fa-solid fa-trash"></i></button></td></tr>`).join("")||'<tr><td colspan="5">Belum ada event.</td></tr>';
+ }
+ window.editRow=e=>{editId=e.id;currentImagePath=e.image_path||null;$("edit-id").value=e.id;$("title").value=e.title;$("event-date").value=e.event_date;$("status").value=e.status;$("category").value=e.category;$("author-name").value=e.author_name||"Admin";$("form-title").textContent="Edit Event";toast("Mode edit aktif. Isi ulang ringkasan/isi artikel bila ingin mengubahnya.");window.scrollTo({top:0,behavior:"smooth"})};
+ window.deleteRow=async(id,path)=>{if(!confirm("Hapus event ini?"))return;const {error}=await sb.from("events").delete().eq("id",id);if(error){toast(error.message);return}if(path)await sb.storage.from(GRADIEND.config.eventBucket).remove([path]);toast("Event dihapus.");loadRows()};
+ document.addEventListener("DOMContentLoaded",boot);
+})();
+</script></body></html>
