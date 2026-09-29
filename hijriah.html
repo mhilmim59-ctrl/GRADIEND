@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tanggal Hijriah — GRADIEND</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main class="section"><div class="container">
+ <div class="card reveal" style="padding:38px;text-align:center;max-width:900px;margin:auto">
+  <div class="eyebrow">Kalender Islam</div><h1 class="section-title">Tanggal Hijriah.</h1>
+  <div id="greg" class="section-sub"></div><div id="hijri" style="font-family:Amiri,serif;font-size:clamp(50px,8vw,92px);line-height:1.1;color:var(--green);margin:14px 0"></div>
+  <div class="notice" style="max-width:700px;margin:20px auto">Kalender Hijriah pada browser dapat berbeda satu hari dari penetapan lokal. Untuk kebutuhan ibadah yang bergantung pada tanggal Hijriah, ikuti penetapan resmi yang berlaku.</div>
+ </div>
+</div></main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="qibla.html">Arah Kiblat</a><br>
+    <a href="tasbih.html">Tasbih</a><br>
+    <a href="hijriah.html">Hijriah</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a><br>
+    <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const d=new Date();document.getElementById("greg").textContent=new Intl.DateTimeFormat("id-ID",{dateStyle:"full"}).format(d);
+ let h;try{h=new Intl.DateTimeFormat("id-ID-u-ca-islamic-umalqura",{day:"numeric",month:"long",year:"numeric"}).format(d)}catch{h=new Intl.DateTimeFormat("en-u-ca-islamic",{day:"numeric",month:"long",year:"numeric"}).format(d)}
+ document.getElementById("hijri").textContent=h;
+});
+</script></body></html>
