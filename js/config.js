@@ -3,8 +3,8 @@
 // NEVER put a service_role/secret key or your admin password in this file.
 
 window.GRADIEND_CONFIG = {
-  supabaseUrl: "PASTE_SUPABASE_PROJECT_URL_HERE",
-  supabaseAnonKey: "PASTE_SUPABASE_PUBLISHABLE_KEY_HERE",
+  supabaseUrl: "https://hmajkhrphwjkuprlwmju.supabase.co",
+  supabaseAnonKey: "sb_publishable_KVrRZqzfgcP2Inobp-gyww_5KPBAXTs",
 
   // Supabase Auth uses this internal email.
   // Visitors only see the username "rohis62" on the admin page.
