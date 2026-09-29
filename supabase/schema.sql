@@ -30,8 +30,14 @@ create index if not exists events_created_idx on public.events(created_at desc);
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path=public as $$
 begin
-  insert into public.profiles(id,display_name)
-  values(new.id,coalesce(nullif(new.raw_user_meta_data->>'display_name',''),'Admin'))
+  -- Akun dengan email admin internal otomatis berstatus admin (tanpa SQL manual).
+  -- Email ini harus sama dengan adminAuthEmail di js/config.js.
+  insert into public.profiles(id,display_name,role)
+  values(
+    new.id,
+    coalesce(nullif(new.raw_user_meta_data->>'display_name',''),'Admin'),
+    case when lower(new.email)='admin@gradiend.local' then 'admin' else 'user' end
+  )
   on conflict(id) do nothing;
   return new;
 end $$;
@@ -91,6 +97,8 @@ drop policy if exists event_images_admin_delete on storage.objects;
 create policy event_images_admin_delete on storage.objects for delete to authenticated
 using(bucket_id='event-images' and public.is_admin());
 
--- Setelah akun admin dibuat di Supabase Authentication -> Users:
--- update public.profiles set role='admin', display_name='Admin'
--- where id='UUID_AKUN_ADMIN';
+-- Jika akun admin SUDAH dibuat sebelum skema ini dijalankan, baris di bawah
+-- otomatis memberinya role admin. Aman dijalankan berulang kali.
+insert into public.profiles(id,display_name,role)
+select id,'Admin','admin' from auth.users where lower(email)='admin@gradiend.local'
+on conflict(id) do update set role='admin', display_name='Admin';
