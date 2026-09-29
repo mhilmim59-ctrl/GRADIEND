@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Waktu Salat — GRADIEND</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main>
+<section class="page-hero"><div class="container reveal"><div class="eyebrow">Ibadah harian</div><h1>Waktu salat.</h1><p>Ambil lokasi perangkat untuk mencari kabupaten/kota terdekat, lalu tampilkan jadwal salat dari data yang bersumber dari Kemenag RI.</p></div></section>
+<section class="section" style="padding-top:25px">
+ <div class="container">
+  <div class="prayer-top">
+   <div class="prayer-next reveal">
+     <small>Salat berikutnya</small><h2 id="next-name">Memuat...</h2><div class="timer" id="timer">--:--:--</div>
+     <div class="prayer-location"><span class="pill" id="place">Mencari lokasi...</span><span class="pill" id="data-source">Sumber: Kemenag RI</span></div>
+     <div class="actions"><button id="locate" class="btn btn-secondary"><i class="fa-solid fa-location-crosshairs"></i> Gunakan lokasi perangkat</button><a class="btn btn-secondary" href="https://bimasislam.kemenag.dev/jadwal-sholat" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Kemenag</a></div>
+     <p class="helper" style="margin-top:14px;color:#b8d5ca">Lokasi dipakai untuk menentukan wilayah terdekat. Jadwal mengikuti data wilayah, bukan menghitung ulang dengan rumus lokal.</p>
+   </div>
+   <div id="prayers" class="prayer-grid reveal"></div>
+  </div>
+  <div class="notice" style="margin-top:16px">Data jadwal yang ditampilkan berasal dari API yang mendokumentasikan sumber data Kemenag RI/Bimas Islam. Untuk kebutuhan ibadah, cek kembali halaman resmi Kemenag bila ada perbedaan wilayah atau tanggal.</div>
+ </div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="qibla.html">Arah Kiblat</a><br>
+    <a href="tasbih.html">Tasbih</a><br>
+    <a href="hijriah.html">Hijriah</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a><br>
+    <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+<script>
+(() => {
+ const fmtDate=d=>d.toISOString().slice(0,10);
+ const names=[["imsak","Imsak"],["subuh","Subuh"],["terbit","Terbit"],["dhuha","Dhuha"],["dzuhur","Dzuhur"],["ashar","Ashar"],["maghrib","Maghrib"],["isya","Isya"]];
+ let jadwal=null,nextKey=null,timer=null;
+
+ function render(){
+   if(!jadwal)return;
+   document.getElementById("prayers").innerHTML=names.map(([k,l])=>`<div class="prayer-item ${k===nextKey?"active":""}"><span>${l}</span><b>${jadwal[k]||"--:--"}</b></div>`).join("");
+ }
+ function getNext(){
+   if(!jadwal)return;
+   const now=new Date(), cur=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+   const candidates=names.filter(([k])=>k!=="imsak"&&jadwal[k]).map(([k,l])=>({k,l,t:(+jadwal[k].slice(0,2))*60+(+jadwal[k].slice(3,5))}));
+   let found=candidates.find(x=>x.t>cur);
+   if(!found)found=candidates[0];
+   nextKey=found?.k||null;
+   document.getElementById("next-name").textContent=found?("Salat "+found.l):"Selesai";
+   clearInterval(timer);
+   const tick=()=>{const n=new Date();let target=(parseInt(jadwal[nextKey].slice(0,2))*3600+parseInt(jadwal[nextKey].slice(3,5))*60)-(n.getHours()*3600+n.getMinutes()*60+n.getSeconds());if(target<0)target+=86400;const h=Math.floor(target/3600),m=Math.floor(target%3600/60),s=target%60;document.getElementById("timer").textContent=`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;render()};tick();timer=setInterval(tick,1000);
+ }
+ async function fetchCity(keyword){
+   const q=encodeURIComponent(keyword);
+   const res=await fetch(`${GRADIEND.config.prayerApiBase}/kabkota/cari/${q}`);
+   const json=await res.json(); return json?.data?.[0]||null;
+ }
+ async function fetchToday(id){
+   const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"Asia/Jakarta";
+   const res=await fetch(`${GRADIEND.config.prayerApiBase}/jadwal/${id}/today?tz=${encodeURIComponent(tz)}`);
+   const json=await res.json(); const days=json?.data?.jadwal||{}; const today=days[fmtDate(new Date())]||Object.values(days)[0]; return today||null;
+ }
+ async function loadByKeyword(keyword){
+   const city=await fetchCity(keyword);if(!city)throw new Error("Kota tidak ditemukan");
+   const today=await fetchToday(city.id);if(!today)throw new Error("Jadwal hari ini tidak tersedia");
+   jadwal=today; document.getElementById("place").textContent=city.lokasi; getNext();
+ }
+ async function useLocation(){
+   if(!navigator.geolocation){toast("Browser tidak mendukung geolocation.");return}
+   const btn=document.getElementById("locate");btn.disabled=true;btn.textContent="Mengambil lokasi...";
+   navigator.geolocation.getCurrentPosition(async p=>{
+     try{
+       const lat=p.coords.latitude,lon=p.coords.longitude;
+       const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=10&accept-language=id`,{headers:{"Accept":"application/json"}});
+       const j=await r.json(); const a=j.address||{};
+       const keyword=a.city||a.town||a.municipality||a.county||a.state||"Jakarta";
+       document.getElementById("place").textContent=`${keyword} · GPS ${lat.toFixed(3)}, ${lon.toFixed(3)}`;
+       await loadByKeyword(keyword);
+     }catch(e){console.error(e);toast("Lokasi ditemukan, tetapi wilayah tidak bisa dicocokkan ke data jadwal.");}
+     btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-location-crosshairs"></i> Perbarui lokasi';
+   },()=>{toast("Izin lokasi diperlukan.");btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-location-crosshairs"></i> Coba lagi'},{enableHighAccuracy:true,timeout:12000,maximumAge:300000});
+ }
+ document.addEventListener("DOMContentLoaded",async()=>{
+   document.getElementById("locate").onclick=useLocation;
+   try{await loadByKeyword("Jakarta");setTimeout(useLocation,350)}catch(e){toast("Jadwal belum dapat dimuat.")}
+ });
+})();
+</script></body></html>
