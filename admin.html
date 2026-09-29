@@ -52,7 +52,7 @@
       <div><label>Kategori</label><select id="category" class="select"><option>Kajian</option><option>Keislaman</option><option>Sosial</option><option>Kegiatan</option><option>Lainnya</option></select></div>
       <div><label>Status</label><select id="status" class="select"><option value="published">Published</option><option value="draft">Draft</option></select></div>
       <div><label>Penulis</label><input id="author-name" class="input" value="Admin" required></div>
-      <div><label>Gambar cover</label><input id="image" type="file" accept="image/*"></div>
+      <div><label>Gambar cover</label><input id="image" type="file" accept="image/*"><div class="helper" id="image-hint"></div></div>
       <div class="span-2"><label>Ringkasan</label><textarea id="excerpt" rows="3" class="textarea"></textarea></div>
       <div class="span-2"><label>Isi artikel</label><textarea id="content" rows="10" class="textarea" placeholder="Pisahkan antar paragraf dengan satu baris kosong." required></textarea></div>
      </div>
@@ -74,8 +74,7 @@
     <h4>Jelajah</h4>
     <a href="jadwal-salat.html">Waktu Salat</a><br>
     <a href="qibla.html">Arah Kiblat</a><br>
-    <a href="tasbih.html">Tasbih</a><br>
-    <a href="hijriah.html">Hijriah</a>
+    <a href="tasbih.html">Tasbih</a>
   </div>
   <div>
     <h4>Kontak</h4>
@@ -87,51 +86,4 @@
 <div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
 </footer>
 
-<script>
-(() => {
- let sb=null,currentUser=null,editId=null,currentImagePath=null;
- const $=id=>document.getElementById(id);
- function showLogin(){$("login-card").style.display="block";$("admin-panel").style.display="none"}
- function showPanel(){$("login-card").style.display="none";$("admin-panel").style.display="block";loadRows()}
- async function getUser(){return (await sb.auth.getUser()).data.user}
- async function isAdmin(){const u=await getUser();if(!u)return false;const {data}=await sb.from("profiles").select("role").eq("id",u.id).maybeSingle();return data?.role==="admin"}
- async function boot(){
-   if(!GRADIEND.configured){toast("Isi js/config.js dahulu.");return}
-   sb=await GRADIEND.client();const {data:{session}}=await sb.auth.getSession();
-   if(session&&await isAdmin())showPanel();else showLogin();
- }
- $("login-form").onsubmit=async e=>{
-   e.preventDefault();if(!GRADIEND.configured){toast("Supabase belum dikonfigurasi.");return}
-   const username=$("username").value.trim(),password=$("password").value;
-   if(username.toLowerCase()!==String(GRADIEND.config.adminUsername||"rohis62").toLowerCase()){toast("Username atau password salah.");return}
-   const {error}=await sb.auth.signInWithPassword({email:GRADIEND.config.adminAuthEmail,password});
-   if(error){toast("Username atau password salah.");return}
-   if(await isAdmin()){showPanel()}else{await sb.auth.signOut();toast("Akun ini belum diberi role admin.");}
- };
- $("logout").onclick=async()=>{await sb.auth.signOut();showLogin()};
- const clear=()=>{editId=null;currentImagePath=null;$("edit-id").value="";$("event-form").reset();$("author-name").value="Admin";$("status").value="published";$("form-title").textContent="Tambah Event"};
- $("clear").onclick=clear;
- async function upload(file){
-   if(!file)return null;const ext=(file.name.split(".").pop()||"jpg").replace(/[^a-z0-9]/gi,"")||"jpg",path=`${crypto.randomUUID()}.${ext}`;
-   const {error}=await sb.storage.from(GRADIEND.config.eventBucket).upload(path,file,{contentType:file.type,upsert:false});
-   if(error)throw error;const {data}=sb.storage.from(GRADIEND.config.eventBucket).getPublicUrl(path);return {path,url:data.publicUrl}
- }
- $("event-form").onsubmit=async e=>{
-   e.preventDefault();try{
-    const u=await getUser();if(!(await isAdmin())){toast("Akun bukan admin.");return}
-    const payload={title:$("title").value.trim(),event_date:$("event-date").value,category:$("category").value,status:$("status").value,author_name:$("author-name").value.trim(),excerpt:$("excerpt").value.trim(),content:$("content").value.trim(),author_id:u.id};
-    const file=$("image").files[0];if(file){const img=await upload(file);payload.image_url=img.url;payload.image_path=img.path;if(currentImagePath)await sb.storage.from(GRADIEND.config.eventBucket).remove([currentImagePath])}
-    let res=editId?await sb.from("events").update(payload).eq("id",editId):await sb.from("events").insert(payload);
-    if(res.error)throw res.error;toast(editId?"Event diperbarui.":"Event ditambahkan.");clear();loadRows();
-   }catch(err){console.error(err);toast(err.message||"Gagal menyimpan.")}
- };
- async function loadRows(){
-   const {data,error}=await sb.from("events").select("id,title,event_date,status,author_name,image_url,image_path").order("created_at",{ascending:false});
-   if(error){$("rows").innerHTML='<tr><td colspan="5">Gagal memuat data.</td></tr>';return}
-   $("rows").innerHTML=(data||[]).map(e=>`<tr><td><img class="thumb" src="${e.image_url||"assets/gradiend-logo.png"}"></td><td><b>${escapeHtml(e.title)}</b><div>${dateID(e.event_date)}</div></td><td>${escapeHtml(e.author_name||"Admin")}</td><td>${escapeHtml(e.status)}</td><td><button class="icon-btn" onclick='window.editRow(${JSON.stringify(e)})'><i class="fa-solid fa-pen"></i></button> <button class="icon-btn" onclick="window.deleteRow('${e.id}','${escapeHtml(e.image_path||"")}')"><i class="fa-solid fa-trash"></i></button></td></tr>`).join("")||'<tr><td colspan="5">Belum ada event.</td></tr>';
- }
- window.editRow=e=>{editId=e.id;currentImagePath=e.image_path||null;$("edit-id").value=e.id;$("title").value=e.title;$("event-date").value=e.event_date;$("status").value=e.status;$("category").value=e.category;$("author-name").value=e.author_name||"Admin";$("form-title").textContent="Edit Event";toast("Mode edit aktif. Isi ulang ringkasan/isi artikel bila ingin mengubahnya.");window.scrollTo({top:0,behavior:"smooth"})};
- window.deleteRow=async(id,path)=>{if(!confirm("Hapus event ini?"))return;const {error}=await sb.from("events").delete().eq("id",id);if(error){toast(error.message);return}if(path)await sb.storage.from(GRADIEND.config.eventBucket).remove([path]);toast("Event dihapus.");loadRows()};
- document.addEventListener("DOMContentLoaded",boot);
-})();
-</script></body></html>
+<script src="js/admin.js"></script></body></html>

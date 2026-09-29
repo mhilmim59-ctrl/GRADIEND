@@ -40,8 +40,7 @@
     <h4>Jelajah</h4>
     <a href="jadwal-salat.html">Waktu Salat</a><br>
     <a href="qibla.html">Arah Kiblat</a><br>
-    <a href="tasbih.html">Tasbih</a><br>
-    <a href="hijriah.html">Hijriah</a>
+    <a href="tasbih.html">Tasbih</a>
   </div>
   <div>
     <h4>Kontak</h4>
@@ -61,7 +60,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
  const sb=await GRADIEND.client();const {data,error}=await sb.from("events").select("id,title,event_date,category,excerpt,content,image_url,author_name,created_at").eq("id",id).eq("status","published").maybeSingle();
  if(error||!data){box.innerHTML='<div class="empty">Artikel tidak ditemukan.</div>';return}
  document.title=data.title+" — GRADIEND";
- const body=(data.content||"").split(/\\n\\s*\\n/).filter(Boolean).map(x=>`<p>${escapeHtml(x).replace(/\\n/g,"<br>")}</p>`).join("");
+ const body=(data.content||"").split(/\r?\n\s*\r?\n/).filter(Boolean).map(x=>`<p>${escapeHtml(x).replace(/\r?\n/g,"<br>")}</p>`).join("");
  box.innerHTML=`<div class="article-cover">${data.image_url?`<img src="${data.image_url}" alt="">`:'<div class="cover-icon"><i class="fa-solid fa-mosque" style="position:absolute;inset:0;display:grid;place-items:center;font-size:120px;color:#f0f5e9"></i></div>'}</div>
  <div class="eyebrow" style="margin-top:25px">${escapeHtml(data.category)} · ${dateID(data.event_date)}</div>
  <h1>${escapeHtml(data.title)}</h1><p class="lead">${escapeHtml(data.excerpt||"")}</p>
