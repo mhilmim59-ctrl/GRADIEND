@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Al-Qur'an — GRADIEND</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main>
+<section class="page-hero">
+ <div class="container reveal"><div class="eyebrow">Al-Qur'an</div><h1>Baca Al-Qur'an.</h1><p>114 surah lengkap dengan teks Arab, transliterasi Latin, dan terjemahan bahasa Indonesia, ditambah murottal untuk menemani bacaanmu.</p></div>
+</section>
+<section class="section" style="padding-top:20px">
+ <div class="container" id="quran-root"><div class="empty">Memuat...</div></div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="quran.html">Al-Qur'an</a><br>
+    <a href="tasbih.html">Tasbih</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const root=document.getElementById("quran-root");
+ const API=String(GRADIEND.config.quranApiBase||"https://equran.id/api/v2").replace(/\/+$/,"");
+ const QARI="05",QARI_NAME="Misyari Rasyid Al-Afasy"; // kode 05 = Mishary Rashid Al-Afasy
+ const cache=new Map();
+
+ /* preferensi tampilan (tersimpan di perangkat) */
+ const PREF_KEY="gradiend_quran_prefs";
+ const prefs={latin:true,id:true,size:matchMedia("(max-width:680px)").matches?28:32};
+ try{Object.assign(prefs,JSON.parse(localStorage.getItem(PREF_KEY)||"{}"))}catch{}
+ const savePrefs=()=>{try{localStorage.setItem(PREF_KEY,JSON.stringify(prefs))}catch{}};
+
+ async function api(path){
+  if(cache.has(path))return cache.get(path);
+  const res=await fetch(API+path,{headers:{Accept:"application/json"}});
+  if(!res.ok)throw new Error("HTTP "+res.status);
+  const json=await res.json();
+  if(!json||json.data==null)throw new Error("Format data tidak dikenali");
+  cache.set(path,json.data);return json.data;
+ }
+ function showError(retry){
+  root.innerHTML=`<div class="empty">Data Al-Qur'an belum bisa dimuat. Periksa koneksi internet, lalu coba lagi.<br><br>
+   <button class="btn btn-primary" id="retry"><i class="fa-solid fa-rotate-right"></i> Coba lagi</button>
+   <a class="btn btn-secondary" href="https://quran.kemenag.go.id" target="_blank" rel="noopener">Buka Quran Kemenag</a></div>`;
+  document.getElementById("retry").onclick=retry;
+ }
+ const strip=t=>String(t||"").replace(/<[^>]*>/g,"");
+ const plainAr=t=>String(t||"").replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").replace(/\u0671/g,"ا");
+ const normLatin=t=>String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+
+ /* ---------- DAFTAR SURAH ---------- */
+ async function showList(){
+  root.innerHTML='<div class="empty">Memuat daftar surah...</div>';
+  let list;try{list=await api("/surat")}catch(e){console.error(e);return showError(showList)}
+  root.innerHTML=`<div class="card quran-tools"><input id="q-search" class="input" type="search" placeholder="Cari surah: nama, arti, atau nomor (mis. Al-Kahfi, 18)" aria-label="Cari surah" autocomplete="off"><div class="helper" id="q-count" style="margin-top:8px"></div></div><div class="surah-grid" id="surah-grid"></div>`;
+  const input=document.getElementById("q-search"),grid=document.getElementById("surah-grid"),count=document.getElementById("q-count");
+  const render=()=>{
+   const raw=input.value.trim(),q=normLatin(raw);
+   const out=list.filter(s=>!raw||String(s.nomor)===raw||(q&&(normLatin(s.namaLatin).includes(q)||normLatin(s.arti).includes(q)))||String(s.nama).includes(raw));
+   grid.innerHTML=out.map(s=>`<a class="card surah-card" href="quran.html?s=${s.nomor}"><span class="surah-no">${s.nomor}</span><span class="surah-info"><b>${escapeHtml(s.namaLatin)}</b><span>${escapeHtml(s.arti)} · ${s.jumlahAyat} ayat · ${escapeHtml(s.tempatTurun)}</span></span><span class="surah-ar" lang="ar">${escapeHtml(s.nama)}</span></a>`).join("")||'<div class="empty" style="grid-column:1/-1">Surah tidak ditemukan.</div>';
+   count.textContent=`${out.length} dari ${list.length} surah`;
+  };
+  input.oninput=render;render();
+ }
+
+ /* ---------- BACA SURAH ---------- */
+ async function showSurah(n){
+  document.querySelector(".page-hero").hidden=true;
+  root.innerHTML='<div class="empty">Memuat surah...</div>';
+  let d;try{d=await api("/surat/"+n)}catch(e){console.error(e);return showError(()=>showSurah(n))}
+  document.title=`${d.namaLatin} — Al-Qur'an — GRADIEND`;
+  const ayat=d.ayat||[],total=ayat.length||d.jumlahAyat;
+  const prev=d.suratSebelumnya||(n>1?{nomor:n-1,namaLatin:"Surah sebelumnya"}:null);
+  const next=d.suratSelanjutnya||(n<114?{nomor:n+1,namaLatin:"Surah berikutnya"}:null);
+  const needBismillah=n!==1&&n!==9&&!(ayat[0]&&plainAr(ayat[0].teksArab).startsWith("بسم الله"));
+  const fullSrc=d.audioFull&&d.audioFull[QARI];
+  const desc=strip(d.deskripsi).trim();
+
+  root.innerHTML=`<a class="back-link" href="quran.html"><i class="fa-solid fa-arrow-left"></i> Semua surah</a>
+  <div class="card reader-head">
+   <div class="eyebrow">Surah ke-${d.nomor} · ${escapeHtml(d.tempatTurun)} · ${d.jumlahAyat} ayat</div>
+   <div class="reader-ar" lang="ar">${escapeHtml(d.nama)}</div>
+   <h1>${escapeHtml(d.namaLatin)}</h1><p>${escapeHtml(d.arti)}</p>
+   ${desc?`<details class="reader-desc"><summary>Tentang surah ini</summary><p>${escapeHtml(desc)}</p></details>`:""}
+   ${fullSrc?`<div class="reader-audio"><small>Murottal surah penuh · ${QARI_NAME}</small><audio id="full-audio" controls preload="none" src="${escapeHtml(fullSrc)}"></audio></div>`:""}
+  </div>
+  <div class="card quran-tools"><div class="tool-row">
+   <button type="button" class="btn" id="t-latin" aria-pressed="true">Latin</button>
+   <button type="button" class="btn" id="t-id" aria-pressed="true">Terjemahan</button>
+   <button type="button" class="btn btn-secondary" id="size-down" aria-label="Perkecil teks Arab">A−</button>
+   <button type="button" class="btn btn-secondary" id="size-up" aria-label="Perbesar teks Arab">A+</button>
+   <label class="jump">Ke ayat <input id="jump" class="input" type="number" inputmode="numeric" min="1" max="${total}" placeholder="1–${total}"></label>
+  </div></div>
+  <div class="reader" id="reader">
+   ${needBismillah?'<div class="bismillah" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>':""}
+   <div id="ayat-list">${ayat.map(a=>`<article class="card ayah" id="a-${a.nomorAyat}">
+    <div class="ayah-top"><span class="ayah-no">${a.nomorAyat}</span><button type="button" class="icon-btn ayah-play" data-n="${a.nomorAyat}" aria-label="Putar ayat ${a.nomorAyat}"><i class="fa-solid fa-play"></i></button></div>
+    <div class="ayah-ar" lang="ar" dir="rtl">${escapeHtml(a.teksArab)}</div>
+    <div class="ayah-latin">${escapeHtml(a.teksLatin)}</div>
+    <div class="ayah-id">${escapeHtml(a.teksIndonesia)}</div></article>`).join("")}</div>
+  </div>
+  <div class="reader-nav">
+   ${prev?`<a class="btn btn-secondary" href="quran.html?s=${prev.nomor}"><i class="fa-solid fa-chevron-left"></i> ${escapeHtml(prev.namaLatin)}</a>`:"<span></span>"}
+   ${next?`<a class="btn btn-primary" href="quran.html?s=${next.nomor}">${escapeHtml(next.namaLatin)} <i class="fa-solid fa-chevron-right"></i></a>`:"<span></span>"}
+  </div>
+  <p class="helper quran-credit">Teks & terjemahan: Kementerian Agama RI, melalui equran.id.</p>`;
+
+  /* tampilan: Latin / terjemahan / ukuran teks */
+  const reader=document.getElementById("reader"),tl=document.getElementById("t-latin"),ti=document.getElementById("t-id");
+  const applyView=()=>{
+   reader.classList.toggle("hide-latin",!prefs.latin);reader.classList.toggle("hide-id",!prefs.id);
+   reader.style.setProperty("--ar",prefs.size+"px");
+   [[tl,prefs.latin],[ti,prefs.id]].forEach(([b,on])=>{b.setAttribute("aria-pressed",on);b.classList.toggle("btn-primary",on);b.classList.toggle("btn-secondary",!on)});
+  };
+  tl.onclick=()=>{prefs.latin=!prefs.latin;savePrefs();applyView()};
+  ti.onclick=()=>{prefs.id=!prefs.id;savePrefs();applyView()};
+  document.getElementById("size-down").onclick=()=>{prefs.size=Math.max(22,prefs.size-4);savePrefs();applyView()};
+  document.getElementById("size-up").onclick=()=>{prefs.size=Math.min(56,prefs.size+4);savePrefs();applyView()};
+  applyView();
+
+  /* lompat ke ayat */
+  const jump=document.getElementById("jump");
+  const goAyah=v=>{const el=document.getElementById("a-"+v);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});else toast("Ayat tidak ditemukan.")};
+  jump.onchange=()=>{const v=parseInt(jump.value,10);if(v>=1&&v<=total)goAyah(v);else toast(`Masukkan angka 1–${total}.`)};
+  if(/^#a-\d+$/.test(location.hash))setTimeout(()=>goAyah(location.hash.slice(3)),150);
+
+  /* audio per ayat (berlanjut otomatis ke ayat berikutnya) */
+  const player=new Audio(),fullAudio=document.getElementById("full-audio");let cur=null;
+  const setPlaying=num=>{
+   document.querySelectorAll(".ayah").forEach(el=>{
+    const on=String(num)===el.id.slice(2);el.classList.toggle("playing",on);
+    el.querySelector(".ayah-play i").className="fa-solid "+(on?"fa-pause":"fa-play");
+   });
+  };
+  function playAyah(num,auto){
+   const a=ayat.find(x=>x.nomorAyat===num),src=a&&a.audio&&a.audio[QARI];
+   if(!src){toast("Audio ayat ini belum tersedia.");return}
+   if(!auto&&cur===num&&!player.paused){player.pause();setPlaying(null);cur=null;return}
+   if(fullAudio)fullAudio.pause();
+   cur=num;player.src=src;player.play().catch(()=>{toast("Audio gagal diputar.");setPlaying(null)});setPlaying(num);
+   if(auto)document.getElementById("a-"+num)?.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+  player.onended=()=>{const nx=cur+1;if(ayat.some(x=>x.nomorAyat===nx))playAyah(nx,true);else{setPlaying(null);cur=null}};
+  if(fullAudio)fullAudio.onplay=()=>{player.pause();setPlaying(null);cur=null};
+  document.getElementById("ayat-list").addEventListener("click",e=>{
+   const b=e.target.closest(".ayah-play");if(b)playAyah(parseInt(b.dataset.n,10),false);
+  });
+ }
+
+ const s=parseInt(new URLSearchParams(location.search).get("s"),10);
+ if(s>=1&&s<=114)showSurah(s);else showList();
+});
+</script></body></html>

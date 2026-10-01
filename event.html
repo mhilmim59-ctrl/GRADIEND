@@ -6,8 +6,8 @@
 <title>Event — GRADIEND</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
+<script src="js/events.js"></script>
 <script src="js/app.js"></script>
 </head>
 <body class="shell">
@@ -17,7 +17,7 @@
   <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
     <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
   </a>
-  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
   <div class="nav-tools">
     <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
     <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
@@ -58,29 +58,33 @@
   <div>
     <h4>Jelajah</h4>
     <a href="jadwal-salat.html">Waktu Salat</a><br>
-    <a href="qibla.html">Arah Kiblat</a><br>
+    <a href="quran.html">Al-Qur'an</a><br>
     <a href="tasbih.html">Tasbih</a>
   </div>
   <div>
     <h4>Kontak</h4>
     <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
-    <a href="media-sosial.html">Media Sosial</a><br>
-    <a href="admin.html"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+    <a href="media-sosial.html">Media Sosial</a>
   </div>
 </div>
 <div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
 </footer>
 
 <script>
-document.addEventListener("DOMContentLoaded",async()=>{
- const box=document.getElementById("event-grid"),search=document.getElementById("search");let rows=[],cat="Semua";
- if(!GRADIEND.configured){box.innerHTML='<div class="empty">Supabase belum dikonfigurasi. Isi <b>js/config.js</b> terlebih dahulu.</div>';return}
- const sb=await GRADIEND.client();
- const {data,error}=await sb.from("events").select("id,title,event_date,category,excerpt,image_url,author_name,content").eq("status","published").order("event_date",{ascending:false});
- if(error){box.innerHTML='<div class="empty">Gagal mengambil event dari Supabase.</div>';return}
- rows=data||[];
- function render(){const q=search.value.toLowerCase().trim();const filtered=rows.filter(e=>(cat==="Semua"||e.category===cat)&&(`${e.title} ${e.excerpt||""} ${e.content||""}`).toLowerCase().includes(q));
- box.innerHTML=filtered.length?filtered.map(e=>`<article class="card event-card" onclick="location.href='artikel.html?id=${encodeURIComponent(e.id)}'"><div class="event-cover">${e.image_url?`<img src="${e.image_url}" alt="">`:'<div class="cover-icon"><i class="fa-solid fa-star-and-crescent"></i></div>'}</div><div class="event-body"><div class="meta">${escapeHtml(e.category)} · ${dateID(e.event_date)}</div><h3>${escapeHtml(e.title)}</h3><p>${escapeHtml(e.excerpt||"")}</p><div class="author"><span class="avatar">${initials(e.author_name)}</span>${escapeHtml(e.author_name||"Admin")}</div></div></article>`).join(""):'<div class="empty">Tidak ada artikel yang cocok.</div>'}
- search.oninput=render;document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{document.querySelectorAll(".cat").forEach(x=>x.classList.remove("btn-primary"));document.querySelectorAll(".cat").forEach(x=>x.classList.add("btn-secondary"));b.classList.remove("btn-secondary");b.classList.add("btn-primary");cat=b.dataset.cat;render()});render();
+document.addEventListener("DOMContentLoaded",()=>{
+ const box=document.getElementById("event-grid"),search=document.getElementById("search");
+ const rows=getEvents();let cat="Semua";
+ function render(){
+  const q=search.value.toLowerCase().trim();
+  const filtered=rows.filter(e=>(cat==="Semua"||e.category===cat)&&(`${e.title} ${e.excerpt||""} ${e.content||""}`).toLowerCase().includes(q));
+  box.innerHTML=filtered.length?filtered.map(e=>eventCard(e,"fa-star-and-crescent")).join(""):
+   `<div class="empty" style="grid-column:1/-1">${rows.length?"Tidak ada artikel yang cocok.":"Belum ada event. Nantikan kegiatan Rohis berikutnya."}</div>`;
+ }
+ search.oninput=render;
+ document.querySelectorAll(".cat").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".cat").forEach(x=>{x.classList.remove("btn-primary");x.classList.add("btn-secondary")});
+  b.classList.remove("btn-secondary");b.classList.add("btn-primary");cat=b.dataset.cat;render();
+ });
+ render();
 });
 </script></body></html>
