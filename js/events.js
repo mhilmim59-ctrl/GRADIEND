@@ -39,5 +39,18 @@ Paragraf kedua artikel. Tinggalkan satu baris kosong di antara paragraf.`
 window.GRADIEND_EVENTS = [
 
   // ⬇️ Tempel event baru di sini ⬇️
+   
+{
+  id: "phbi-maulid-gema-2026",
+  title: "PHBI Maulid Nabi: GEMA (Generasi Meneladani Akhlak Rasulullah)",
+  date: "2026-09-25",
+  category: "Kegiatan",
+  author: "GRADIEND Divisi Syiar",
+  excerpt: "Peringatan Hari Besar Islam (PHBI) Maulid Nabi Muhammad SAW yang dianjurkan oleh Rohis SMAN 62 Jakarta dengan melibatkan pelajar Tingkatan 10 sebagai jawatankuasa.",
+  image: "assets/events/maulidgema.JPG",
+  content: `Rohis SMAN 62 Jakarta telah berjaya menganjurkan Peringatan Hari Besar Islam (PHBI) Maulid Nabi Muhammad SAW dengan tema "GEMA" (Generasi Meneladani Akhlak Rasulullah). Majlis ini berlangsung meriah di halaman sekolah dengan kehadiran para pelajar dan guru yang berkumpul bersama untuk memperingati keperibadian serta perjuangan Nabi Muhammad SAW.
+
+Istimewanya pada penganjuran kali ini, pihak Rohis memberdayakan pelajar Tingkatan 10 untuk terlibat secara aktif sebagai jawatankuasa pelaksana. Dengan bimbingan dan pendampingan daripada abang dan kakak Tingkatan 11 Rohis, para pelajar Tingkatan 10 belajar menguruskan pelbagai keperluan majlis, sekali gus mengasah kepimpinan dan kerjasama pasukan dalam menjayakan acara keagamaan ini.`
+}
 
 ];
