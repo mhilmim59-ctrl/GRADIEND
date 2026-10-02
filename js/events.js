@@ -45,7 +45,7 @@ window.GRADIEND_EVENTS = [
   title: "PHBI Maulid Nabi: GEMA (Generasi Meneladani Akhlak Rasulullah)",
   date: "2026-09-25",
   category: "Kegiatan",
-  author: "GRADIEND - Syiar",
+  author: "GRADIEND Syiar",
   excerpt: "Peringatan Maulid Nabi di SMAN 62 Jakarta melibatkan langsung anak-anak kelas 10 sebagai pantia.",
   image: "assets/events/maulidgema.JPG",
   content: `Rohis SMAN 62 Jakarta baru saja mengadakan acara Peringatan Hari Besar Islam (PHBI) Maulid Nabi dengan tema "GEMA" (Generasi Meneladani Akhlak Rasulullah). Acara ini berlangsung hangat dan seru, di mana para siswa berkumpul dan duduk bersama di lapangan sekolah untuk mengingat kembali keteladanan akhlak Rasulullah[cite: 1].
