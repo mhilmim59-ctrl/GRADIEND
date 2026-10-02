@@ -45,12 +45,12 @@ window.GRADIEND_EVENTS = [
   title: "PHBI Maulid Nabi: GEMA (Generasi Meneladani Akhlak Rasulullah)",
   date: "2026-09-25",
   category: "Kegiatan",
-  author: "GRADIEND Divisi Syiar",
-  excerpt: "Peringatan Hari Besar Islam (PHBI) Maulid Nabi Muhammad SAW yang dianjurkan oleh Rohis SMAN 62 Jakarta dengan melibatkan pelajar Tingkatan 10 sebagai jawatankuasa.",
-  image: "assets/events/maulidgema.JPG",
-  content: `Rohis SMAN 62 Jakarta telah berjaya menganjurkan Peringatan Hari Besar Islam (PHBI) Maulid Nabi Muhammad SAW dengan tema "GEMA" (Generasi Meneladani Akhlak Rasulullah). Majlis ini berlangsung meriah di halaman sekolah dengan kehadiran para pelajar dan guru yang berkumpul bersama untuk memperingati keperibadian serta perjuangan Nabi Muhammad SAW.
+  author: "GRADIEND - Syiar",
+  excerpt: "Peringatan Maulid Nabi di SMAN 62 Jakarta melibatkan langsung anak-anak kelas 10 sebagai pantia.",
+  image: "137156.jpg",
+  content: `Rohis SMAN 62 Jakarta baru saja mengadakan acara Peringatan Hari Besar Islam (PHBI) Maulid Nabi dengan tema "GEMA" (Generasi Meneladani Akhlak Rasulullah). Acara ini berlangsung hangat dan seru, di mana para siswa berkumpul dan duduk bersama di lapangan sekolah untuk mengingat kembali keteladanan akhlak Rasulullah[cite: 1].
 
-Istimewanya pada penganjuran kali ini, pihak Rohis memberdayakan pelajar Tingkatan 10 untuk terlibat secara aktif sebagai jawatankuasa pelaksana. Dengan bimbingan dan pendampingan daripada abang dan kakak Tingkatan 11 Rohis, para pelajar Tingkatan 10 belajar menguruskan pelbagai keperluan majlis, sekali gus mengasah kepimpinan dan kerjasama pasukan dalam menjayakan acara keagamaan ini.`
+Hal yang bikin acara ini makin spesial adalah kepanitiaannya yang memberdayakan langsung anak-anak kelas 10. Walaupun menjadi pengalaman baru bagi mereka, acaranya tetap berjalan lancar karena terus didampingi dan diarahkan oleh kakak-kakak Rohis kelas 11. Jadi, selain untuk memperingati hari besar Islam, momen ini juga menjadi kesempatan untuk adik-adik kelas 10 belajar berorganisasi dan melatih kerja sama tim.`
 }
 
 ];
