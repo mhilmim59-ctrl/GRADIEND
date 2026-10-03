@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Asmaul Husna — GRADIEND</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="js/config.js"></script>
+<script src="js/asmaul-husna.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="asmaul-husna.html" data-page="asmaul-husna.html">Asmaul Husna</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main>
+<section class="page-hero">
+ <div class="container reveal"><div class="eyebrow">Asmaul Husna</div><h1>99 Nama Allah.</h1><p>Mengenal nama-nama Allah yang terbaik beserta tulisan Arab, bacaan Latin, dan artinya.</p></div>
+</section>
+<section class="section" style="padding-top:20px">
+ <div class="container">
+  <div class="dalil-grid">
+   <div class="dalil-box"><div class="arabic" lang="ar" dir="rtl">وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا</div><p>Dan Allah memiliki Asmaulhusna (nama-nama yang terbaik), maka bermohonlah kepada-Nya dengan menyebut Asmaulhusna itu.</p><small>QS. Al-A'raf: 180</small></div>
+   <div class="dalil-box"><p>Sesungguhnya Allah memiliki sembilan puluh sembilan nama, seratus kurang satu. Barang siapa menghafalnya, ia akan masuk surga.</p><small>HR. Bukhari dan Muslim</small></div>
+  </div>
+  <div class="card ah-today" id="ah-today"></div>
+  <div class="card quran-tools"><div class="tool-row">
+   <input id="ah-search" class="input" type="search" placeholder="Cari nama, arti, atau nomor" aria-label="Cari Asmaul Husna" autocomplete="off" style="flex:1 1 260px">
+   <button type="button" class="btn btn-secondary" id="ah-hafalan" aria-pressed="false"><i class="fa-solid fa-eye-slash"></i> Mode hafalan</button>
+  </div><div class="helper" id="ah-count" style="margin-top:8px"></div></div>
+  <div class="ah-grid" id="ah-grid"></div>
+ </div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="quran.html">Al-Qur'an</a><br>
+    <a href="asmaul-husna.html">Asmaul Husna</a><br>
+    <a href="tasbih.html">Tasbih</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const data=window.GRADIEND_ASMAUL_HUSNA||[];
+ const grid=document.getElementById("ah-grid"),count=document.getElementById("ah-count"),input=document.getElementById("ah-search"),hBtn=document.getElementById("ah-hafalan");
+ if(!data.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1">Data Asmaul Husna belum tersedia.</div>';return}
+ const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+ const card=x=>`<article class="card ah-card" tabindex="0"><span class="ah-no">${x.n}</span><div class="ah-ar" lang="ar" dir="rtl">${escapeHtml(x.ar)}</div><div class="ah-latin">${escapeHtml(x.latin)}</div><div class="ah-arti">${escapeHtml(x.arti)}</div></article>`;
+
+ /* nama hari ini (berganti setiap hari, tombol untuk mengacak) */
+ const today=document.getElementById("ah-today");let idx;
+ const showToday=i=>{idx=i;const x=data[i];
+  today.innerHTML=`<div class="eyebrow">Nama hari ini · ke-${x.n}</div><div class="ah-today-ar" lang="ar" dir="rtl">${escapeHtml(x.ar)}</div><h2>${escapeHtml(x.latin)}</h2><p>${escapeHtml(x.arti)}</p><button type="button" class="btn btn-secondary" id="ah-shuffle"><i class="fa-solid fa-shuffle"></i> Nama lain</button>`;
+  document.getElementById("ah-shuffle").onclick=()=>{let n;do{n=Math.floor(Math.random()*data.length)}while(data.length>1&&n===idx);showToday(n)};
+ };
+ const d=new Date();showToday(Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)%data.length);
+
+ /* daftar + pencarian */
+ const render=()=>{
+  const raw=input.value.trim(),q=norm(raw);
+  const out=data.filter(x=>!raw||String(x.n)===raw||(q&&(norm(x.latin).includes(q)||norm(x.arti).includes(q))));
+  grid.innerHTML=out.map(card).join("")||'<div class="empty" style="grid-column:1/-1">Nama tidak ditemukan.</div>';
+  count.textContent=`${out.length} dari ${data.length} nama`;
+ };
+ input.oninput=render;render();
+
+ /* mode hafalan: Latin & arti disembunyikan, ketuk kartu untuk melihat */
+ hBtn.onclick=()=>{const on=!grid.classList.contains("hafalan");grid.classList.toggle("hafalan",on);grid.querySelectorAll(".ah-card.open").forEach(c=>c.classList.remove("open"));
+  hBtn.setAttribute("aria-pressed",on);hBtn.classList.toggle("btn-primary",on);hBtn.classList.toggle("btn-secondary",!on);
+  hBtn.innerHTML=`<i class="fa-solid ${on?"fa-eye":"fa-eye-slash"}"></i> ${on?"Matikan mode hafalan":"Mode hafalan"}`};
+ const flip=e=>{const c=e.target.closest(".ah-card");if(c&&grid.classList.contains("hafalan"))c.classList.toggle("open")};
+ grid.addEventListener("click",flip);
+ grid.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip(e)}});
+});
+</script></body></html>
