@@ -71,5 +71,23 @@ window.GRADIEND_QUOTES = [
   { type: "tokoh", text: "Jika engkau tidak menyibukkan dirimu dengan kebaikan, dirimu akan menyibukkanmu dengan keburukan.", source: "Imam Asy-Syafi'i" },
   { type: "tokoh", text: "Kewajiban kita lebih banyak daripada waktu yang kita miliki.", source: "Hasan Al-Banna" },
   { type: "tokoh", text: "Kalau hidup sekadar hidup, babi di hutan pun hidup. Kalau bekerja sekadar bekerja, kera juga bekerja.", source: "Buya Hamka" }
+/* ===== REMINDER SHOLAT & IBADAH ===== */
+  { type: "renungan", text: "Tidak semua orang punya tempat cerita, oleh karena itu Allah memanggil kita lima kali sehari.", source: "Anonim" },
+  { type: "renungan", text: "Sholatlah di belakang imam sebelum disholatkan di depan imam.", source: "Anonim" },
+  { type: "renungan", text: "Datanglah ke masjid sebagai jamaah sebelum datang ke masjid sebagai jenazah.", source: "Anonim" },
 
+/* ===== PENGINGAT AKHIRAT & HATI ===== */
+  { type: "renungan", text: "Dunia dikejar seperti tak akan mati, akhirat dilupa seperti tak akan terjadi.", source: "Anonim" },
+  { type: "renungan", text: "Manusia sering lupa akan kematian, padahal itu janji yang paling pasti.", source: "Anonim" },
+  { type: "renungan", text: "Rezeki yang sudah tertakar tidak akan pernah tertukar.", source: "Anonim" },
+  { type: "renungan", text: "Lahir ditolong, mati digotong, lantas apa alasan untuk sombong?", source: "Anonim" },
+
+/* ===== MOTIVASI & AKHLAK ===== */
+  { type: "motivasi", text: "Ulangi terus doanya, ulangi terus usahanya, sampai Allah memberikan ketetapan terbaik-Nya.", source: "Anonim" },
+  { type: "motivasi", text: "Banyak yang ingin setajam pisau tetapi menolak untuk diasah; banyak yang ingin seharum dupa tetapi enggan dibakar.", source: "Anonim" },
+  { type: "motivasi", text: "Kita hanya perlu menjadi lebih baik dari diri kita yang kemarin, bukan lebih baik dari orang lain.", source: "Anonim" },
+  { type: "motivasi", text: "Pelan-pelan satu per satu, tidak semua keinginan harus terkabul dalam satu waktu.", source: "Anonim" },
+  { type: "motivasi", text: "Manusia boleh memiliki kendala, tetapi Allah memegang penuh segala kendali.", source: "Anonim" },
+  { type: "motivasi", text: "Ada orang yang tidak seberuntung dirimu, tetapi rasa syukurnya jauh melebihi dirimu.", source: "Anonim" },
+  
 ];
