@@ -9,7 +9,8 @@ event dan quote ditambahkan langsung lewat kode.
 - `event.html` — Daftar event & artikel
 - `artikel.html?id=...` — Isi artikel
 - `jadwal-salat.html` — Waktu salat
-- `quran.html` — Al-Qur'an (Arab, Latin, terjemahan Indonesia, murottal)
+- `quran.html` — Al-Qur'an (Arab berwarna tajwid, Latin, terjemahan Indonesia, tafsir per ayat, murottal)
+- `asmaul-husna.html` — 99 nama Allah (Arab, Latin, arti) dengan pencarian dan mode hafalan
 - `tasbih.html` — Tasbih digital
 - `sejarah.html`, `media-sosial.html`, `kontak.html`
 
@@ -32,8 +33,18 @@ Pastikan isi dan sumber quote benar sebelum ditambahkan.
 
 ## Al-Qur'an
 
-Halaman `quran.html` mengambil data dari API publik equran.id (sumber: Kemenag RI) langsung dari browser,
-jadi butuh koneksi internet. Alamat API ada di `js/config.js` (`quranApiBase`).
+Halaman `quran.html` mengambil data dari API publik langsung dari browser, jadi butuh koneksi internet:
+
+- Teks Arab, Latin, terjemahan, tafsir, dan murottal: equran.id (sumber: Kemenag RI).
+- Warna tajwid: Quran.com. Jika data tajwid gagal dimuat, ayat tetap tampil tanpa warna.
+
+Alamat kedua API ada di `js/config.js` (`quranApiBase` dan `tajwidApiBase`).
+Tombol **Tajwid** menyalakan atau mematikan warna (beserta panduan warnanya), tombol **Tafsir** membuka semua tafsir,
+dan setiap ayat punya tombol tafsirnya sendiri.
+
+## Asmaul Husna
+
+Data 99 nama ada di `js/asmaul-husna.js`. Untuk mengubah arti atau ejaan Latin, edit teksnya lalu commit.
 
 ## GitHub & Vercel
 

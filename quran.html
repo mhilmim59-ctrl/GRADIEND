@@ -16,7 +16,7 @@
   <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
     <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
   </a>
-  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="asmaul-husna.html" data-page="asmaul-husna.html">Asmaul Husna</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
   <div class="nav-tools">
     <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
     <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
@@ -43,6 +43,7 @@
     <h4>Jelajah</h4>
     <a href="jadwal-salat.html">Waktu Salat</a><br>
     <a href="quran.html">Al-Qur'an</a><br>
+    <a href="asmaul-husna.html">Asmaul Husna</a><br>
     <a href="tasbih.html">Tasbih</a>
   </div>
   <div>
@@ -60,10 +61,11 @@ document.addEventListener("DOMContentLoaded",()=>{
  const API=String(GRADIEND.config.quranApiBase||"https://equran.id/api/v2").replace(/\/+$/,"");
  const QARI="05",QARI_NAME="Misyari Rasyid Al-Afasy"; // kode 05 = Mishary Rashid Al-Afasy
  const cache=new Map();
+ const TAJWID_API=String(GRADIEND.config.tajwidApiBase||"https://api.quran.com/api/v4").replace(/\/+$/,"");
 
  /* preferensi tampilan (tersimpan di perangkat) */
  const PREF_KEY="gradiend_quran_prefs";
- const prefs={latin:true,id:true,size:matchMedia("(max-width:680px)").matches?28:32};
+ const prefs={latin:true,id:true,tajwid:true,size:matchMedia("(max-width:680px)").matches?28:32};
  try{Object.assign(prefs,JSON.parse(localStorage.getItem(PREF_KEY)||"{}"))}catch{}
  const savePrefs=()=>{try{localStorage.setItem(PREF_KEY,JSON.stringify(prefs))}catch{}};
 
@@ -84,6 +86,80 @@ document.addEventListener("DOMContentLoaded",()=>{
  const strip=t=>String(t||"").replace(/<[^>]*>/g,"");
  const plainAr=t=>String(t||"").replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").replace(/\u0671/g,"ا");
  const normLatin=t=>String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+
+
+ /* ---------- TAJWID: data warna dari Quran.com ---------- */
+ // Nama kelas dari API dipetakan ke kategori (daftar putih), sisanya tampil tanpa warna.
+ function tjCat(raw){
+  const c=String(raw||"").toLowerCase().replace(/[^a-z_]/g,"");
+  if(/shafawi/.test(c))return /ikh/.test(c)?"ikhfa-syafawi":"idgham-mimi";
+  if(/^ikh/.test(c))return "ikhfa";
+  if(/^idgham/.test(c)){
+   if(/mutajan/.test(c))return "idgham-mutajanisain";
+   if(/mutaqarib/.test(c))return "idgham-mutaqaribain";
+   if(/wo_ghunnah|without|bila/.test(c))return "idgham-bilaghunnah";
+   return "idgham-bighunnah";
+  }
+  if(/^iqlab/.test(c))return "iqlab";
+  if(/^ghunnah/.test(c))return "ghunnah";
+  if(/^qalqal/.test(c))return "qalqalah";
+  if(/^ham/.test(c))return "wasl";
+  if(/^(laam|lam)/.test(c))return "syams";
+  if(/^(slnt|silent)/.test(c))return "slnt";
+  if(/^madda?_?normal/.test(c))return "mad-asli";
+  if(/^madda?_?permiss/.test(c))return "mad-jaiz";
+  if(/^madda?_?necess/.test(c))return "mad-lazim";
+  if(/^madda?_?oblig/.test(c))return "mad-wajib";
+  return "";
+ }
+ // Ubah markup dari API menjadi HTML aman: hanya <span class="tj tj-..."> dan teks yang di-escape.
+ function tajwidHtml(raw){
+  const s=String(raw||"").replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,"").replace(/<span[^>]*class=["']?end["']?[^>]*>.*?<\/span>/gi,"").replace(/[\s\u0660-\u0669\u06F0-\u06F9]+$/,"").trim();
+  const re=/<tajweed\s+class=["']?([a-z_]+)["']?[^>]*>|<\/tajweed\s*>|<[^>]*>|[^<]+/gi;
+  let out="",depth=0,m;
+  while((m=re.exec(s))){
+   const t=m[0];
+   if(m[1]!==undefined){const cat=tjCat(m[1]);out+=cat?`<span class="tj tj-${cat}">`:"<span>";depth++}
+   else if(/^<\/tajweed/i.test(t)){if(depth>0){out+="</span>";depth--}}
+   else if(t[0]!=="<")out+=escapeHtml(t);
+  }
+  return out+"</span>".repeat(depth);
+ }
+ const TJ_LEGEND=[
+  ["mad-asli","Mad Thabi'i","dibaca 2 harakat"],
+  ["mad-jaiz","Mad Jaiz","dibaca 2, 4, atau 6 harakat (mis. mad munfasil)"],
+  ["mad-wajib","Mad Wajib","dibaca 4–5 harakat"],
+  ["mad-lazim","Mad Lazim","dibaca 6 harakat"],
+  ["ghunnah","Ghunnah","dengung 2 harakat pada nun atau mim bertasydid"],
+  ["ikhfa","Ikhfa","nun mati atau tanwin dibaca samar sebelum 15 huruf ikhfa"],
+  ["ikhfa-syafawi","Ikhfa Syafawi","mim mati bertemu ba', dibaca samar dengan dengung"],
+  ["iqlab","Iqlab","nun mati atau tanwin bertemu ba' dibaca seperti mim samar"],
+  ["idgham-bighunnah","Idgham Bighunnah","nun mati atau tanwin lebur ke huruf ي ن م و dengan dengung"],
+  ["idgham-bilaghunnah","Idgham Bilaghunnah","nun mati atau tanwin lebur ke huruf ل ر tanpa dengung"],
+  ["idgham-mimi","Idgham Mimi","mim mati bertemu mim, dilebur dengan dengung"],
+  ["idgham-mutajanisain","Idgham Mutajanisain / Mutaqaribain","dua huruf sejenis atau berdekatan makhraj bertemu, dilebur"],
+  ["qalqalah","Qalqalah","pantulan bunyi pada huruf ق ط ب ج د yang sukun"],
+  ["slnt","Tidak dibaca / lebur","hamzah wasal, lam syamsiyah, dan huruf yang tidak dilafalkan"]
+ ];
+ async function fetchTajwid(n){
+  const key="tajwid:"+n;if(cache.has(key))return cache.get(key);
+  const res=await fetch(`${TAJWID_API}/quran/verses/uthmani_tajweed?chapter_number=${n}`,{headers:{Accept:"application/json"}});
+  if(!res.ok)throw new Error("HTTP "+res.status);
+  const json=await res.json();
+  if(!json||!Array.isArray(json.verses))throw new Error("Format tajwid tidak dikenali");
+  const map={};
+  json.verses.forEach(v=>{const i=parseInt(String(v.verse_key).split(":")[1],10);if(i&&v.text_uthmani_tajweed)map[i]=tajwidHtml(v.text_uthmani_tajweed)});
+  cache.set(key,map);return map;
+ }
+
+ /* ---------- TAFSIR: dari equran.id (Kemenag RI) ---------- */
+ async function fetchTafsir(n){
+  const data=await api("/tafsir/"+n);
+  const map={};
+  (data.tafsir||[]).forEach(t=>{const i=parseInt(t.ayat,10);if(i&&t.teks)map[i]=String(t.teks)});
+  return map;
+ }
+ const tafsirHtml=t=>strip(t).split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>`<p>${escapeHtml(x)}</p>`).join("");
 
  /* ---------- DAFTAR SURAH ---------- */
  async function showList(){
@@ -122,38 +198,90 @@ document.addEventListener("DOMContentLoaded",()=>{
    ${fullSrc?`<div class="reader-audio"><small>Murottal surah penuh · ${QARI_NAME}</small><audio id="full-audio" controls preload="none" src="${escapeHtml(fullSrc)}"></audio></div>`:""}
   </div>
   <div class="card quran-tools"><div class="tool-row">
+   <button type="button" class="btn" id="t-tajwid" aria-pressed="true">Tajwid</button>
    <button type="button" class="btn" id="t-latin" aria-pressed="true">Latin</button>
    <button type="button" class="btn" id="t-id" aria-pressed="true">Terjemahan</button>
+   <button type="button" class="btn btn-secondary" id="t-tafsir" aria-pressed="false">Tafsir</button>
    <button type="button" class="btn btn-secondary" id="size-down" aria-label="Perkecil teks Arab">A−</button>
    <button type="button" class="btn btn-secondary" id="size-up" aria-label="Perbesar teks Arab">A+</button>
    <label class="jump">Ke ayat <input id="jump" class="input" type="number" inputmode="numeric" min="1" max="${total}" placeholder="1–${total}"></label>
   </div></div>
+  <details class="card tj-legend" id="tj-legend" hidden><summary><i class="fa-solid fa-palette"></i> Panduan warna tajwid</summary>
+   <div class="tj-grid">${TJ_LEGEND.map(([c,nm,ds])=>`<div class="tj-item"><span class="tj-sw" style="background:var(--tj-${c})"></span><div><b>${nm}</b><span>${ds}</span></div></div>`).join("")}</div>
+   <p class="helper">Warna mengikuti data tajwid Quran.com. Huruf tanpa warna dibaca biasa (termasuk izhar). Untuk belajar tajwid, tetap bimbingan guru.</p>
+  </details>
   <div class="reader" id="reader">
    ${needBismillah?'<div class="bismillah" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>':""}
    <div id="ayat-list">${ayat.map(a=>`<article class="card ayah" id="a-${a.nomorAyat}">
-    <div class="ayah-top"><span class="ayah-no">${a.nomorAyat}</span><button type="button" class="icon-btn ayah-play" data-n="${a.nomorAyat}" aria-label="Putar ayat ${a.nomorAyat}"><i class="fa-solid fa-play"></i></button></div>
+    <div class="ayah-top"><span class="ayah-no">${a.nomorAyat}</span><span class="ayah-actions"><button type="button" class="btn btn-secondary ayah-tafsir-btn" data-n="${a.nomorAyat}" aria-expanded="false" aria-controls="tf-${a.nomorAyat}"><i class="fa-solid fa-book-open"></i> Tafsir</button><button type="button" class="icon-btn ayah-play" data-n="${a.nomorAyat}" aria-label="Putar ayat ${a.nomorAyat}"><i class="fa-solid fa-play"></i></button></span></div>
     <div class="ayah-ar" lang="ar" dir="rtl">${escapeHtml(a.teksArab)}</div>
     <div class="ayah-latin">${escapeHtml(a.teksLatin)}</div>
-    <div class="ayah-id">${escapeHtml(a.teksIndonesia)}</div></article>`).join("")}</div>
+    <div class="ayah-id">${escapeHtml(a.teksIndonesia)}</div>
+    <div class="ayah-tafsir" id="tf-${a.nomorAyat}" hidden></div></article>`).join("")}</div>
   </div>
   <div class="reader-nav">
    ${prev?`<a class="btn btn-secondary" href="quran.html?s=${prev.nomor}"><i class="fa-solid fa-chevron-left"></i> ${escapeHtml(prev.namaLatin)}</a>`:"<span></span>"}
    ${next?`<a class="btn btn-primary" href="quran.html?s=${next.nomor}">${escapeHtml(next.namaLatin)} <i class="fa-solid fa-chevron-right"></i></a>`:"<span></span>"}
   </div>
-  <p class="helper quran-credit">Teks & terjemahan: Kementerian Agama RI, melalui equran.id.</p>`;
+  <p class="helper quran-credit">Teks, terjemahan, dan tafsir: Kementerian Agama RI, melalui equran.id. Warna tajwid: Quran.com.</p>`;
 
-  /* tampilan: Latin / terjemahan / ukuran teks */
-  const reader=document.getElementById("reader"),tl=document.getElementById("t-latin"),ti=document.getElementById("t-id");
+  /* tampilan: tajwid / Latin / terjemahan / ukuran teks */
+  const reader=document.getElementById("reader"),tj=document.getElementById("t-tajwid"),tl=document.getElementById("t-latin"),ti=document.getElementById("t-id"),legend=document.getElementById("tj-legend");
+  let tjMap=null,tjState="idle"; // idle | loading | ok | fail
+  const arEl=num=>document.querySelector(`#a-${num} .ayah-ar`);
+  const renderArabic=()=>{
+   const on=!!(prefs.tajwid&&tjMap);
+   ayat.forEach(a=>{const el=arEl(a.nomorAyat);if(!el)return;
+    if(on&&tjMap[a.nomorAyat])el.innerHTML=tjMap[a.nomorAyat];else el.textContent=a.teksArab});
+   legend.hidden=!on;
+  };
   const applyView=()=>{
    reader.classList.toggle("hide-latin",!prefs.latin);reader.classList.toggle("hide-id",!prefs.id);
    reader.style.setProperty("--ar",prefs.size+"px");
-   [[tl,prefs.latin],[ti,prefs.id]].forEach(([b,on])=>{b.setAttribute("aria-pressed",on);b.classList.toggle("btn-primary",on);b.classList.toggle("btn-secondary",!on)});
+   tj.textContent=tjState==="loading"?"Tajwid…":"Tajwid";
+   [[tj,prefs.tajwid],[tl,prefs.latin],[ti,prefs.id]].forEach(([b,on])=>{b.setAttribute("aria-pressed",on);b.classList.toggle("btn-primary",on);b.classList.toggle("btn-secondary",!on)});
   };
+  async function ensureTajwid(){
+   if(tjMap||tjState==="loading")return;
+   tjState="loading";applyView();
+   try{tjMap=await fetchTajwid(n);tjState="ok"}
+   catch(e){console.error(e);tjState="fail";toast("Warna tajwid belum bisa dimuat. Teks ditampilkan tanpa warna.")}
+   applyView();renderArabic();
+  }
+  tj.onclick=()=>{prefs.tajwid=!prefs.tajwid;savePrefs();if(prefs.tajwid&&tjState==="fail")tjState="idle";applyView();renderArabic();if(prefs.tajwid)ensureTajwid()};
   tl.onclick=()=>{prefs.latin=!prefs.latin;savePrefs();applyView()};
   ti.onclick=()=>{prefs.id=!prefs.id;savePrefs();applyView()};
   document.getElementById("size-down").onclick=()=>{prefs.size=Math.max(22,prefs.size-4);savePrefs();applyView()};
   document.getElementById("size-up").onclick=()=>{prefs.size=Math.min(56,prefs.size+4);savePrefs();applyView()};
   applyView();
+  if(prefs.tajwid)ensureTajwid();
+
+  /* tafsir per ayat (dimuat sekali saat pertama dibuka) */
+  const tfBtnAll=document.getElementById("t-tafsir");let tfMap=null,tfPromise=null,tfAll=false;
+  const ensureTafsir=()=>tfMap?Promise.resolve(tfMap):(tfPromise||(tfPromise=fetchTafsir(n).then(m=>(tfMap=m)).catch(e=>{tfPromise=null;throw e})));
+  const tfBox=num=>document.getElementById("tf-"+num),tfBtn=num=>document.querySelector(`.ayah-tafsir-btn[data-n="${num}"]`);
+  function closeTafsir(num){tfBox(num).hidden=true;tfBtn(num).setAttribute("aria-expanded","false")}
+  async function openTafsir(num){
+   const box=tfBox(num);tfBtn(num).setAttribute("aria-expanded","true");box.hidden=false;
+   if(box.dataset.filled)return true;
+   box.innerHTML='<p class="tf-loading">Memuat tafsir...</p>';
+   try{
+    await ensureTafsir();
+    box.innerHTML='<div class="tf-title">Tafsir Kemenag RI</div>'+(tfMap[num]?tafsirHtml(tfMap[num]):'<p class="tf-empty">Tafsir untuk ayat ini belum tersedia.</p>');
+    box.dataset.filled="1";return true;
+   }catch(e){console.error(e);closeTafsir(num);toast("Tafsir belum bisa dimuat. Periksa koneksi lalu coba lagi.");return false}
+  }
+  document.getElementById("ayat-list").addEventListener("click",e=>{
+   const b=e.target.closest(".ayah-tafsir-btn");if(!b)return;
+   const num=parseInt(b.dataset.n,10);
+   if(b.getAttribute("aria-expanded")==="true")closeTafsir(num);else openTafsir(num);
+  });
+  tfBtnAll.onclick=async()=>{
+   tfAll=!tfAll;tfBtnAll.setAttribute("aria-pressed",tfAll);tfBtnAll.classList.toggle("btn-primary",tfAll);tfBtnAll.classList.toggle("btn-secondary",!tfAll);
+   if(!tfAll){ayat.forEach(a=>closeTafsir(a.nomorAyat));return}
+   try{await ensureTafsir()}catch(e){console.error(e);toast("Tafsir belum bisa dimuat. Periksa koneksi lalu coba lagi.");tfAll=false;tfBtnAll.setAttribute("aria-pressed","false");tfBtnAll.classList.remove("btn-primary");tfBtnAll.classList.add("btn-secondary");return}
+   ayat.forEach(a=>openTafsir(a.nomorAyat));
+  };
 
   /* lompat ke ayat */
   const jump=document.getElementById("jump");
