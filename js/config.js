@@ -7,5 +7,8 @@ window.GRADIEND_CONFIG = {
   kemenagUrl: "https://bimasislam.kemenag.dev/jadwal-sholat",
 
   // Al-Qur'an (teks Arab, Latin & terjemahan Indonesia dari Kemenag RI via equran.id)
-  quranApiBase: "https://equran.id/api/v2"
+  quranApiBase: "https://equran.id/api/v2",
+
+  // Data warna tajwid (Quran.com)
+  tajwidApiBase: "https://api.quran.com/api/v4"
 };
