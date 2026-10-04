@@ -308,3 +308,22 @@ a.event-card{display:block;color:inherit}
 .tw-empty{padding:30px;text-align:center;color:var(--muted)}
 .tw-legend{margin-top:6px}
 @media(max-width:860px){.tw-grid{grid-template-columns:1fr}.ah-audio{padding:14px}}
+
+/* ===== Halaman Doa ===== */
+.dx-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:start}
+.dx-card{padding:20px 20px 16px}
+.dx-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.dx-top h3{margin:0;font-size:16px;line-height:1.4}
+.dx-kat{flex:none;padding:4px 10px;border-radius:999px;background:#eaf7ef;color:var(--green);font-size:10.5px;font-weight:800;letter-spacing:.04em}
+.dark .dx-kat{background:#10372a;color:#d7f1e1}
+.dx-ar{font-family:"Amiri Quran",Amiri,serif;font-size:clamp(24px,4.4vw,30px);line-height:2.1;text-align:right;color:var(--green);margin:6px 0}
+.dark .dx-ar{color:#f0d685}
+.dx-latin{color:var(--green);font-style:italic;font-size:13px;line-height:1.8;margin-top:4px}
+.dark .dx-latin{color:#8fd1b2}
+.dx-arti{margin-top:8px;font-size:14px;line-height:1.85}
+.dx-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.dark .dx-foot{border-color:#1a4336}
+.dx-foot small{color:var(--muted);font-weight:800;font-size:11px}
+.dx-copy{padding:8px 13px;font-size:11px}
+.hide-dx-latin .dx-latin,.hide-dx-arti .dx-arti{display:none}
+@media(max-width:860px){.dx-grid{grid-template-columns:1fr}}
