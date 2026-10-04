@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded",()=>{
  const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f\u064B-\u065F\u0670]/g,"").toLowerCase().replace(/[^a-z0-9\u0600-\u06FF ]/g," ");
  const kn=id=>(kats.find(k=>k.id===id)||{nama:id}).nama;
  let active="all";
- const card=(d,i)=>`<article class="card dx-card" data-i="${i}"><div class="dx-top"><h3>${escapeHtml(d.judul)}</h3><span class="dx-kat">${escapeHtml(kn(d.kat))}</span></div>
+ const card=(d,i)=>`<article class="card dx-card" data-i="${i}"><div class="dx-top"><h3>${escapeHtml(d.judul)}</h3><span class="dx-kat${d.populer?" dx-pop":""}">${escapeHtml(d.populer?"Populer di Indonesia":kn(d.kat))}</span></div>
   <div class="dx-ar" lang="ar" dir="rtl">${escapeHtml(d.ar)}</div>
   <div class="dx-latin">${escapeHtml(d.latin)}</div>
   <div class="dx-arti">${escapeHtml(d.arti)}</div>
