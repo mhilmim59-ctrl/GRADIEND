@@ -38,7 +38,7 @@
   <div class="card ah-today" id="ah-today"></div>
   <div class="card quran-tools"><div class="tool-row">
    <input id="ah-search" class="input" type="search" placeholder="Cari nama, arti, atau nomor" aria-label="Cari Asmaul Husna" autocomplete="off" style="flex:1 1 260px">
-   <button type="button" class="btn btn-secondary" id="ah-hafalan" aria-pressed="false"><i class="fa-solid fa-eye-slash"></i> Mode hafalan</button>
+   <button type="button" class="btn btn-primary" id="ah-playall"><i class="fa-solid fa-play"></i> Putar semua</button>
   </div><div class="helper" id="ah-count" style="margin-top:8px"></div></div>
   <div class="ah-grid" id="ah-grid"></div>
  </div>
@@ -70,34 +70,66 @@
 <script>
 document.addEventListener("DOMContentLoaded",()=>{
  const data=window.GRADIEND_ASMAUL_HUSNA||[];
- const grid=document.getElementById("ah-grid"),count=document.getElementById("ah-count"),input=document.getElementById("ah-search"),hBtn=document.getElementById("ah-hafalan");
+ const grid=document.getElementById("ah-grid"),count=document.getElementById("ah-count"),input=document.getElementById("ah-search"),allBtn=document.getElementById("ah-playall");
  if(!data.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1">Data Asmaul Husna belum tersedia.</div>';return}
  const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
- const card=x=>`<article class="card ah-card" tabindex="0"><span class="ah-no">${x.n}</span><div class="ah-ar" lang="ar" dir="rtl">${escapeHtml(x.ar)}</div><div class="ah-latin">${escapeHtml(x.latin)}</div><div class="ah-arti">${escapeHtml(x.arti)}</div></article>`;
+ const card=x=>`<article class="card ah-card" data-n="${x.n}"><span class="ah-no">${x.n}</span><button type="button" class="icon-btn ah-play" data-play="${x.n}" aria-label="Putar audio ${escapeHtml(x.latin)}"><i class="fa-solid fa-play"></i></button><div class="ah-ar" lang="ar" dir="rtl">${escapeHtml(x.ar)}</div><div class="ah-latin">${escapeHtml(x.latin)}</div><div class="ah-arti">${escapeHtml(x.arti)}</div></article>`;
+
+ /* ---------- audio ----------
+    1) memakai berkas assets/audio/asmaul-husna/01.mp3 ... 99.mp3 bila ada
+    2) bila tidak ada, dibacakan oleh suara Arab bawaan browser/perangkat */
+ const synth=window.speechSynthesis;
+ let current=null,queue=[],audioEl=null,token=0,allOn=false;
+ const pad=n=>String(n).padStart(2,"0");
+ const arabicVoice=()=>{const v=synth?synth.getVoices():[];return v.find(x=>/^ar[-_]SA/i.test(x.lang))||v.find(x=>/^ar/i.test(x.lang))||null};
+ if(synth)synth.onvoiceschanged=()=>{};
+ const mark=n=>{document.querySelectorAll(".ah-card.playing,.ah-today.playing").forEach(e=>e.classList.remove("playing"));
+  document.querySelectorAll("[data-play]").forEach(b=>{const on=n!=null&&String(b.dataset.play)===String(n);b.firstElementChild.className="fa-solid "+(on?"fa-stop":"fa-play");if(on)b.closest(".ah-card,.ah-today")?.classList.add("playing")})};
+ const stop=()=>{token++;queue=[];current=null;allOn=false;if(audioEl){audioEl.onended=audioEl.onerror=null;audioEl.pause();audioEl=null}if(synth)synth.cancel();mark(null);
+  allBtn.innerHTML='<i class="fa-solid fa-play"></i> Putar semua';allBtn.classList.add("btn-primary");allBtn.classList.remove("btn-secondary")};
+ const speak=(x,done)=>{
+  const my=token;const next=()=>{if(my===token)done&&done()};
+  const viaVoice=()=>{
+   if(!synth||typeof SpeechSynthesisUtterance==="undefined"){toast("Browser ini belum mendukung suara.");stop();return}
+   const u=new SpeechSynthesisUtterance(x.ar);u.lang="ar-SA";u.rate=.8;const v=arabicVoice();if(v)u.voice=v;
+   else if(!speak.warned){speak.warned=1;toast("Suara Arab belum terpasang di perangkat ini. Tambahkan berkas mp3 atau pasang suara Arab.")}
+   u.onend=next;u.onerror=e=>{if(e.error==="canceled"||e.error==="interrupted")return;stop()};
+   synth.cancel();synth.speak(u)};
+  audioEl=new Audio(`assets/audio/asmaul-husna/${pad(x.n)}.mp3`);
+  audioEl.onended=next;audioEl.onerror=()=>{audioEl=null;if(my===token)viaVoice()};
+  audioEl.play().catch(()=>{});
+ };
+ const play=(n,done)=>{const x=data.find(d=>d.n===n);if(!x)return;stop();current=n;mark(n);speak(x,()=>{if(done)done();else stop()})};
+ const playQueue=()=>{if(!queue.length){stop();return}const n=queue.shift();const my=token;current=n;mark(n);
+  document.querySelector(`.ah-card[data-n="${n}"]`)?.scrollIntoView({block:"nearest",behavior:"smooth"});
+  speak(data.find(d=>d.n===n),()=>{if(my===token)setTimeout(()=>my===token&&playQueue(),500)})};
+
+ allBtn.onclick=()=>{
+  if(allOn){stop();return}
+  const list=[...grid.querySelectorAll(".ah-card")].map(c=>+c.dataset.n);if(!list.length)return;
+  stop();allOn=true;queue=list;
+  allBtn.innerHTML='<i class="fa-solid fa-stop"></i> Hentikan';allBtn.classList.remove("btn-primary");allBtn.classList.add("btn-secondary");
+  playQueue()};
+ document.addEventListener("click",e=>{const b=e.target.closest("[data-play]");if(!b)return;
+  const n=+b.dataset.play;if(current===n){stop()}else play(n)});
 
  /* nama hari ini (berganti setiap hari, tombol untuk mengacak) */
  const today=document.getElementById("ah-today");let idx;
  const showToday=i=>{idx=i;const x=data[i];
-  today.innerHTML=`<div class="eyebrow">Nama hari ini · ke-${x.n}</div><div class="ah-today-ar" lang="ar" dir="rtl">${escapeHtml(x.ar)}</div><h2>${escapeHtml(x.latin)}</h2><p>${escapeHtml(x.arti)}</p><button type="button" class="btn btn-secondary" id="ah-shuffle"><i class="fa-solid fa-shuffle"></i> Nama lain</button>`;
-  document.getElementById("ah-shuffle").onclick=()=>{let n;do{n=Math.floor(Math.random()*data.length)}while(data.length>1&&n===idx);showToday(n)};
+  today.innerHTML=`<div class="eyebrow">Nama hari ini · ke-${x.n}</div><div class="ah-today-ar" lang="ar" dir="rtl">${escapeHtml(x.ar)}</div><h2>${escapeHtml(x.latin)}</h2><p>${escapeHtml(x.arti)}</p><div class="ah-today-actions"><button type="button" class="btn btn-primary" data-play="${x.n}"><i class="fa-solid fa-play"></i> Dengarkan</button><button type="button" class="btn btn-secondary" id="ah-shuffle"><i class="fa-solid fa-shuffle"></i> Nama lain</button></div>`;
+  document.getElementById("ah-shuffle").onclick=()=>{let n;do{n=Math.floor(Math.random()*data.length)}while(data.length>1&&n===idx);stop();showToday(n)};
  };
  const d=new Date();showToday(Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)%data.length);
 
  /* daftar + pencarian */
  const render=()=>{
+  stop();
   const raw=input.value.trim(),q=norm(raw);
   const out=data.filter(x=>!raw||String(x.n)===raw||(q&&(norm(x.latin).includes(q)||norm(x.arti).includes(q))));
   grid.innerHTML=out.map(card).join("")||'<div class="empty" style="grid-column:1/-1">Nama tidak ditemukan.</div>';
   count.textContent=`${out.length} dari ${data.length} nama`;
  };
  input.oninput=render;render();
-
- /* mode hafalan: Latin & arti disembunyikan, ketuk kartu untuk melihat */
- hBtn.onclick=()=>{const on=!grid.classList.contains("hafalan");grid.classList.toggle("hafalan",on);grid.querySelectorAll(".ah-card.open").forEach(c=>c.classList.remove("open"));
-  hBtn.setAttribute("aria-pressed",on);hBtn.classList.toggle("btn-primary",on);hBtn.classList.toggle("btn-secondary",!on);
-  hBtn.innerHTML=`<i class="fa-solid ${on?"fa-eye":"fa-eye-slash"}"></i> ${on?"Matikan mode hafalan":"Mode hafalan"}`};
- const flip=e=>{const c=e.target.closest(".ah-card");if(c&&grid.classList.contains("hafalan"))c.classList.toggle("open")};
- grid.addEventListener("click",flip);
- grid.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip(e)}});
+ window.addEventListener("pagehide",stop);
 });
 </script></body></html>
