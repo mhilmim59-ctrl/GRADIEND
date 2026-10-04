@@ -73,7 +73,7 @@ window.GRADIEND_TAJWID = [
         contoh: [ { ar: "كَمْ مِنْ فِئَةٍ", ket: "mim mati bertemu mim", ref: "QS. Al-Baqarah: 249" } ] },
       { nama: "Idzhar Syafawi", warna: "", arab: "إظهار شفوي",
         def: "Mim mati dibaca jelas jika bertemu selain mim dan ba'.",
-        huruf: "selain م dan ب",
+        huruf: "م dan ب selain",
         cara: "Ucapkan mim dengan jelas tanpa dengung. Hati-hati pada fa' dan wau, agar mim tidak ikut samar.",
         contoh: [
           { ar: "هُمْ فِيهَا", ket: "mim mati bertemu fa'", ref: "QS. Al-Baqarah: 25" },
