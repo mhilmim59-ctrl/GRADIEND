@@ -127,7 +127,7 @@ window.GRADIEND_TAJWID = [
         ] },
       { nama: "Mad Wajib Muttashil", warna: "mad-wajib", arab: "مد واجب متصل",
         def: "Huruf mad bertemu hamzah dalam satu kata.",
-        huruf: "mad + ء dalam satu kata",
+        huruf: "dalam satu kata  ء mad +",
         cara: "Dibaca 4 sampai 5 harakat.",
         contoh: [
           { ar: "جَاءَ", ket: "alif bertemu hamzah dalam satu kata", ref: "QS. An-Nasr: 1" },
