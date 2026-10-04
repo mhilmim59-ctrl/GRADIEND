@@ -135,7 +135,7 @@ window.GRADIEND_TAJWID = [
         ] },
       { nama: "Mad Jaiz Munfashil", warna: "mad-jaiz", arab: "مد جائز منفصل",
         def: "Huruf mad bertemu hamzah di awal kata berikutnya.",
-        huruf: "mad + ء di kata berikutnya",
+        huruf: "di kata berikutnya ء + mad",
         cara: "Dibaca 2, 4, atau 5 harakat (boleh), dan konsisten dengan riwayat yang dipakai.",
         contoh: [
           { ar: "إِنَّا أَعْطَيْنَاكَ", ket: "alif bertemu hamzah di kata berikutnya", ref: "QS. Al-Kautsar: 1" },
