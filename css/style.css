@@ -207,10 +207,6 @@ a.event-card{display:block;color:inherit}
 .ah-latin{font-weight:800;font-size:14px}
 .ah-arti{font-size:12.5px;color:var(--muted);line-height:1.6}
 .dark .ah-arti{color:#a8c0b6}
-.ah-play{position:absolute;top:8px;right:8px;width:34px;height:34px;font-size:12px}
-.ah-card.playing{border-color:var(--gold);box-shadow:0 0 0 3px rgba(203,163,77,.25)}
-.ah-today-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.ah-today.playing{box-shadow:0 0 0 3px rgba(240,214,133,.45)}
 
 /* ===== Tajwid & Tafsir ===== */
 :root{--tj-mad-asli:#537FFF;--tj-mad-jaiz:#4050FF;--tj-mad-wajib:#2144C1;--tj-mad-lazim:#000EBC;--tj-ghunnah:#FF7E1E;--tj-ikhfa:#9400A8;--tj-ikhfa-syafawi:#D500B7;--tj-iqlab:#26BFFD;--tj-idgham-bighunnah:#169777;--tj-idgham-bilaghunnah:#169200;--tj-idgham-mimi:#58B800;--tj-idgham-mutajanisain:#A1A1A1;--tj-qalqalah:#DD0008;--tj-slnt:#AAAAAA}
@@ -273,3 +269,4 @@ a.event-card{display:block;color:inherit}
 .dark .kj-sains{background:#0f2f25}
 .kj-sains p{margin:4px 0 0}
 .kj-note{margin-top:10px;font-size:11.5px;color:var(--muted);line-height:1.7}
+.kj-search{margin-top:12px}.kj-item[hidden]{display:none}
