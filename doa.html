@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Doa-doa — GRADIEND</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="js/config.js"></script>
+<script src="js/doa.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="tajwid.html" data-page="tajwid.html">Tajwid</a><a href="asmaul-husna.html" data-page="asmaul-husna.html">Asmaul Husna</a><a href="doa.html" data-page="doa.html">Doa</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main>
+<section class="page-hero">
+ <div class="container reveal"><div class="eyebrow">Doa-doa</div><h1>Kumpulan Doa.</h1><p>Doa harian, ibadah, perlindungan, ilmu, keluarga, dan ampunan lengkap dengan tulisan Arab, bacaan Latin, arti, dan sumbernya.</p></div>
+</section>
+<section class="section" style="padding-top:20px">
+ <div class="container">
+  <div class="card quran-tools"><div class="tool-row">
+   <input id="dx-search" class="input" type="search" placeholder="Cari doa (mis. makan, tidur, ilmu, orang tua)" aria-label="Cari doa" autocomplete="off" style="flex:1 1 260px">
+   <button type="button" class="btn btn-primary" id="dx-latin" aria-pressed="true"><i class="fa-solid fa-font"></i> Latin</button>
+   <button type="button" class="btn btn-primary" id="dx-arti" aria-pressed="true"><i class="fa-solid fa-language"></i> Arti</button>
+  </div><div class="helper" id="dx-count" style="margin-top:8px"></div></div>
+  <div class="tw-chips" id="dx-chips" aria-label="Pilih kategori"></div>
+  <div class="dx-grid" id="dx-list"></div>
+  <div class="notice" style="margin-top:18px">Pastikan bacaan Arab dilafalkan dengan benar. Belajarlah langsung kepada guru atau pembina Rohis. Sumber hadis ditulis ringkas, jadi rujuklah kitab aslinya untuk penelusuran lebih lanjut.</div>
+ </div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="quran.html">Al-Qur'an</a><br>
+    <a href="tajwid.html">Tajwid</a><br>
+    <a href="asmaul-husna.html">Asmaul Husna</a><br>
+    <a href="doa.html">Doa-doa</a><br>
+    <a href="tasbih.html">Tasbih</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const data=window.GRADIEND_DOA||[],kats=window.GRADIEND_DOA_KATEGORI||[];
+ const list=document.getElementById("dx-list"),chips=document.getElementById("dx-chips"),input=document.getElementById("dx-search"),count=document.getElementById("dx-count"),bL=document.getElementById("dx-latin"),bA=document.getElementById("dx-arti");
+ if(!data.length){list.innerHTML='<div class="empty">Data doa belum tersedia.</div>';return}
+ const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f\u064B-\u065F\u0670]/g,"").toLowerCase().replace(/[^a-z0-9\u0600-\u06FF ]/g," ");
+ const kn=id=>(kats.find(k=>k.id===id)||{nama:id}).nama;
+ let active="all";
+ const card=(d,i)=>`<article class="card dx-card" data-i="${i}"><div class="dx-top"><h3>${escapeHtml(d.judul)}</h3><span class="dx-kat">${escapeHtml(kn(d.kat))}</span></div>
+  <div class="dx-ar" lang="ar" dir="rtl">${escapeHtml(d.ar)}</div>
+  <div class="dx-latin">${escapeHtml(d.latin)}</div>
+  <div class="dx-arti">${escapeHtml(d.arti)}</div>
+  ${d.catatan?`<div class="tw-note"><i class="fa-solid fa-circle-info"></i> ${escapeHtml(d.catatan)}</div>`:""}
+  <div class="dx-foot"><small>${escapeHtml(d.sumber||"")}</small><button type="button" class="btn btn-secondary dx-copy" data-i="${i}"><i class="fa-regular fa-copy"></i> Salin</button></div></article>`;
+ const render=()=>{
+  const q=norm(input.value.trim());
+  const out=data.map((d,i)=>[d,i]).filter(([d])=>(active==="all"||d.kat===active)&&(!q||norm([d.judul,d.latin,d.arti,d.sumber,d.catatan,kn(d.kat)].join(" ")).includes(q)||d.ar.includes(input.value.trim())));
+  list.innerHTML=out.map(([d,i])=>card(d,i)).join("")||'<div class="empty" style="grid-column:1/-1">Doa tidak ditemukan.</div>';
+  count.textContent=`${out.length} dari ${data.length} doa`;
+ };
+ chips.innerHTML=[{id:"all",nama:"Semua",ikon:"fa-list"},...kats].map(k=>`<button type="button" class="tw-chip${k.id==="all"?" on":""}" data-id="${k.id}"><i class="fa-solid ${escapeHtml(k.ikon||"fa-circle")}"></i> ${escapeHtml(k.nama)}</button>`).join("");
+ chips.addEventListener("click",e=>{const b=e.target.closest(".tw-chip");if(!b)return;active=b.dataset.id;chips.querySelectorAll(".tw-chip").forEach(x=>x.classList.toggle("on",x===b));render()});
+ input.oninput=render;
+ const tog=(btn,cls)=>btn.onclick=()=>{const on=btn.getAttribute("aria-pressed")!=="true";btn.setAttribute("aria-pressed",on);btn.classList.toggle("btn-primary",on);btn.classList.toggle("btn-secondary",!on);list.classList.toggle(cls,!on)};
+ tog(bL,"hide-dx-latin");tog(bA,"hide-dx-arti");
+ list.addEventListener("click",async e=>{
+  const b=e.target.closest(".dx-copy");if(!b)return;const d=data[+b.dataset.i];
+  const text=`${d.judul}\n\n${d.ar}\n\n${d.latin}\n\nArtinya: ${d.arti}\n\n(${d.sumber})`;
+  try{await navigator.clipboard.writeText(text);toast("Doa disalin.")}
+  catch{const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast("Doa disalin.")}catch{toast("Gagal menyalin.")}t.remove()}
+ });
+ render();
+});
+</script></body></html>
