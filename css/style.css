@@ -207,8 +207,10 @@ a.event-card{display:block;color:inherit}
 .ah-latin{font-weight:800;font-size:14px}
 .ah-arti{font-size:12.5px;color:var(--muted);line-height:1.6}
 .dark .ah-arti{color:#a8c0b6}
-.ah-grid.hafalan .ah-card{cursor:pointer}
-.ah-grid.hafalan .ah-card:not(.open) .ah-latin,.ah-grid.hafalan .ah-card:not(.open) .ah-arti{visibility:hidden}
+.ah-play{position:absolute;top:8px;right:8px;width:34px;height:34px;font-size:12px}
+.ah-card.playing{border-color:var(--gold);box-shadow:0 0 0 3px rgba(203,163,77,.25)}
+.ah-today-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ah-today.playing{box-shadow:0 0 0 3px rgba(240,214,133,.45)}
 
 /* ===== Tajwid & Tafsir ===== */
 :root{--tj-mad-asli:#537FFF;--tj-mad-jaiz:#4050FF;--tj-mad-wajib:#2144C1;--tj-mad-lazim:#000EBC;--tj-ghunnah:#FF7E1E;--tj-ikhfa:#9400A8;--tj-ikhfa-syafawi:#D500B7;--tj-iqlab:#26BFFD;--tj-idgham-bighunnah:#169777;--tj-idgham-bilaghunnah:#169200;--tj-idgham-mimi:#58B800;--tj-idgham-mutajanisain:#A1A1A1;--tj-qalqalah:#DD0008;--tj-slnt:#AAAAAA}
@@ -252,3 +254,22 @@ a.event-card{display:block;color:inherit}
 @media(max-width:680px){.ah-grid{grid-template-columns:repeat(2,1fr);gap:10px}.ah-card{padding:24px 8px 14px}.ah-latin{font-size:13px}.ah-arti{font-size:12px}.ah-today{padding:24px 16px;border-radius:22px}}
 @media(max-width:360px){.ah-grid{grid-template-columns:1fr}}
 @media(max-width:680px){.tj-grid{grid-template-columns:1fr}.ayah-tafsir{padding:12px 13px;font-size:13px}.ayah-tafsir-btn{padding:6px 10px}}
+
+/* ===== Fitur tersembunyi: Keajaiban Al-Qur'an & Sains ===== */
+.kj-card{width:min(640px,100%)}
+.kj-list{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.kj-item{border:1px solid var(--line);border-radius:16px;background:#fffefa;overflow:hidden}
+.dark .kj-item{background:#06261e;border-color:#1a4336}
+.kj-item summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;padding:13px 14px;font-weight:800;font-size:14px}
+.kj-item summary::-webkit-details-marker{display:none}
+.kj-ico{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#eaf7ef;color:var(--green);font-size:14px}
+.dark .kj-ico{background:#10372a;color:#d7f1e1}
+.kj-body{padding:0 16px 16px}
+.kj-ar{font-family:"Amiri Quran",Amiri,serif;font-size:clamp(22px,4.5vw,26px);line-height:2;text-align:right;color:var(--green)}
+.dark .kj-ar{color:#f0d685}
+.kj-id{margin:6px 0 2px;font-size:13.5px;line-height:1.8}
+.kj-ref{display:block;color:var(--muted);font-weight:800;font-size:11px;margin-bottom:10px}
+.kj-sains{padding:12px 14px;border-left:4px solid var(--gold);background:#fff8dc;border-radius:0 14px 14px 0;font-size:13px;line-height:1.8}
+.dark .kj-sains{background:#0f2f25}
+.kj-sains p{margin:4px 0 0}
+.kj-note{margin-top:10px;font-size:11.5px;color:var(--muted);line-height:1.7}
