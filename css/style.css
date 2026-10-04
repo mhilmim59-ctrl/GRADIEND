@@ -270,3 +270,41 @@ a.event-card{display:block;color:inherit}
 .kj-sains p{margin:4px 0 0}
 .kj-note{margin-top:10px;font-size:11.5px;color:var(--muted);line-height:1.7}
 .kj-search{margin-top:12px}.kj-item[hidden]{display:none}
+
+/* ===== Pemutar audio Asmaul Husna ===== */
+.ah-audio{display:flex;align-items:center;gap:14px;padding:16px 18px;margin-bottom:18px}
+.ah-audio-btn{flex:none;width:52px;height:52px;border-radius:50%;border:0;background:var(--green);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 12px 30px rgba(12,107,77,.22);transition:.2s}
+.ah-audio-btn:hover{background:var(--green2)}
+.ah-audio-main{flex:1;min-width:0}
+.ah-audio-title{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px}.ah-audio-title b{font-size:14px}.ah-audio-title span{font-size:11.5px;color:var(--muted)}
+.ah-audio-seek{width:100%;accent-color:var(--green);margin:2px 0;cursor:pointer}
+.ah-audio-time{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ===== Halaman Tajwid ===== */
+.tw-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.tw-chip{display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.72);color:var(--green);font-size:12px;font-weight:800;cursor:pointer;transition:.2s}
+.tw-chip:hover,.tw-chip.on{background:var(--green);color:#fff;border-color:var(--green)}
+.dark .tw-chip{background:#08251c;border-color:#173c31;color:#e8f3ee}
+.dark .tw-chip:hover,.dark .tw-chip.on{background:var(--green);color:#fff}
+.tw-sec{margin-bottom:30px;scroll-margin-top:96px}
+.tw-sec-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.tw-sec-head h2{margin:0;font-size:clamp(20px,3.4vw,26px);letter-spacing:-.02em}
+.tw-intro{color:var(--muted);line-height:1.8;margin:0 0 14px;font-size:14px}
+.tw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:start}
+.tw-card{padding:20px 20px 18px}
+.tw-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tw-top h3{margin:0;font-size:16px;display:flex;align-items:center;gap:9px}
+.tw-dot{flex:none;width:14px;height:14px;border-radius:5px;background:var(--line);border:1px solid #c5d8cd}
+.tw-arab{font-family:Amiri,serif;font-size:22px;color:var(--green)}.dark .tw-arab{color:#f0d685}
+.tw-def{margin:10px 0 8px;font-size:13.5px;line-height:1.8}
+.tw-row{font-size:12.5px;line-height:1.7;margin:6px 0;color:var(--muted)}.tw-row b{color:var(--ink)}.dark .tw-row b{color:#e8f3ee}
+.tw-huruf{font-family:"Amiri Quran",Amiri,serif;font-size:20px;color:var(--green);direction:rtl;display:inline-block;letter-spacing:.06em}.dark .tw-huruf{color:#f0d685}
+.tw-note{margin-top:8px;padding:10px 12px;border-left:3px solid var(--gold);background:#fff8dc;border-radius:0 12px 12px 0;font-size:12px;line-height:1.7}.dark .tw-note{background:#282714}
+.tw-ex{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.tw-ex-item{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#fffefa;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dark .tw-ex-item{background:#06261e;border-color:#1a4336}
+.tw-ex-ar{font-family:"Amiri Quran",Amiri,serif;font-size:clamp(22px,4.5vw,26px);line-height:1.9;direction:rtl;text-align:right;flex:none;order:2}
+.tw-ex-info{order:1;font-size:11.5px;line-height:1.6;color:var(--muted);min-width:0}.tw-ex-info b{display:block;color:var(--ink);font-size:11px}.dark .tw-ex-info b{color:#e8f3ee}
+.tw-empty{padding:30px;text-align:center;color:var(--muted)}
+.tw-legend{margin-top:6px}
+@media(max-width:860px){.tw-grid{grid-template-columns:1fr}.ah-audio{padding:14px}}
