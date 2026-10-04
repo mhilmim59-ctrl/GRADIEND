@@ -46,6 +46,20 @@
       if (a.dataset.page === current) a.classList.add("active");
     });
 
+    /* fitur tersembunyi: ketuk "GRADIEND 32" di footer -> js/keajaiban.js (dimuat saat dibutuhkan) */
+    const egg = document.querySelector(".footer-bottom span:last-child");
+    if (egg) {
+      egg.setAttribute("tabindex", "-1");
+      egg.style.cursor = "default";
+      egg.addEventListener("click", () => {
+        if (window.openKeajaiban) return window.openKeajaiban();
+        const sc = document.createElement("script");
+        sc.src = "js/keajaiban.js";
+        sc.onload = () => window.openKeajaiban && window.openKeajaiban();
+        document.head.appendChild(sc);
+      });
+    }
+
     const observer = new IntersectionObserver(entries => entries.forEach(x => x.isIntersecting && x.target.classList.add("show")), { threshold: .12 });
     document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
   });
