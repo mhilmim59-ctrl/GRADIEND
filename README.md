@@ -11,6 +11,7 @@ event dan quote ditambahkan langsung lewat kode.
 - `jadwal-salat.html` — Waktu salat
 - `quran.html` — Al-Qur'an (Arab berwarna tajwid, Latin, terjemahan Indonesia, tafsir per ayat, murottal)
 - `asmaul-husna.html` — 99 nama Allah (Arab, Latin, arti) dengan pencarian
+- `tajwid.html` — Panduan hukum tajwid (nun mati, mim mati, mad, qalqalah, alif lam, lam jalalah dan ra', makharijul huruf, tanda waqaf) dengan contoh ayat berwarna dan pencarian
 - `tasbih.html` — Tasbih digital
 - `sejarah.html`, `media-sosial.html`, `kontak.html`
 
@@ -45,6 +46,14 @@ dan setiap ayat punya tombol tafsirnya sendiri.
 ## Asmaul Husna
 
 Data 99 nama ada di `js/asmaul-husna.js`. Untuk mengubah arti atau ejaan Latin, edit teksnya lalu commit.
+
+## Audio Asmaul Husna
+
+Pemutar audio di `asmaul-husna.html` memutar satu berkas: `assets/audio/asmaul-husna.mp3` (play/jeda, geser posisi, ulangi). Untuk mengganti audio, timpa berkas itu dengan nama yang sama.
+
+## Tajwid
+
+Isi halaman `tajwid.html` ada di `js/tajwid.js`. Tiap hukum punya nama, pengertian, huruf, cara baca, dan contoh. Tambah atau ubah dengan menyalin satu blok.
 
 ## Fitur tersembunyi
 

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tajwid — GRADIEND</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="js/config.js"></script>
+<script src="js/tajwid.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="tajwid.html" data-page="tajwid.html">Tajwid</a><a href="asmaul-husna.html" data-page="asmaul-husna.html">Asmaul Husna</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main>
+<section class="page-hero">
+ <div class="container reveal"><div class="eyebrow">Tajwid</div><h1>Belajar Tajwid.</h1><p>Panduan hukum bacaan Al-Qur'an: hukum nun mati dan tanwin, mim mati, mad, qalqalah, hingga tanda waqaf, lengkap dengan contoh ayat berwarna.</p></div>
+</section>
+<section class="section" style="padding-top:20px">
+ <div class="container">
+  <div class="card quran-tools"><div class="tool-row">
+   <input id="tw-search" class="input" type="search" placeholder="Cari hukum, huruf, atau contoh (mis. ikhfa, mad, ba)" aria-label="Cari hukum tajwid" autocomplete="off" style="flex:1 1 260px">
+   <a class="btn btn-secondary" href="quran.html"><i class="fa-solid fa-book-quran"></i> Baca Al-Qur'an berwarna tajwid</a>
+  </div><div class="helper" id="tw-count" style="margin-top:8px"></div></div>
+  <div class="tw-chips" id="tw-chips" role="tablist" aria-label="Pilih bagian"></div>
+  <details class="card tj-legend tw-legend" id="tw-legend"><summary><i class="fa-solid fa-palette"></i> Panduan warna tajwid</summary><div class="tj-grid" id="tw-legend-grid"></div></details>
+  <div id="tw-list" style="margin-top:22px"></div>
+  <div class="notice" style="margin-top:8px">Halaman ini ringkasan untuk belajar. Untuk memastikan bacaan, belajarlah langsung dengan guru yang bersanad atau pembina Rohis, karena tajwid dipelajari lewat talaqqi (mendengar dan menirukan).</div>
+ </div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="quran.html">Al-Qur'an</a><br>
+    <a href="tajwid.html">Tajwid</a><br>
+    <a href="asmaul-husna.html">Asmaul Husna</a><br>
+    <a href="tasbih.html">Tasbih</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const data=window.GRADIEND_TAJWID||[];
+ const list=document.getElementById("tw-list"),chips=document.getElementById("tw-chips"),input=document.getElementById("tw-search"),count=document.getElementById("tw-count");
+ if(!data.length){list.innerHTML='<div class="empty">Data tajwid belum tersedia.</div>';return}
+ const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").toLowerCase();
+ const LEG=[["mad-asli","Mad Thabi'i","2 harakat"],["mad-jaiz","Mad Jaiz","2, 4, atau 6 harakat"],["mad-wajib","Mad Wajib","4–5 harakat"],["mad-lazim","Mad Lazim","6 harakat"],["ghunnah","Ghunnah","dengung nun atau mim bertasydid"],["ikhfa","Ikhfa","samar dengan dengung"],["ikhfa-syafawi","Ikhfa Syafawi","mim mati bertemu ba'"],["iqlab","Iqlab","nun atau tanwin menjadi mim samar"],["idgham-bighunnah","Idgham Bighunnah","lebur dengan dengung"],["idgham-bilaghunnah","Idgham Bilaghunnah","lebur tanpa dengung"],["idgham-mimi","Idgham Mimi","mim mati bertemu mim"],["qalqalah","Qalqalah","pantulan bunyi ق ط ب ج د"],["slnt","Tidak dibaca","lam syamsiyah, hamzah wasal"]];
+ document.getElementById("tw-legend-grid").innerHTML=LEG.map(([c,n,d])=>`<div class="tj-item"><span class="tj-sw" style="background:var(--tj-${c})"></span><div><b>${n}</b><span>${d}</span></div></div>`).join("");
+ const ex=(e,w)=>`<div class="tw-ex-item"><div class="tw-ex-info"><b>${escapeHtml(e.ket)}</b>${e.ref?escapeHtml(e.ref):""}</div><div class="tw-ex-ar${w?" tj-"+w:""}" lang="ar" dir="rtl">${escapeHtml(e.ar)}</div></div>`;
+ const hk=h=>`<article class="card tw-card"><div class="tw-top"><h3><span class="tw-dot"${h.warna?` style="background:var(--tj-${h.warna});border-color:transparent"`:""}></span>${escapeHtml(h.nama)}</h3><span class="tw-arab" lang="ar" dir="rtl">${escapeHtml(h.arab)}</span></div>
+  <p class="tw-def">${escapeHtml(h.def)}</p>
+  <div class="tw-row"><b>Huruf:</b> <span class="tw-huruf" lang="ar">${escapeHtml(h.huruf)}</span></div>
+  <div class="tw-row"><b>Cara baca:</b> ${escapeHtml(h.cara)}</div>
+  ${h.catatan?`<div class="tw-note"><i class="fa-solid fa-circle-info"></i> ${escapeHtml(h.catatan)}</div>`:""}
+  ${h.contoh&&h.contoh.length?`<div class="tw-ex">${h.contoh.map(e=>ex(e,h.warna)).join("")}</div>`:""}</article>`;
+ let active="all";
+ const matches=(sec,h,q)=>!q||norm([sec.judul,h.nama,h.arab,h.def,h.huruf,h.cara,h.catatan,...(h.contoh||[]).flatMap(e=>[e.ar,e.ket,e.ref])].join(" ")).includes(q);
+ const render=()=>{
+  const q=norm(input.value.trim());let total=0;
+  const html=data.filter(s=>active==="all"||s.id===active).map(sec=>{
+   const hs=sec.hukum.filter(h=>matches(sec,h,q));if(!hs.length)return"";total+=hs.length;
+   return `<section class="tw-sec" id="${sec.id}"><div class="tw-sec-head"><span class="feature-icon" style="margin:0;width:42px;height:42px"><i class="fa-solid ${escapeHtml(sec.ikon)}"></i></span><h2>${escapeHtml(sec.judul)}</h2></div><p class="tw-intro">${escapeHtml(sec.intro)}</p><div class="tw-grid">${hs.map(hk).join("")}</div></section>`}).join("");
+  list.innerHTML=html||'<div class="empty tw-empty">Hukum tidak ditemukan.</div>';
+  count.textContent=`${total} hukum ditampilkan`;
+ };
+ chips.innerHTML=[{id:"all",judul:"Semua"},...data].map(s=>`<button type="button" class="tw-chip${s.id==="all"?" on":""}" data-id="${s.id}">${escapeHtml(s.judul.replace(/^Hukum /,""))}</button>`).join("");
+ chips.addEventListener("click",e=>{const b=e.target.closest(".tw-chip");if(!b)return;active=b.dataset.id;chips.querySelectorAll(".tw-chip").forEach(x=>x.classList.toggle("on",x===b));render()});
+ input.oninput=render;render();
+});
+</script></body></html>

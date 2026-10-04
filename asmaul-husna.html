@@ -17,7 +17,7 @@
   <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
     <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
   </a>
-  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="asmaul-husna.html" data-page="asmaul-husna.html">Asmaul Husna</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="tajwid.html" data-page="tajwid.html">Tajwid</a><a href="asmaul-husna.html" data-page="asmaul-husna.html">Asmaul Husna</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
   <div class="nav-tools">
     <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
     <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
@@ -34,6 +34,16 @@
   <div class="dalil-grid">
    <div class="dalil-box"><div class="arabic" lang="ar" dir="rtl">وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا</div><p>Dan Allah memiliki Asmaulhusna (nama-nama yang terbaik), maka bermohonlah kepada-Nya dengan menyebut Asmaulhusna itu.</p><small>QS. Al-A'raf: 180</small></div>
    <div class="dalil-box"><p>Sesungguhnya Allah memiliki sembilan puluh sembilan nama, seratus kurang satu. Barang siapa menghafalnya, ia akan masuk surga.</p><small>HR. Bukhari dan Muslim</small></div>
+  </div>
+  <div class="card ah-audio" id="ah-audio">
+   <button type="button" class="ah-audio-btn" id="ah-audio-btn" aria-label="Putar audio Asmaul Husna"><i class="fa-solid fa-play"></i></button>
+   <div class="ah-audio-main">
+    <div class="ah-audio-title"><b>Audio Asmaul Husna</b><span>99 nama Allah</span></div>
+    <input type="range" id="ah-audio-seek" class="ah-audio-seek" min="0" max="100" step="0.1" value="0" aria-label="Posisi audio">
+    <div class="ah-audio-time"><span id="ah-audio-cur">0:00</span><span id="ah-audio-dur">0:00</span></div>
+   </div>
+   <button type="button" class="icon-btn" id="ah-audio-loop" aria-pressed="false" aria-label="Ulangi audio" title="Ulangi"><i class="fa-solid fa-repeat"></i></button>
+   <audio id="ah-audio-el" src="assets/audio/asmaul-husna.mp3" preload="metadata"></audio>
   </div>
   <div class="card ah-today" id="ah-today"></div>
   <div class="card quran-tools"><div class="tool-row">
@@ -54,6 +64,7 @@
     <h4>Jelajah</h4>
     <a href="jadwal-salat.html">Waktu Salat</a><br>
     <a href="quran.html">Al-Qur'an</a><br>
+    <a href="tajwid.html">Tajwid</a><br>
     <a href="asmaul-husna.html">Asmaul Husna</a><br>
     <a href="tasbih.html">Tasbih</a>
   </div>
@@ -73,6 +84,21 @@ document.addEventListener("DOMContentLoaded",()=>{
  if(!data.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1">Data Asmaul Husna belum tersedia.</div>';return}
  const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
  const card=x=>`<article class="card ah-card"><span class="ah-no">${x.n}</span><div class="ah-ar" lang="ar" dir="rtl">${escapeHtml(x.ar)}</div><div class="ah-latin">${escapeHtml(x.latin)}</div><div class="ah-arti">${escapeHtml(x.arti)}</div></article>`;
+
+ /* pemutar audio */
+ const au=document.getElementById("ah-audio-el"),ab=document.getElementById("ah-audio-btn"),as=document.getElementById("ah-audio-seek"),ac=document.getElementById("ah-audio-cur"),ad=document.getElementById("ah-audio-dur"),al=document.getElementById("ah-audio-loop");
+ const fmt=t=>{t=Math.max(0,Math.floor(t||0));return Math.floor(t/60)+":"+String(t%60).padStart(2,"0")};
+ const setIcon=()=>{ab.firstElementChild.className="fa-solid "+(au.paused?"fa-play":"fa-pause");ab.setAttribute("aria-label",au.paused?"Putar audio Asmaul Husna":"Jeda audio Asmaul Husna")};
+ let seeking=false;
+ ab.onclick=()=>{if(au.paused)au.play().catch(()=>toast("Audio tidak dapat diputar."));else au.pause()};
+ au.addEventListener("play",setIcon);au.addEventListener("pause",setIcon);au.addEventListener("ended",setIcon);
+ au.addEventListener("loadedmetadata",()=>{ad.textContent=fmt(au.duration)});
+ au.addEventListener("timeupdate",()=>{ac.textContent=fmt(au.currentTime);if(!seeking&&au.duration)as.value=au.currentTime/au.duration*100});
+ au.addEventListener("error",()=>{ad.textContent="–";toast("Berkas audio belum ditemukan.")});
+ as.addEventListener("input",()=>{seeking=true;if(au.duration)ac.textContent=fmt(as.value/100*au.duration)});
+ as.addEventListener("change",()=>{if(au.duration)au.currentTime=as.value/100*au.duration;seeking=false});
+ al.onclick=()=>{au.loop=!au.loop;al.setAttribute("aria-pressed",au.loop);al.style.background=au.loop?"var(--green)":"";al.style.color=au.loop?"#fff":""};
+ window.addEventListener("pagehide",()=>au.pause());
 
  /* nama hari ini (berganti setiap hari, tombol untuk mengacak) */
  const today=document.getElementById("ah-today");let idx;
