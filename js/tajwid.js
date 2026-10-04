@@ -195,7 +195,7 @@ window.GRADIEND_TAJWID = [
     hukum: [
       { nama: "Lam Jalalah (لله)", warna: "", arab: "لام الجلالة",
         def: "Lam pada lafaz Allah dibaca tebal (tafkhim) jika didahului fathah atau dhammah, dan tipis (tarqiq) jika didahului kasrah.",
-        huruf: "ل pada lafaz الله",
+        huruf: "الله pada lafaz ل",
         cara: "Tebal setelah fathah atau dhammah, tipis setelah kasrah.",
         contoh: [
           { ar: "قَالَ اللَّهُ", ket: "setelah fathah: tebal", ref: "" },
