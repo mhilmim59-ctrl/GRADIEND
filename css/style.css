@@ -327,3 +327,4 @@ a.event-card{display:block;color:inherit}
 .dx-copy{padding:8px 13px;font-size:11px}
 .hide-dx-latin .dx-latin,.hide-dx-arti .dx-arti{display:none}
 @media(max-width:860px){.dx-grid{grid-template-columns:1fr}}
+.dx-kat.dx-pop{background:#fff1c2;color:#7a5a05}.dark .dx-kat.dx-pop{background:#3a3213;color:#f0d685}
