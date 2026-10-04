@@ -10,7 +10,7 @@ event dan quote ditambahkan langsung lewat kode.
 - `artikel.html?id=...` — Isi artikel
 - `jadwal-salat.html` — Waktu salat
 - `quran.html` — Al-Qur'an (Arab berwarna tajwid, Latin, terjemahan Indonesia, tafsir per ayat, murottal)
-- `asmaul-husna.html` — 99 nama Allah (Arab, Latin, arti) dengan pencarian dan audio
+- `asmaul-husna.html` — 99 nama Allah (Arab, Latin, arti) dengan pencarian
 - `tasbih.html` — Tasbih digital
 - `sejarah.html`, `media-sosial.html`, `kontak.html`
 
@@ -45,13 +45,6 @@ dan setiap ayat punya tombol tafsirnya sendiri.
 ## Asmaul Husna
 
 Data 99 nama ada di `js/asmaul-husna.js`. Untuk mengubah arti atau ejaan Latin, edit teksnya lalu commit.
-
-**Audio:** tiap kartu punya tombol putar, dan ada tombol "Putar semua". Urutan pemutaran:
-
-1. Jika ada berkas `assets/audio/asmaul-husna/01.mp3` sampai `99.mp3` (nama dua digit sesuai nomor), berkas itu yang diputar.
-2. Jika tidak ada, nama dibacakan oleh suara Arab bawaan browser/perangkat (Web Speech API). Kualitas bergantung pada perangkat; di perangkat tanpa suara Arab akan muncul pemberitahuan.
-
-Untuk suara yang konsisten di semua perangkat, taruh rekaman mp3 per nama di folder tersebut.
 
 ## Fitur tersembunyi
 
