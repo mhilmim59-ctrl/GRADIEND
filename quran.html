@@ -88,13 +88,21 @@ document.addEventListener("DOMContentLoaded",()=>{
  /* Gaya Mushaf Indonesia: harakat tegak.
     Dalam teks Utsmani, mad ditulis harakat + tanda tegak (mis. fathah + alif kecil ٰ).
     Di Mushaf Standar Indonesia harakat pendampingnya dihilang: fathah tegak (ٰ), kasrah tegak (ٖ), dhammah terbalik (ٗ) berdiri sendiri. */
- const indoConv=t=>String(t||"").replace(/([\u0621-\u064A\u0671-\u06D3])([\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E8]+)/g,(m,l,mk)=>{
-  if(mk.includes("\u0670"))mk=mk.replace(/\u064E/g,"");
-  if(mk.includes("\u0656"))mk=mk.replace(/\u0650/g,"");
-  if(mk.includes("\u0657"))mk=mk.replace(/\u064F/g,"");
-  return l+mk});
+ const indoConv=t=>String(t||"")
+  /* 1) hapus tatwil (ـ) yang hanya dipakai sebagai "kursi" tanda tegak */
+  .replace(/ـ(?=(?:<[^>]*>|[ً-ٟ])*[ٰٖٗ])/g,"")
+  /* 2) hapus harakat pendamping tanda tegak (boleh terpisah tag/syaddah) */
+  .replace(/َ(?=(?:<[^>]*>|ّ)*ٰ)/g,"")
+  .replace(/ِ(?=(?:<[^>]*>|ّ)*ٖ)/g,"")
+  .replace(/ُ(?=(?:<[^>]*>|ّ)*ٗ)/g,"")
+  /* 3) urutan terbalik (tanda tegak lebih dulu) pada huruf yang sama */
+  .replace(/([ء-ؿف-يٱ-ۓ])([ً-ٰٟۖ-ۜ۟-ۨ]+)/g,(m,l,mk)=>{
+   if(mk.includes("ٰ"))mk=mk.replace(/َ/g,"");
+   if(mk.includes("ٖ"))mk=mk.replace(/ِ/g,"");
+   if(mk.includes("ٗ"))mk=mk.replace(/ُ/g,"");
+   return l+mk});
  const fixAr=t=>prefs.indo?indoConv(t):String(t||"");
- const fixHtml=h=>prefs.indo?String(h||"").replace(/(^|>)([^<]+)/g,(m,p,t)=>p+indoConv(t)):h;
+ const fixHtml=h=>prefs.indo?indoConv(h):h;
  const arDigits=n=>String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
  const strip=t=>String(t||"").replace(/<[^>]*>/g,"");
  const plainAr=t=>String(t||"").replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").replace(/\u0671/g,"ا");
