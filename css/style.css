@@ -1,5 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Manrope:wght@400;500;600;700;800&display=swap');
+/* Font resmi Kemenag (opsional): taruh berkas di assets/fonts/LPMQ-IsepMisbah.ttf, otomatis dipakai bila ada */
+@font-face{font-family:"LPMQ Isep Misbah";src:local("LPMQ Isep Misbah"),url("../assets/fonts/LPMQ-IsepMisbah.ttf") format("truetype");font-display:swap}
 
 :root{
   --bg:#f7f8f1; --surface:#ffffffd9; --surface-solid:#fffef8;
@@ -175,7 +177,7 @@ a.event-card{display:block;color:inherit}
 .ayah-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .ayah-no{min-width:34px;height:34px;padding:0 8px;display:grid;place-items:center;border-radius:11px;background:#eaf7ef;color:var(--green);font-weight:800;font-size:12px}
 .ayah-play{width:36px;height:36px}
-.ayah-ar{font-family:"Amiri Quran",Amiri,serif;font-size:var(--ar,32px);line-height:2.1;text-align:right;direction:rtl}
+.ayah-ar{font-family:"LPMQ Isep Misbah","Amiri Quran",Amiri,serif;font-size:var(--ar,32px);line-height:2.1;text-align:right;direction:rtl}
 .ayah-latin{margin-top:10px;color:var(--green);font-style:italic;font-size:13.5px;line-height:1.8}
 .dark .ayah-latin{color:#8fd1b2}
 .ayah-id{margin-top:8px;font-size:14.5px;line-height:1.85}
@@ -328,28 +330,3 @@ a.event-card{display:block;color:inherit}
 .hide-dx-latin .dx-latin,.hide-dx-arti .dx-arti{display:none}
 @media(max-width:860px){.dx-grid{grid-template-columns:1fr}}
 .dx-kat.dx-pop{background:#fff1c2;color:#7a5a05}.dark .dx-kat.dx-pop{background:#3a3213;color:#f0d685}
-
-/* ===== Tampilan Mushaf (gaya Mushaf Standar Indonesia) ===== */
-.seg{display:inline-flex;gap:0;border-radius:13px;overflow:hidden;border:1px solid var(--line)}
-.seg .btn{border-radius:0;border:0;box-shadow:none}
-.mushaf-page{position:relative;padding:clamp(18px,4vw,36px) clamp(14px,4vw,40px);background:#fffcf0;border-radius:20px;border:1px solid #e3d3a0;box-shadow:inset 0 0 0 6px #fffcf0,inset 0 0 0 7px #d9b968,inset 0 0 0 10px #fffcf0,inset 0 0 0 11px #ecd9a4,var(--shadow)}
-.dark .mushaf-page{background:#0a2a21;border-color:#3b5a4a;box-shadow:inset 0 0 0 6px #0a2a21,inset 0 0 0 7px #8a7a3a,inset 0 0 0 10px #0a2a21,inset 0 0 0 11px #4a5a3a}
-.mushaf-page .mushaf-bism{padding:6px 0 18px;margin-bottom:14px;border-bottom:1px solid #ecd9a4;font-size:calc(var(--ar,32px)*1.1)}
-.mushaf-text{font-family:"Amiri Quran",Amiri,serif;font-size:var(--ar,32px);line-height:2.55;text-align:justify;text-align-last:center;text-justify:inter-word;word-spacing:.04em;color:#1a1a14}
-.dark .mushaf-text{color:#f1ecd6}
-.mv{cursor:pointer;border-radius:10px;transition:background .2s;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-.mv:hover{background:rgba(203,163,77,.14)}
-.mv:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.mv.sel{background:rgba(203,163,77,.26)}
-.mv.playing{background:rgba(12,107,77,.16)}
-.dark .mv.playing{background:rgba(143,209,178,.16)}
-.mv-end{display:inline-flex;align-items:center;justify-content:center;min-width:1.7em;height:1.7em;padding:0 .3em;margin:0 .2em;border-radius:999px;border:1.5px solid #c9a24a;box-shadow:inset 0 0 0 2px #fffcf0,inset 0 0 0 3px #d9b968;background:#fff6d8;color:var(--green);font-family:"Amiri Quran",Amiri,serif;font-size:.5em;line-height:1;vertical-align:middle;direction:rtl}
-.dark .mv-end{background:#10372a;box-shadow:inset 0 0 0 2px #0a2a21,inset 0 0 0 3px #8a7a3a;border-color:#8a7a3a;color:#f0d685}
-.mushaf-hint{text-align:center;margin:12px 0}
-.mushaf-detail{position:sticky;bottom:12px;z-index:5;padding:14px 18px;margin:12px 0;max-height:46vh;overflow:auto;border-color:var(--gold);box-shadow:0 18px 50px rgba(8,70,49,.22)}
-.md-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
-.md-actions{display:flex;align-items:center;gap:8px}
-.mushaf-terjemah{padding:20px 22px;margin-top:14px}
-.mushaf-terjemah .ayah-id{margin:0 0 .7em}
-.hide-id .mushaf-terjemah{display:none}
-@media(max-width:680px){.mushaf-text{line-height:2.4;text-align-last:right}.mushaf-detail{bottom:8px}}
