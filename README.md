@@ -41,7 +41,7 @@ Halaman `quran.html` mengambil data dari API publik langsung dari browser, jadi 
 - Warna tajwid: Quran.com. Jika data tajwid gagal dimuat, ayat tetap tampil tanpa warna.
 
 Alamat kedua API ada di `js/config.js` (`quranApiBase` dan `tajwidApiBase`).
-Halaman surah punya dua tampilan: **Mushaf** (bawaan; ayat mengalir bersambung seperti mushaf cetak, dengan penanda akhir ayat berbingkai, dan ketuk ayat untuk membuka Latin, terjemahan, tafsir, dan audio) dan **Per ayat** (satu kartu per ayat). Pilihan tampilan tersimpan di perangkat pembaca.
+Tombol **Gaya Indonesia** (aktif secara bawaan) menulis ulang teks Arab dengan gaya Mushaf Standar Indonesia: harakat tegak (نٰ), ha' dhamir (هٗ، هٖ), huruf mad bersukun (قِيْلَ), dan sukun bulat. Font Arab bawaan Amiri Quran. Untuk font resmi Kemenag, taruh berkas `LPMQ-IsepMisbah.ttf` di `assets/fonts/`, otomatis dipakai bila ada.
 
 Tombol **Tajwid** menyalakan atau mematikan warna (beserta panduan warnanya), tombol **Tafsir** membuka semua tafsir,
 dan setiap ayat punya tombol tafsirnya sendiri.
