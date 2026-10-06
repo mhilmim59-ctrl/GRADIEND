@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
  /* preferensi tampilan (tersimpan di perangkat) */
  const PREF_KEY="gradiend_quran_prefs";
- const prefs={indo:true,view:"mushaf",latin:true,id:true,tajwid:true,size:matchMedia("(max-width:680px)").matches?28:32};
+ const prefs={indo:true,latin:true,id:true,tajwid:true,size:matchMedia("(max-width:680px)").matches?28:32};
  try{Object.assign(prefs,JSON.parse(localStorage.getItem(PREF_KEY)||"{}"))}catch{}
  const savePrefs=()=>{try{localStorage.setItem(PREF_KEY,JSON.stringify(prefs))}catch{}};
 
@@ -85,17 +85,35 @@ document.addEventListener("DOMContentLoaded",()=>{
    <a class="btn btn-secondary" href="https://quran.kemenag.go.id" target="_blank" rel="noopener">Buka Quran Kemenag</a></div>`;
   document.getElementById("retry").onclick=retry;
  }
- /* Gaya Mushaf Indonesia: harakat tegak.
-    Dalam teks Utsmani, mad ditulis harakat + tanda tegak (mis. fathah + alif kecil ٰ).
-    Di Mushaf Standar Indonesia harakat pendampingnya dihilang: fathah tegak (ٰ), kasrah tegak (ٖ), dhammah terbalik (ٗ) berdiri sendiri. */
+ /* ---------- GAYA PENULISAN INDONESIA ----------
+    Teks tajwid dari Quran.com memakai penulisan Utsmani gaya Madinah. Bagian ini mengubahnya ke
+    gaya Mushaf Indonesia (Kemenag) supaya lebih mudah dibaca:
+    1. fathah/kasrah/dhammah tegak: harakat pendamping alif kecil dihapus (نَـٰ -> نٰ)
+    2. ha' dhamir: هُۥ -> هٗ (dhammah terbalik) dan هِۦ -> هٖ (kasrah tegak)
+    3. huruf mad diberi sukun: قِيلَ -> قِيْلَ, يَقُولُ -> يَقُوْلُ
+    4. sukun bulat (ْ) menggantikan sukun kepala (ۡ); alif washal ٱ ditulis ا */
+ const NOMARK="(?![ً-ٰٟۖ-ۭـ])";
  const indoConv=t=>String(t||"")
-  /* 1) hapus tatwil (ـ) yang hanya dipakai sebagai "kursi" tanda tegak */
+  /* tatwil yang hanya jadi "kursi" tanda tegak dibuang */
   .replace(/ـ(?=(?:<[^>]*>|[ً-ٟ])*[ٰٖٗ])/g,"")
-  /* 2) hapus harakat pendamping tanda tegak (boleh terpisah tag/syaddah) */
+  /* harakat pendamping tanda tegak dihapus (boleh terpisah tag/syaddah) */
   .replace(/َ(?=(?:<[^>]*>|ّ)*ٰ)/g,"")
   .replace(/ِ(?=(?:<[^>]*>|ّ)*ٖ)/g,"")
   .replace(/ُ(?=(?:<[^>]*>|ّ)*ٗ)/g,"")
-  /* 3) urutan terbalik (tanda tegak lebih dulu) pada huruf yang sama */
+  /* ha' dhamir: dhammah+waw kecil -> dhammah terbalik, kasrah+ya kecil -> kasrah tegak */
+  .replace(/ُ((?:<[^>]*>)*)ۥ/g,"ٗ$1")
+  .replace(/ِ((?:<[^>]*>)*)ۦ/g,"ٖ$1")
+  /* huruf mad diberi sukun (ya setelah kasrah, waw setelah dhammah) */
+  .replace(/(ِ(?:<[^>]*>)*ي)(?=(?:<\/?[^>]*>)*(?![ً-ٰٟۖ-ۭـ]))/g,"$1ْ")
+  .replace(/(ُ(?:<[^>]*>)*و)(?=(?:<\/?[^>]*>)*(?![ً-ٰٟۖ-ۭـ]))/g,"$1ْ")
+  /* hamzah mad: ـَٔا / ءَا -> اٰ */
+  .replace(/ـَٔا/g,"اٰ")
+  .replace(/ءَا/g,"اٰ")
+  /* tanda huruf tidak dibaca dihilangkan, sukun bulat, alif washal polos */
+  .replace(/۟/g,"")
+  .replace(/ۡ/g,"ْ")
+  .replace(/ٱ/g,"ا")
+  /* urutan terbalik pada huruf yang sama */
   .replace(/([ء-ؿف-يٱ-ۓ])([ً-ٰٟۖ-ۜ۟-ۨ]+)/g,(m,l,mk)=>{
    if(mk.includes("ٰ"))mk=mk.replace(/َ/g,"");
    if(mk.includes("ٖ"))mk=mk.replace(/ِ/g,"");
@@ -103,7 +121,6 @@ document.addEventListener("DOMContentLoaded",()=>{
    return l+mk});
  const fixAr=t=>prefs.indo?indoConv(t):String(t||"");
  const fixHtml=h=>prefs.indo?indoConv(h):h;
- const arDigits=n=>String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
  const strip=t=>String(t||"").replace(/<[^>]*>/g,"");
  const plainAr=t=>String(t||"").replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").replace(/\u0671/g,"ا");
  const normLatin=t=>String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
@@ -219,9 +236,8 @@ document.addEventListener("DOMContentLoaded",()=>{
    ${fullSrc?`<div class="reader-audio"><small>Murottal surah penuh · ${QARI_NAME}</small><audio id="full-audio" controls preload="none" src="${escapeHtml(fullSrc)}"></audio></div>`:""}
   </div>
   <div class="card quran-tools"><div class="tool-row">
-   <span class="seg" role="group" aria-label="Tampilan"><button type="button" class="btn" id="v-mushaf" aria-pressed="true">Mushaf</button><button type="button" class="btn" id="v-ayat" aria-pressed="false">Per ayat</button></span>
    <button type="button" class="btn" id="t-tajwid" aria-pressed="true">Tajwid</button>
-   <button type="button" class="btn" id="t-indo" aria-pressed="true" title="Harakat tegak seperti Mushaf Standar Indonesia">Gaya Indonesia</button>
+   <button type="button" class="btn" id="t-indo" aria-pressed="true" title="Penulisan seperti Mushaf Standar Indonesia">Gaya Indonesia</button>
    <button type="button" class="btn" id="t-latin" aria-pressed="true">Latin</button>
    <button type="button" class="btn" id="t-id" aria-pressed="true">Terjemahan</button>
    <button type="button" class="btn btn-secondary" id="t-tafsir" aria-pressed="false">Tafsir</button>
@@ -234,16 +250,7 @@ document.addEventListener("DOMContentLoaded",()=>{
    <p class="helper">Warna mengikuti data tajwid Quran.com. Huruf tanpa warna dibaca biasa (termasuk izhar). Untuk belajar tajwid, tetap bimbingan guru.</p>
   </details>
   <div class="reader" id="reader">
-   ${needBismillah?'<div class="bismillah bism-ayat" id="bism-ayat" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>':""}
-   <div id="mushaf-wrap">
-    <div class="mushaf-page">
-     ${needBismillah?'<div class="bismillah mushaf-bism" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>':""}
-     <div class="mushaf-text" id="mushaf-text" dir="rtl" lang="ar">${ayat.map(a=>`<span class="mv" id="m-${a.nomorAyat}" data-n="${a.nomorAyat}" tabindex="0" role="button" aria-label="Ayat ${a.nomorAyat}"><span class="mv-t">${escapeHtml(fixAr(a.teksArab))}</span> <span class="mv-end" aria-hidden="true">${arDigits(a.nomorAyat)}</span></span> `).join("")}</div>
-    </div>
-    <p class="helper mushaf-hint"><i class="fa-solid fa-hand-pointer"></i> Ketuk ayat untuk melihat Latin, terjemahan, tafsir, dan memutar audionya.</p>
-    <div class="card mushaf-detail" id="m-detail" hidden></div>
-    <div class="card mushaf-terjemah" id="m-terjemah"><div class="tf-title">Terjemahan</div>${ayat.map(a=>`<p class="ayah-id"><b>${a.nomorAyat}.</b> ${escapeHtml(a.teksIndonesia)}</p>`).join("")}</div>
-   </div>
+   ${needBismillah?'<div class="bismillah" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>':""}
    <div id="ayat-list">${ayat.map(a=>`<article class="card ayah" id="a-${a.nomorAyat}">
     <div class="ayah-top"><span class="ayah-no">${a.nomorAyat}</span><span class="ayah-actions"><button type="button" class="btn btn-secondary ayah-tafsir-btn" data-n="${a.nomorAyat}" aria-expanded="false" aria-controls="tf-${a.nomorAyat}"><i class="fa-solid fa-book-open"></i> Tafsir</button><button type="button" class="icon-btn ayah-play" data-n="${a.nomorAyat}" aria-label="Putar ayat ${a.nomorAyat}"><i class="fa-solid fa-play"></i></button></span></div>
     <div class="ayah-ar" lang="ar" dir="rtl">${escapeHtml(fixAr(a.teksArab))}</div>
@@ -259,22 +266,17 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   /* tampilan: tajwid / Latin / terjemahan / ukuran teks */
   const reader=document.getElementById("reader"),tj=document.getElementById("t-tajwid"),tl=document.getElementById("t-latin"),tn=document.getElementById("t-indo"),ti=document.getElementById("t-id"),legend=document.getElementById("tj-legend");
-  const vM=document.getElementById("v-mushaf"),vA=document.getElementById("v-ayat"),tfBtnAllEl=document.getElementById("t-tafsir");
   let tjMap=null,tjState="idle"; // idle | loading | ok | fail
   const arEl=num=>document.querySelector(`#a-${num} .ayah-ar`);
   const renderArabic=()=>{
    const on=!!(prefs.tajwid&&tjMap);
    ayat.forEach(a=>{const el=arEl(a.nomorAyat);if(!el)return;
-    if(on&&tjMap[a.nomorAyat])el.innerHTML=fixHtml(tjMap[a.nomorAyat]);else el.textContent=fixAr(a.teksArab);
-    const mt=document.querySelector(`#m-${a.nomorAyat} .mv-t`);if(mt){if(on&&tjMap[a.nomorAyat])mt.innerHTML=fixHtml(tjMap[a.nomorAyat]);else mt.textContent=fixAr(a.teksArab)}});
+    if(on&&tjMap[a.nomorAyat])el.innerHTML=fixHtml(tjMap[a.nomorAyat]);else el.textContent=fixAr(a.teksArab)});
    legend.hidden=!on;
   };
   const applyView=()=>{
    reader.classList.toggle("hide-latin",!prefs.latin);reader.classList.toggle("hide-id",!prefs.id);
    reader.style.setProperty("--ar",prefs.size+"px");
-   const mv=prefs.view==="mushaf";
-   document.getElementById("mushaf-wrap").hidden=!mv;document.getElementById("ayat-list").hidden=mv;const bz=document.getElementById("bism-ayat");if(bz)bz.hidden=mv;tfBtnAllEl.hidden=mv;
-   [[vM,mv],[vA,!mv]].forEach(([b,on])=>{b.setAttribute("aria-pressed",on);b.classList.toggle("btn-primary",on);b.classList.toggle("btn-secondary",!on)});
    tj.textContent=tjState==="loading"?"Tajwid…":"Tajwid";
    [[tj,prefs.tajwid],[tn,prefs.indo],[tl,prefs.latin],[ti,prefs.id]].forEach(([b,on])=>{b.setAttribute("aria-pressed",on);b.classList.toggle("btn-primary",on);b.classList.toggle("btn-secondary",!on)});
   };
@@ -285,8 +287,6 @@ document.addEventListener("DOMContentLoaded",()=>{
    catch(e){console.error(e);tjState="fail";toast("Warna tajwid belum bisa dimuat. Teks ditampilkan tanpa warna.")}
    applyView();renderArabic();
   }
-  vM.onclick=()=>{prefs.view="mushaf";savePrefs();applyView()};
-  vA.onclick=()=>{prefs.view="ayat";savePrefs();applyView()};
   tj.onclick=()=>{prefs.tajwid=!prefs.tajwid;savePrefs();if(prefs.tajwid&&tjState==="fail")tjState="idle";applyView();renderArabic();if(prefs.tajwid)ensureTajwid()};
   tn.onclick=()=>{prefs.indo=!prefs.indo;savePrefs();applyView();renderArabic()};
   tl.onclick=()=>{prefs.latin=!prefs.latin;savePrefs();applyView()};
@@ -325,39 +325,13 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   /* lompat ke ayat */
   const jump=document.getElementById("jump");
-  const goAyah=v=>{const el=document.getElementById((prefs.view==="mushaf"?"m-":"a-")+v);if(el&&prefs.view==="mushaf")selectM(+v);if(el)el.scrollIntoView({behavior:"smooth",block:prefs.view==="mushaf"?"center":"start"});else toast("Ayat tidak ditemukan.")};
+  const goAyah=v=>{const el=document.getElementById("a-"+v);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});else toast("Ayat tidak ditemukan.")};
   jump.onchange=()=>{const v=parseInt(jump.value,10);if(v>=1&&v<=total)goAyah(v);else toast(`Masukkan angka 1–${total}.`)};
   if(/^#a-\d+$/.test(location.hash))setTimeout(()=>goAyah(location.hash.slice(3)),150);
-
-  /* tampilan mushaf: ketuk ayat -> panel detail */
-  const mDetail=document.getElementById("m-detail");
-  function selectM(num,keepOpen){
-   document.querySelectorAll(".mv.sel").forEach(e=>e.classList.remove("sel"));
-   document.getElementById("m-"+num)?.classList.add("sel");
-   const a=ayat.find(x=>x.nomorAyat===num);if(!a)return;
-   mDetail.hidden=false;
-   mDetail.innerHTML=`<div class="md-top"><b>${escapeHtml(d.namaLatin)} : ${num}</b><span class="md-actions"><button type="button" class="btn btn-secondary ayah-tafsir-btn" data-mtafsir="${num}" aria-expanded="false"><i class="fa-solid fa-book-open"></i> Tafsir</button><button type="button" class="icon-btn ayah-play" data-mplay="${num}" aria-label="Putar ayat ${num}"><i class="fa-solid ${cur===num&&!player.paused?"fa-pause":"fa-play"}"></i></button><button type="button" class="icon-btn" data-mclose aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button></span></div>
-    <div class="ayah-latin">${escapeHtml(a.teksLatin)}</div><div class="ayah-id">${escapeHtml(a.teksIndonesia)}</div><div class="ayah-tafsir" id="md-tafsir" hidden></div>`;
-  }
-  const closeM=()=>{mDetail.hidden=true;document.querySelectorAll(".mv.sel").forEach(e=>e.classList.remove("sel"))};
-  document.getElementById("mushaf-text").addEventListener("click",e=>{const m=e.target.closest(".mv");if(m)selectM(parseInt(m.dataset.n,10))});
-  document.getElementById("mushaf-text").addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const m=e.target.closest(".mv");if(m){e.preventDefault();selectM(parseInt(m.dataset.n,10))}});
-  mDetail.addEventListener("click",async e=>{
-   if(e.target.closest("[data-mclose]")){closeM();return}
-   const pl=e.target.closest("[data-mplay]");if(pl){playAyah(parseInt(pl.dataset.mplay,10),false);return}
-   const tb=e.target.closest("[data-mtafsir]");if(!tb)return;
-   const num=parseInt(tb.dataset.mtafsir,10),box=document.getElementById("md-tafsir");
-   if(tb.getAttribute("aria-expanded")==="true"){box.hidden=true;tb.setAttribute("aria-expanded","false");return}
-   tb.setAttribute("aria-expanded","true");box.hidden=false;box.innerHTML='<p class="tf-loading">Memuat tafsir...</p>';
-   try{await ensureTafsir();box.innerHTML='<div class="tf-title">Tafsir Kemenag RI</div>'+(tfMap[num]?tafsirHtml(tfMap[num]):'<p class="tf-empty">Tafsir untuk ayat ini belum tersedia.</p>')}
-   catch(err){console.error(err);box.hidden=true;tb.setAttribute("aria-expanded","false");toast("Tafsir belum bisa dimuat. Periksa koneksi lalu coba lagi.")}
-  });
 
   /* audio per ayat (berlanjut otomatis ke ayat berikutnya) */
   const player=new Audio(),fullAudio=document.getElementById("full-audio");let cur=null;
   const setPlaying=num=>{
-   document.querySelectorAll(".mv").forEach(el=>el.classList.toggle("playing",String(num)===el.dataset.n));
-   document.querySelectorAll("[data-mplay] i").forEach(i=>{i.className="fa-solid "+(num!=null&&String(num)===i.closest("[data-mplay]").dataset.mplay?"fa-pause":"fa-play")});
    document.querySelectorAll(".ayah").forEach(el=>{
     const on=String(num)===el.id.slice(2);el.classList.toggle("playing",on);
     el.querySelector(".ayah-play i").className="fa-solid "+(on?"fa-pause":"fa-play");
@@ -369,7 +343,7 @@ document.addEventListener("DOMContentLoaded",()=>{
    if(!auto&&cur===num&&!player.paused){player.pause();setPlaying(null);cur=null;return}
    if(fullAudio)fullAudio.pause();
    cur=num;player.src=src;player.play().catch(()=>{toast("Audio gagal diputar.");setPlaying(null)});setPlaying(num);
-   if(auto){const mv=prefs.view==="mushaf";if(mv&&!mDetail.hidden)selectM(num,true);document.getElementById((mv?"m-":"a-")+num)?.scrollIntoView({behavior:"smooth",block:"center"})}
+   if(auto)document.getElementById("a-"+num)?.scrollIntoView({behavior:"smooth",block:"center"});
   }
   player.onended=()=>{const nx=cur+1;if(ayat.some(x=>x.nomorAyat===nx))playAyah(nx,true);else{setPlaying(null);cur=null}};
   if(fullAudio)fullAudio.onplay=()=>{player.pause();setPlaying(null);cur=null};
