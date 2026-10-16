@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   <div class="ab-meta"><span>Perawi sahabat: ${e(d.sahabat)}</span><span>${e(d.mukharrij)}</span><span>Derajat: ${e(d.derajat)}</span></div>
   <div class="ab-ar" lang="ar" dir="rtl">${e(d.pembuka)}</div><div class="ab-arti">${e(d.pembukaArti)}</div>
   <h4>Matan per bagian</h4>${d.bagian.map((b,i)=>`<div class="ab-part"><div class="ab-ar" lang="ar" dir="rtl">${e(b.ar)}</div><div class="ab-arti"><strong>Artinya:</strong> ${e(b.arti)}</div><p><strong>Penjelasan:</strong> ${e(b.syarah)}</p></div>`).join("")}
+  ${(d.bahasan||[]).map(b=>`<h4>${e(b.judul)}</h4>${b.paragraf.map(p=>`<p style="font-size:14px;line-height:1.85">${e(p)}</p>`).join("")}`).join("")}
   <h4>Riwayat lain yang menjelaskan</h4>${d.riwayatLain.map(r=>`<div class="ab-mini">${e(r.teks)}<br><small>${e(r.sumber)}</small><br><em>${e(r.kaitan)}</em></div>`).join("")}
   <h4>Perawi dalam sanad beserta syarahnya</h4><div class="ab-grid2">${d.perawi.map(p=>`<div class="ab-mini"><strong>${e(p.nama)}</strong><small>${e(p.peran)}</small><br>${e(p.syarah)}</div>`).join("")}</div>
   <p class="helper" style="margin-top:8px">Kitab syarah: ${e(d.syarahKitab)}</p>
