@@ -330,30 +330,3 @@ a.event-card{display:block;color:inherit}
 .hide-dx-latin .dx-latin,.hide-dx-arti .dx-arti{display:none}
 @media(max-width:860px){.dx-grid{grid-template-columns:1fr}}
 .dx-kat.dx-pop{background:#fff1c2;color:#7a5a05}.dark .dx-kat.dx-pop{background:#3a3213;color:#f0d685}
-
-/* ===== Hadits (hadits.html) ===== */
-.hd-list{display:grid;gap:16px}
-.hd-card{padding:20px 20px 16px}
-.hd-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.hd-head h3{margin:0;font-size:16px;line-height:1.4}
-.hd-no{padding:3px 10px;border-radius:999px;background:var(--green);color:#fff;font-size:11px;font-weight:800}
-.hd-der{flex:none;padding:4px 10px;border-radius:999px;font-size:10.5px;font-weight:800;background:#eee;color:#444}
-.hd-der.hd-sahih{background:#e0f5e8;color:#0a543e}.hd-der.hd-hasan{background:#fff1c2;color:#7a5a05}.hd-der.hd-daif,.hd-der.hd-maudhu{background:#fde4e4;color:#9b1c1c}
-.dark .hd-der.hd-sahih{background:#10372a;color:#d7f1e1}.dark .hd-der.hd-hasan{background:#3a3213;color:#f0d685}.dark .hd-der.hd-daif,.dark .hd-der.hd-maudhu{background:#3d1a1a;color:#ffb3b3}
-.hd-bab{font-size:12px;color:var(--muted);margin:2px 0 4px}
-.hd-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px;margin:14px 0 8px}
-.hd-meta dt{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.hd-meta dd{margin:2px 0 0;font-size:13px;line-height:1.6}
-.hd-chipsrow{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
-.hd-sec{border-top:1px solid var(--line);padding:2px 0}.dark .hd-sec{border-color:#1a4336}
-.hd-sec summary{cursor:pointer;padding:10px 0;font-weight:800;font-size:13px;color:var(--green)}.dark .hd-sec summary{color:#8fd1b2}
-.hd-body{padding:0 0 12px;font-size:13.5px;line-height:1.85}
-.hd-body h4{margin:10px 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-.hd-body p{margin:0}.hd-body ul{margin:0;padding-left:18px}
-.hd-kos span{font-family:"Amiri Quran",Amiri,serif;font-size:18px;color:var(--green)}.dark .hd-kos span{color:#f0d685}
-.hd-sanad{margin:0;padding-left:20px}.hd-sanad small{color:var(--muted)}
-.hd-hint{margin:6px 0 0;font-size:11.5px;color:var(--muted)}
-.hd-daily{padding:18px 20px;margin-bottom:16px;border-left:4px solid var(--gold)}
-.hd-daily[hidden]{display:none}
-.hide-hd-terjemah .hd-terjemah{display:none}
-.hd-card:target{outline:2px solid var(--gold);outline-offset:2px}
