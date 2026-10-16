@@ -12,7 +12,6 @@ event dan quote ditambahkan langsung lewat kode.
 - `quran.html` — Al-Qur'an (Arab berwarna tajwid, Latin, terjemahan Indonesia, tafsir per ayat, murottal)
 - `asmaul-husna.html` — 99 nama Allah (Arab, Latin, arti) dengan pencarian
 - `doa.html` — Kumpulan doa (harian, ibadah, perlindungan, ilmu, keluarga, ampunan, kesulitan) dengan Arab, Latin, arti, sumber, pencarian, dan tombol salin
-- `hadits.html` — Kumpulan hadits (matan + terjemah, sahabat perawi, penyusun kitab, sanad, takhrij, derajat, penjelasan, rujukan syarah) dengan pencarian, kategori, filter derajat, dan Hadits Pilihan Hari Ini
 - `tajwid.html` — Panduan hukum tajwid (nun mati, mim mati, mad, qalqalah, alif lam, lam jalalah dan ra', makharijul huruf, tanda waqaf) dengan contoh ayat berwarna dan pencarian
 - `tasbih.html` — Tasbih digital
 - `sejarah.html`, `media-sosial.html`, `kontak.html`
@@ -58,29 +57,6 @@ Pemutar audio di `asmaul-husna.html` memutar satu berkas: `assets/audio/asmaul-h
 ## Doa-doa
 
 Isi halaman `doa.html` ada di `js/doa.js`. Untuk menambah doa, salin satu blok di `window.GRADIEND_DOA`, isi `kat` (salah satu id kategori), `judul`, `ar`, `latin`, `arti`, dan `sumber`. Pastikan teks Arab dan sumbernya benar sebelum ditambahkan.
-
-## Hadits
-
-Halaman `hadits.html` memakai data yang **dipisah per file** di `js/hadits/`:
-
-- `index.js` — daftar kategori dan daftar kitab (nama, penyusun/mukharrij, wafat, lokasi berkas). Ubah daftar kitab di sini.
-- `pilihan.js` — hadits yang sudah dilengkapi manual: sahabat perawi, sanad, takhrij, derajat, penjelasan (makna, kosakata, konteks, faedah), dan rujukan syarah. Cara menambah: salin satu blok, penjelasan field ada di komentar atas file. `pilihan: true` memasukkannya ke rotasi "Hadits Pilihan Hari Ini".
-- `<kitab>.js` (mis. `bukhari.js`) — isi lengkap satu kitab (Arab + terjemah Indonesia). Berkas ini dibuat otomatis, dan baru dimuat browser saat kitabnya dipilih.
-
-Tiga hal dipisah: **penyusun kitab** (di `index.js`), **sahabat perawi** (field `sahabat`), dan **rantai perawi dalam sanad** (field `sanad`). Field `bab.id` disiapkan untuk fitur relasi hadits dengan bab kitab (belum aktif). Tiap hadits bisa ditautkan lewat `hadits.html#id-hadits`.
-
-### Mengunduh data kitab
-
-Sumber: [gadingnst/hadith-api](https://github.com/gadingnst/hadith-api) (MIT; data dari tafsirq.com), berisi Bukhari, Muslim, Abu Dawud, Tirmidzi, Nasa'i, Ibnu Majah, Ahmad, Darimi, dan Malik dengan teks Arab dan terjemah Indonesia.
-Di komputer kamu (Node 18+, perlu internet):
-
-```
-node tools/fetch-hadits.js            # semua kitab
-node tools/fetch-hadits.js bukhari    # satu kitab
-```
-
-Hasilnya `js/hadits/<kitab>.js`; commit berkas itu. Kitab yang berkasnya belum ada tampil sebagai "belum tersedia". Data unduhan hanya berisi nomor, Arab, dan terjemah; sanad, derajat, dan penjelasan tetap diisi manual di `pilihan.js`. Periksa mutu data (nomor, terjemah) sebelum dipublikasikan.
-Ukuran: Musnad Ahmad (26 ribu hadits) bisa puluhan MB. Jika terlalu berat untuk Vercel atau pembaca, jangan unduh kitab itu.
 
 ## Tajwid
 
