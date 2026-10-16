@@ -78,12 +78,12 @@ document.addEventListener("DOMContentLoaded",()=>{
   <h4>Faedah hadits</h4><ul>${d.faedah.map(f=>`<li>${e(f)}</li>`).join("")}</ul>
   <h4>Mutiara &amp; catatan</h4>${d.fakta.map(f=>`<div class="tw-note"><strong>${e(f.j)}:</strong> ${e(f.t)}</div>`).join("")}
  </div></details>`;
- root.innerHTML=`
- <div class="card ab-card"><h2>Mukadimah dan Penulis</h2>
-  <div class="ab-ar" lang="ar" dir="rtl">${e(I.mukadimah.ar)}</div><div class="ab-arti">${e(I.mukadimah.arti)}</div>${note(I.mukadimah.catatan)}
-  <h3 style="margin-top:18px">${e(I.penulis.nama)}</h3><p class="helper">${e(I.penulis.lengkap)}</p>${I.penulis.paragraf.map(p=>`<p>${e(p)}</p>`).join("")}</div>
- <div class="card ab-card"><h2>${e(I.shalawat.judul)}</h2><p>${e(I.shalawat.intro)}</p><div class="ab-grid3">${I.shalawat.item.map(s=>`<div class="ab-mini"><strong><i class="fa-solid ${e(s.ikon)}"></i> Dari ${e(s.dari)}</strong>${e(s.isi)}</div>`).join("")}</div></div>
- <div class="card ab-card"><h2>${e(I.konsep.judul)}</h2><p>${e(I.konsep.intro)}</p><div class="ab-grid2">${I.konsep.istilah.map(s=>`<div class="ab-mini"><strong>${e(s.n)}</strong>${e(s.d)}</div>`).join("")}</div><p style="margin-top:12px">${e(I.konsep.contoh)}</p>${note(I.konsep.catatan)}</div>
+ const sec=b=>`<div class="card ab-card" id="bab-${e(b.judul.length)}"><h2><i class="fa-solid ${e(b.ikon||"fa-book")}"></i> ${e(b.judul)}</h2>
+  ${b.ar?`<div class="ab-ar" lang="ar" dir="rtl">${e(b.ar)}</div>`:""}${b.arti?`<div class="ab-arti" style="margin-bottom:10px"><strong>Artinya:</strong> ${e(b.arti)}</div>`:""}
+  ${(b.paragraf||[]).map(p=>`<p>${e(p)}</p>`).join("")}
+  ${b.item?`<div class="ab-grid2">${b.item.map(s=>`<div class="ab-mini"><strong>${e(s.j)}</strong>${e(s.t)}</div>`).join("")}</div>`:""}
+  ${b.catatan?note(b.catatan):""}</div>`;
+ root.innerHTML=`${I.bab.map(sec).join("")}
  <h2 style="margin:10px 0 0">Matan dan Penjelasan</h2>${D.map(hadits).join("")}
  <div class="notice">Terjemahan dan penjelasan ini ringkasan. Rujuklah kitab asli dan guru atau pembina Rohis untuk penelusuran lebih lanjut.</div>`;
 });
