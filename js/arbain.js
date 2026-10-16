@@ -1,47 +1,123 @@
 /* =====================================================================
    DATA ARBA'IN NAWAWI — tampil di arbain-nawawi.html
-   Bagian: ARBAIN_INTRO (penulis, kitab, shalawat, konsep ilmu hadits)
-           ARBAIN (daftar hadits). Tambah hadits dengan menyalin satu blok.
-   Pastikan teks Arab, nomor kitab, dan keterangan perawi benar sebelum menambah.
+   ARBAIN_INTRO.bab: bab-bab pembuka (mukadimah). Tiap bab: judul, ikon, ar, arti,
+   paragraf[], item[{j,t}], catatan. ARBAIN: daftar hadits (salin satu blok untuk menambah).
+   Rujukan mukadimah: kajian mukadimah Arba'in an-Nawawi. Cocokkan dengan kitab sebelum rilis.
    ===================================================================== */
 
-window.ARBAIN_INTRO = {
-  penulis: {
-    nama: "Imam an-Nawawi",
-    lengkap: "Abu Zakariya Yahya bin Syaraf bin Murri an-Nawawi ad-Dimasyqi asy-Syafi'i",
+window.ARBAIN_INTRO = { bab: [
+  { judul: "Siapa Imam an-Nawawi?", ikon: "fa-user-graduate",
     paragraf: [
-      "Nama \"an-Nawawi\" dinisbatkan ke Nawa, sebuah desa di wilayah Hauran, Syam (kini termasuk Suriah, dekat Damaskus). Beliau lahir di sana pada bulan Muharram 631 H dan wafat di tempat yang sama pada 24 Rajab 676 H, dalam usia sekitar 45 tahun.",
-      "Pada usia sekitar 18 tahun beliau pindah ke Damaskus untuk menuntut ilmu, belajar di Madrasah ar-Rawahiyyah, dan bermazhab Syafi'i. Beliau dikenal sangat sederhana, wara', dan berani menasihati penguasa. Dalam usia yang pendek beliau meninggalkan karya besar: Riyadhus Shalihin, al-Adzkar, al-Minhaj (Syarh Shahih Muslim), al-Majmu', dan Minhajuth Thalibin.",
-      "Arba'in an-Nawawi berisi 42 hadits pilihan yang menjadi pokok-pokok agama. Beliau menyusunnya mengikuti riwayat tentang keutamaan menghafal empat puluh hadits. Beliau sendiri menyebut riwayat keutamaan itu lemah, tetapi para ulama membolehkan beramal dengan hadits lemah dalam fadhail (keutamaan amal) dengan syarat tertentu, dan beliau menyatakan tujuannya semata mengikuti para ulama yang telah menyusun kitab serupa. Kitab ini kemudian disyarah oleh Ibnu Daqiq al-'Id dan Ibnu Rajab al-Hanbali (yang menambah 8 hadits sehingga menjadi 50)."
-    ]
-  },
-  mukadimah: {
-    ar: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ، قَيُّومِ السَّمَاوَاتِ وَالْأَرَضِينَ... وَأَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ... وَأَشْهَدُ أَنَّ سَيِّدَنَا مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ وَحَبِيبُهُ وَخَلِيلُهُ، أَفْضَلُ الْمَخْلُوقِينَ، صَلَوَاتُ اللهِ وَسَلَامُهُ عَلَيْهِ وَعَلَى سَائِرِ النَّبِيِّينَ وَالْمُرْسَلِينَ",
-    arti: "Segala puji bagi Allah, Tuhan semesta alam... Aku bersaksi tidak ada Tuhan selain Allah semata, tiada sekutu bagi-Nya... dan aku bersaksi bahwa junjungan kami, Muhammad, adalah hamba, utusan, kekasih, dan khalil-Nya, makhluk terbaik. Semoga shalawat dan salam Allah tercurah kepadanya dan seluruh nabi dan rasul.",
-    catatan: "Teks di atas adalah kutipan ringkas awal mukadimah (bagian tengah dipotong dengan tanda ...). Bandingkan dengan teks lengkap pada cetakan kitab sebelum dijadikan rujukan."
-  },
-  shalawat: {
-    judul: "Makna Shalawat",
-    intro: "Kata shalawat (jamak dari shalah) berbeda maknanya menurut siapa yang mengucapkannya. Penjelasan ini dirangkum dari pendapat ulama yang dinukil Ibnu Hajar dalam Fathul Bari dan Ibnul Qayyim dalam Jalaul Afham.",
-    item: [
-      { dari: "Allah", ikon: "fa-star-and-crescent", isi: "Berupa rahmat serta pujian dan sanjungan kepada Nabi di hadapan para malaikat (riwayat dari Abul 'Aliyah yang dicantumkan Imam Bukhari dalam kitab Shahih-nya)." },
-      { dari: "Malaikat", ikon: "fa-feather", isi: "Berupa doa dan permohonan ampunan, sebagaimana firman Allah: \"Sesungguhnya Allah dan para malaikat-Nya bershalawat untuk Nabi\" (QS. Al-Ahzab: 56)." },
-      { dari: "Manusia", ikon: "fa-people-group", isi: "Berupa doa, yaitu memohon kepada Allah agar melimpahkan shalawat (rahmat dan kemuliaan) kepada Nabi. Manusia tidak memberi rahmat; kita hanya memintakannya kepada Allah. Allah lalu membalas satu shalawat dengan sepuluh shalawat kepada orang yang membacanya (HR. Muslim no. 408)." }
-    ]
-  },
-  konsep: {
-    judul: "Mengenal Sanad, Matan, dan Perawi",
-    intro: "Sebuah hadits terdiri dari dua bagian utama, yaitu jalur yang menyampaikan dan isi yang disampaikan.",
-    istilah: [
-      { n: "Matan", d: "Isi atau redaksi hadits, yaitu ucapan, perbuatan, persetujuan, atau sifat Nabi ﷺ yang disampaikan." },
-      { n: "Sanad", d: "Rangkaian orang yang menyampaikan hadits dari Nabi sampai ke penyusun kitab. Disebut juga isnad atau thariq." },
-      { n: "Perawi", d: "Setiap orang dalam sanad yang meriwayatkan hadits, termasuk sahabat di ujung sanad." },
-      { n: "Mukharrij", d: "Penyusun kitab yang mencatat hadits beserta sanadnya, misalnya Bukhari dan Muslim. Pencatatannya disebut takhrij." }
+      "Pengarang kitab ini adalah Imam an-Nawawi rahimahullah. \"An-Nawawi\" bukan nama asli beliau. Orang Arab terbiasa menisbatkan seseorang pada daerah, kebiasaan, atau nama anaknya, sehingga nama aslinya jarang dipakai. Misalnya seseorang dari Bangkalan bisa dikenal sebagai \"al-Bangkalani\". Begitu pula beliau: nama aslinya Abu Zakariya Yahya bin Syaraf, dan julukan an-Nawawi berasal dari Nawa.",
+      "Nawa adalah daerah di Syam (Suriah), bagian dari wilayah yang lebih besar bernama Dar'a (Hauran). Beliau lahir pada Muharram 631 H di sana dan wafat pada 24 Rajab 676 H, jadi usianya hanya sekitar 44-45 tahun. Dalam usia sependek itu beliau meninggalkan karya yang luar biasa banyak. Di Indonesia pun nama \"Nawawi\" sangat akrab, karena banyak tokoh yang namanya diawali atau diakhiri dengan Nawawi.",
+      "Karya beliau antara lain Riyadhus Shalihin, al-Minhaj (syarah Shahih Muslim), al-Adzkar, Bustanul 'Arifin, Tahdzibul Asma' wal Lughat, al-Majmu', dan Minhajuth Thalibin. Riyadhus Shalihin disebut-sebut termasuk karya keislaman yang paling banyak dicetak setelah Al-Qur'an."
     ],
-    contoh: "Contoh jalur hadits niat dalam Shahih Bukhari: Imam Bukhari ← al-Humaidi ← Sufyan bin 'Uyainah ← Yahya bin Sa'id al-Anshari ← Muhammad bin Ibrahim at-Taimi ← 'Alqamah bin Waqqash al-Laitsi ← Umar bin Khattab ← Rasulullah ﷺ. Seluruh nama dari Bukhari sampai Umar disebut sanad; kalimat \"Innamal a'malu binniyat...\" adalah matan.",
-    catatan: "Perawi sahabat (di ujung sanad), penyusun kitab, dan seluruh perawi dalam sanad adalah tiga hal yang berbeda. Pada hadits niat, sahabat perawinya Umar bin Khattab, penyusunnya Bukhari dan Muslim, sedangkan perawi dalam sanadnya adalah ketujuh nama di atas. Ulama menilai hadits dari sanadnya: bersambung atau tidak, serta adil dan kuat hafalan atau tidak para perawinya."
-  }
-};
+    item: [
+      { j: "Dua belas pelajaran sehari", t: "Beliau dikisahkan mempelajari belasan disiplin ilmu berbeda dalam satu hari. Waktu istirahatnya pun diisi dengan membaca atau menulis kitab, sampai beliau tertidur. Tidurnya bukan tidur yang disengaja, tetapi tertidur karena membaca atau menulis." },
+      { j: "Tidak menikah", t: "Beliau tidak menikah. Para ulama berbeda dalam menafsirkan sebabnya: ada yang mengatakan beliau memegang pendapat bahwa menuntut ilmu lebih utama daripada menikah, ada pula yang mengatakan beliau sebenarnya ingin menikah tetapi wafat sebelum sempat. Kita menyebutnya dengan adab, yaitu \"tidak menikah\"." },
+      { j: "Mutiara hikmah", t: "Belajarlah dari kisah ulama. Salah satu kitab yang dianjurkan adalah Qimatuz Zaman 'indal 'Ulama karya Syekh Abdul Fattah Abu Ghuddah, yang memuat kisah para ulama menjaga waktu." }
+    ],
+    catatan: "Kisah \"12 disiplin ilmu dalam sehari\" dan kebiasaan tidurnya dinukil dari kisah-kisah hidup beliau. Rujuklah biografi beliau dalam Tadzkiratul Huffadz karya adz-Dzahabi dan kitab biografi lain untuk rinciannya." },
+
+  { judul: "Nama Kitab: Arba'in an-Nawawiyah", ikon: "fa-book",
+    paragraf: [
+      "\"Arba'in\" artinya empat puluh, dan \"an-Nawawiyah\" dinisbatkan kepada Imam an-Nawawi. Walaupun bernama empat puluh, jumlah haditsnya 42. Penamaan ini mengikuti kebiasaan ulama: pembulatan nama sudah lazim, dan cukup disebut empat puluhan.",
+      "Imam Ibnu Rajab al-Hanbali, ulama bermazhab Hanbali, menambahkan delapan hadits sehingga genap 50 hadits dalam syarahnya yang berjudul Jami'ul 'Ulum wal Hikam. Dalam halaman ini kita fokus pada 42 hadits asli karya Imam an-Nawawi."
+    ] },
+
+  { judul: "Basmalah: Mengapa Memulai dengan Bismillah", ikon: "fa-feather-pointed",
+    ar: "كُلُّ أَمْرٍ ذِي بَالٍ لَا يُبْدَأُ فِيهِ بِبِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ فَهُوَ أَقْطَعُ",
+    arti: "Setiap urusan penting yang tidak dimulai dengan Bismillahirrahmanirrahim, maka ia terputus (kurang berkahnya).",
+    paragraf: [
+      "Para ulama mengawali kitab mereka dengan basmalah sebagai bentuk meneladani Nabi ﷺ. Maksud \"terputus\" adalah cacat dan tidak sempurna berkahnya.",
+      "Arti basmalah yang paling masyhur di Indonesia adalah \"Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang\". Seluruh ulama sepakat arti \"bismillah\" adalah dengan menyebut nama Allah. Perbedaan penafsiran ada pada ar-Rahman dan ar-Rahim, meski keduanya berasal dari rahmat Allah.",
+      "Satu pendapat menyatakan ar-Rahman adalah rahmat Allah di dunia dan akhirat yang mencakup muslim dan kafir (itulah sebabnya orang kafir pun bisa makan, minum, dan kaya), sedangkan ar-Rahim adalah rahmat khusus di akhirat bagi orang beriman. Pendapat lain menyatakan ar-Rahman berkaitan dengan nikmat-nikmat besar dan ar-Rahim berkaitan dengan nikmat-nikmat yang kecil dan terperinci. Karena itu sebagian orang menerjemahkannya \"yang memberi nikmat besar dan yang memberi nikmat kecil\". Ada tujuh perbedaan yang disebut ulama; di sini ditulis dua yang paling mudah dipahami."
+    ],
+    catatan: "Hadits tentang basmalah ini diperselisihkan ulama dalam penilaian derajatnya, dan sebagian ulama menilainya dhaif. Karena itu para ulama menekankan keteladanan Nabi dalam memulai urusan dengan menyebut nama Allah." },
+
+  { judul: "Hamdalah dan Makna Mukallaf", ikon: "fa-hands-praying",
+    ar: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ، قَيُّومِ السَّمَاوَاتِ وَالْأَرَضِينَ، مُدَبِّرِ الْخَلَائِقِ أَجْمَعِينَ، بَاعِثِ الرُّسُلِ إِلَى الْمُكَلَّفِينَ",
+    arti: "Segala puji bagi Allah, Tuhan semesta alam, Penguasa langit dan bumi, Pengatur seluruh makhluk, yang mengutus para rasul kepada para mukallaf.",
+    paragraf: [
+      "Setelah basmalah, Imam an-Nawawi memulai dengan pujian kepada Allah, mengikuti kebiasaan ulama yang memulai dengan alhamdulillah. Ada hadits yang menyebut setiap perkara penting yang tidak dimulai dengan hamdalah terputus, tetapi haditsnya lemah sehingga jarang disebut ulama.",
+      "Mukallaf adalah orang yang terkena beban syariat, yaitu orang yang berakal dan sudah balig. Bayi, anak kecil, dan orang yang tidak berakal bukan mukallaf, sehingga perbuatan mereka tidak dihitung dosa. Pembahasan mukallaf cukup panjang dan lebih tepat dibahas dalam kajian fiqih.",
+      "Beliau lalu memuji Allah atas seluruh nikmat dan memohon tambahan karunia-Nya, kemudian menyebut shalawat dan salam bagi para rasul."
+    ] },
+
+  { judul: "Dua Kalimat Syahadat dan Kemuliaan Nabi ﷺ", ikon: "fa-star-and-crescent",
+    arti: "Aku bersaksi bahwa tiada tuhan yang berhak disembah selain Allah Yang Maha Esa, tiada sekutu bagi-Nya, Tuhan Yang Maha Kuasa, Maha Mulia, dan Maha Pengampun. Aku bersaksi bahwa Nabi Muhammad ﷺ adalah hamba dan utusan-Nya, kekasih dan khalil-Nya, makhluk yang paling mulia, dimuliakan dengan Al-Qur'an yang agung sebagai mukjizat yang kekal, dan dengan sunnah-sunnah yang menerangi orang yang mencari petunjuk (mustarsyidin).",
+    paragraf: [
+      "Al-Qur'an adalah mukjizat yang kekal sepanjang masa, sedangkan sunnah menjadi cahaya bagi mereka yang menginginkan petunjuk. Kita memohon kepada Allah agar dimasukkan dalam golongan mustarsyidin.",
+      "Imam an-Nawawi juga menyebut Nabi sebagai yang dikhususkan dengan jawami'ul kalim, yaitu kata-kata yang ringkas namun maknanya sangat padat."
+    ],
+    item: [
+      { j: "Jawami'ul kalim", t: "Salah satu kelebihan Nabi ﷺ adalah diberi jawami'ul kalim (HR. Bukhari no. 7013 dan Muslim no. 523 dari Abu Hurairah). Satu hadits pendek bisa dijelaskan setengah jam oleh seorang guru, sehari oleh ulama lain, bahkan berbulan-bulan, tanpa pernah habis maknanya." },
+      { j: "Contoh", t: "Hadits \"sesungguhnya amal itu tergantung niat\" bisa dikaji dari fiqih, akhlak, bahkan psikologi. Itulah yang dimaksud ringkas namun padat." }
+    ] },
+
+  { judul: "Makna Shalawat", ikon: "fa-heart",
+    paragraf: [
+      "Banyak orang membedakan shalawat dan shalat, padahal keduanya satu akar kata. \"Shalawat\" adalah jamak dari \"shalah\". Secara bahasa shalah berarti doa atau permintaan. Maka ketika Allah berfirman bahwa Allah dan malaikat-Nya bershalawat kepada Nabi (QS. Al-Ahzab: 56), maknanya berbeda-beda tergantung siapa yang bershalawat. Bukan berarti Allah memohon kepada Nabi."
+    ],
+    item: [
+      { j: "Dari Allah", t: "Maknanya rahmat (kasih sayang) dan pujian Allah kepada Nabi di hadapan para malaikat. Nabi ﷺ bersabda bahwa siapa yang bershalawat kepadanya sekali, Allah bershalawat kepadanya sepuluh kali (HR. Muslim no. 408). Artinya nama kita dipuji dan disebut Allah, dan mendapat rahmat-Nya." },
+      { j: "Dari malaikat", t: "Maknanya istighfar, yaitu memohonkan ampunan kepada Allah. Jika malaikat bershalawat kepada kita, berarti mereka memohonkan ampunan bagi kita." },
+      { j: "Dari manusia", t: "Maknanya doa, yaitu memohon kepada Allah agar melimpahkan rahmat dan kemuliaan kepada Nabi ﷺ. Karena itu kita membaca Allahumma shalli 'ala Sayyidina Muhammad." },
+      { j: "Mutiara hikmah", t: "Memperbanyak shalawat adalah sebab turunnya rahmat dan terbukanya pintu ampunan." }
+    ] },
+
+  { judul: "Hadits Keutamaan Menghafal 40 Hadits", ikon: "fa-scroll",
+    ar: "مَنْ حَفِظَ عَلَى أُمَّتِي أَرْبَعِينَ حَدِيثًا مِنْ أَمْرِ دِينِهَا بَعَثَهُ اللهُ فِي زُمْرَةِ الْفُقَهَاءِ وَالْعُلَمَاءِ",
+    arti: "Barang siapa menghafal untuk umatku empat puluh hadits tentang urusan agamanya, Allah akan membangkitkannya bersama golongan para fuqaha dan ulama.",
+    paragraf: [
+      "Imam an-Nawawi menyebut hadits ini diriwayatkan dari banyak sahabat, di antaranya Ali bin Abi Thalib, Ibnu Mas'ud, Ibnu Umar, Ibnu Abbas, Abu Darda', Abu Hurairah, dan Anas, dengan jalur yang beragam. Dalam riwayat lain, keutamaannya lebih besar: dibangkitkan bersama para ulama dan syuhada, Nabi menjadi pemberi syafaat dan saksi baginya, serta dikatakan kepadanya agar masuk surga dari pintu mana saja yang ia kehendaki."
+    ],
+    item: [
+      { j: "Catatan penting", t: "Imam an-Nawawi sendiri menegaskan bahwa seluruh jalur hadits ini dhaif (lemah). Karena itu keutamaannya tidak boleh disampaikan sebagai kepastian dari Nabi. Namun para ulama membolehkan mengamalkan hadits dhaif dalam hal tertentu seperti yang dijelaskan pada bab berikutnya." },
+      { j: "Tips", t: "Bila menghafal satu hadits per hari, 42 hadits selesai dalam sekitar satu setengah bulan; satu hadits per dua hari selesai dalam sekitar 84 hari. Tetapi yang terpenting adalah memahami dan mengamalkannya." }
+    ] },
+
+  { judul: "Kapan Hadits Dhaif Boleh Diamalkan?", ikon: "fa-scale-balanced",
+    paragraf: [
+      "Para ulama menjelaskan bahwa hadits dhaif (yang tidak terlalu lemah) boleh diamalkan dalam beberapa perkara. Imam an-Nawawi menyebut kesepakatan ulama bahwa hadits dhaif boleh dipakai dalam fadha'ilul a'mal (keutamaan amal). Perkara lain yang disebut adalah kisah-kisah sejarah (sirah), targhib (kabar gembira), dan tarhib (peringatan).",
+      "Sebaliknya, hadits dhaif tidak boleh dijadikan dasar dalam urusan hukum halal-haram, akidah, dan urusan kenegaraan (siyasah). Hukum dan akidah memerlukan dalil yang kuat."
+    ],
+    catatan: "Ulama juga memberi syarat tambahan, misalnya kelemahannya tidak parah, haditsnya masih berada di bawah dasar yang umum, dan tidak diyakini sebagai sabda Nabi yang pasti. Rujuklah kitab ulum hadits untuk rincian syaratnya." },
+
+  { judul: "Tradisi Mengumpulkan 40 Hadits", ikon: "fa-landmark",
+    paragraf: [
+      "Imam an-Nawawi menyebut bahwa sebelum beliau, banyak ulama telah mengumpulkan empat puluh hadits. Yang pertama disebut adalah Abdullah bin al-Mubarak. Kemudian Muhammad bin Aslam ath-Thusi, al-Hasan bin Sufyan an-Nasawi, Abu Bakr al-Ajurri, Abu Bakr Muhammad bin Ibrahim al-Ashbahani, ad-Daraquthni, al-Hakim, Abu Nu'aim, Abu 'Abdirrahman as-Sulami, Abu Sa'id al-Malini, Abu 'Utsman ash-Shabuni, 'Abdullah bin Muhammad al-Anshari, Abu Bakr al-Baihaqi, serta ulama lain dari masa lalu dan masa kemudian.",
+      "Beliau memohon petunjuk kepada Allah lalu mengikuti jejak mereka. Perlu diketahui bahwa nama \"al-Ashbahani\" bisa dibaca dengan beberapa cara karena huruf \"P\" tidak ada dalam bahasa Arab dan diganti dengan fa atau ba, seperti nama \"al-Fadani\" atau \"al-Badani\" untuk Padang."
+    ] },
+
+  { judul: "Hadits Penyampaian Ilmu", ikon: "fa-bullhorn",
+    ar: "نَضَّرَ اللهُ امْرَأً سَمِعَ مَقَالَتِي فَوَعَاهَا فَأَدَّاهَا كَمَا سَمِعَهَا",
+    arti: "Semoga Allah memberi cahaya pada wajah seseorang yang mendengar ucapanku, menghafalnya, lalu menyampaikannya sebagaimana yang ia dengar.",
+    paragraf: [
+      "Imam an-Nawawi mengaku bahwa walaupun hadits dhaif boleh diamalkan, beliau tidak bersandar pada hadits dhaif itu. Beliau mengikuti sabda Nabi dalam hadits sahih agar yang hadir menyampaikan kepada yang tidak hadir (HR. Bukhari no. 67 dan Muslim no. 1679). Maka kita menyampaikan hadits kepada orang lain dan terus berlanjut hingga hari kiamat, sehingga menjadi pahala yang mengalir.",
+      "Hadits \"nadhdharallah\" diriwayatkan oleh Tirmidzi (no. 2657) dan lainnya dari beberapa sahabat. Jangan pelit menyampaikan hadits Nabi."
+    ] },
+
+  { judul: "Mengenal Matan, Sanad, Perawi, dan Hafizh", ikon: "fa-link",
+    paragraf: [
+      "Perumpamaan sederhana: Tono berkata \"kucing tertabrak truk\". Cahyadi bertanya kepada saya, \"dari mana kamu tahu?\" Saya menjawab: saya mendengar dari Jenny, Jenny dari Jono, Jono dari Toni, Toni dari Tini, dan Tini dari Tono. Kalimat \"kucing tertabrak truk\" adalah matan (isi berita). Rangkaian nama dari saya sampai Tono adalah sanad atau riwayat (jalur). Setiap orang dalam rantai itu disebut perawi.",
+      "Ulama hadits menilai bukan hanya matan, tetapi juga status setiap perawi: apakah ia jujur, terpercaya, pendusta, atau tertuduh dusta. Karena itu seorang yang digelari hafizh pada masa awal Islam adalah orang yang menghafal sekitar seratus ribu hadits lengkap dengan matan dan sanadnya, serta mengetahui keadaan perawinya. Kini makna hafizh bergeser menjadi penghafal Al-Qur'an."
+    ],
+    item: [
+      { j: "Referensi", t: "Biografi para hafizh dapat dibaca dalam Tadzkiratul Huffadz karya adz-Dzahabi." },
+      { j: "Catatan", t: "Perawi sahabat, penyusun kitab, dan seluruh perawi dalam sanad adalah tiga hal yang berbeda; bagian ini menjadi dasar penjelasan perawi pada setiap hadits." }
+    ] },
+
+  { judul: "Mengapa Imam an-Nawawi Menyusun Arba'in dengan Cara Ini", ikon: "fa-bullseye",
+    paragraf: [
+      "Ulama sebelumnya menyusun empat puluh hadits secara tematik: ada yang khusus jihad, zuhud, adab, atau khutbah. Imam an-Nawawi memandang ada cara yang lebih penting, yaitu mengumpulkan empat puluh hadits yang mencakup seluruh pokok agama (usuluddin), cabang hukum (furu'), jihad, zuhud, adab, khutbah, dan lain-lain. Beliau menyebutnya hadits yang mencakup banyak kaidah agung.",
+      "Beliau memastikan seluruh haditsnya sahih, dan sebagian besar diambil dari Shahih Bukhari dan Shahih Muslim. Beliau juga membuang sanad dan hanya menyebut sahabat perawinya agar mudah dihafal. Karena itu kitab ini dimaksudkan untuk dihafal, bukan hanya dibaca.",
+      "Contohnya hadits niat. Salat, puasa, zakat, haji, dan jihad semuanya terikat pada hadits ini, sehingga ulama menyebutnya setara dengan sepertiga, separuh, atau poros besar agama. Beliau juga menjelaskan bahwa dengan menghafal kitab ini seseorang mendapat peringatan terhadap seluruh bentuk ketaatan bagi yang mau merenungkannya."
+    ],
+    item: [
+      { j: "Penutup mukadimah", t: "Beliau menutup dengan berpegang kepada Allah: kepada-Nya segala puji dan nikmat, dari-Nya pertolongan dan perlindungan." }
+    ] }
+] };
 
 window.ARBAIN = [
   {
