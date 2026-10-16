@@ -330,3 +330,16 @@ a.event-card{display:block;color:inherit}
 .hide-dx-latin .dx-latin,.hide-dx-arti .dx-arti{display:none}
 @media(max-width:860px){.dx-grid{grid-template-columns:1fr}}
 .dx-kat.dx-pop{background:#fff1c2;color:#7a5a05}.dark .dx-kat.dx-pop{background:#3a3213;color:#f0d685}
+
+/* ===== Arba'in Nawawi ===== */
+.ab-stack{display:grid;gap:14px}.ab-card{padding:22px}.ab-card h2{margin:0 0 10px;font-size:20px}.ab-card p{line-height:1.85;font-size:14px}
+.ab-ar{font-family:"Amiri Quran",Amiri,serif;font-size:clamp(22px,4.2vw,28px);line-height:2.1;text-align:right;color:var(--green);margin:8px 0}.dark .ab-ar{color:#f0d685}
+.ab-arti{font-size:13px;line-height:1.8;color:var(--muted)}
+.ab-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ab-grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.ab-mini{padding:14px;border:1px solid var(--line);border-radius:14px;font-size:13px;line-height:1.75}.ab-mini strong{display:block;color:var(--green);margin-bottom:4px}.dark .ab-mini strong{color:#f0d685}
+.ab-part{padding:12px 0;border-top:1px dashed var(--line)}
+.ab-meta{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}.ab-meta span{padding:5px 10px;border-radius:999px;background:#eaf4ee;color:var(--green);font-size:11px;font-weight:800}.dark .ab-meta span{background:#0a2b21;color:#aac2b7}
+details.ab-hadits{border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}details.ab-hadits>summary{cursor:pointer;padding:16px 20px;font-weight:800;display:flex;gap:10px;align-items:center}details.ab-hadits[open]>summary{border-bottom:1px solid var(--line)}.ab-body{padding:6px 20px 20px}.ab-body h4{margin:18px 0 6px;color:var(--green)}.dark .ab-body h4{color:#f0d685}
+.ab-no{display:inline-grid;place-items:center;min-width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;font-size:13px}
+.ab-body ul{margin:0;padding-left:18px;font-size:13px;line-height:1.85}
+@media(max-width:860px){.ab-grid3,.ab-grid2{grid-template-columns:1fr}}
