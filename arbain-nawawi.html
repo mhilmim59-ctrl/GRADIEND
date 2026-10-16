@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/png" href="assets/iconlight.png">
+<link rel="icon" type="image/png" href="assets/iconlight.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" href="assets/icondark.png" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="assets/iconlight.png">
+<title>Arba'in Nawawi — GRADIEND</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="js/config.js"></script>
+<script src="js/arbain.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body class="shell">
+
+<header class="nav">
+<div class="container nav-inner">
+  <a class="brand" href="index.html"><img class="brand-logo" src="assets/gradiend-logo.png" alt="GRADIEND">
+    <div><div class="brand-title">GRADIEND</div><div class="brand-tag">Generasi Dakwah Islam Enam Dua</div></div>
+  </a>
+  <nav class="nav-links"><a href="index.html" data-page="index.html">Beranda</a><a href="jadwal-salat.html" data-page="jadwal-salat.html">Salat</a><a href="quran.html" data-page="quran.html">Al-Qur'an</a><a href="tajwid.html" data-page="tajwid.html">Tajwid</a><a href="asmaul-husna.html" data-page="asmaul-husna.html">Asmaul Husna</a><a href="doa.html" data-page="doa.html">Doa</a><a href="arbain-nawawi.html" data-page="arbain-nawawi.html">Arba'in</a><a href="event.html" data-page="event.html">Event</a><a href="sejarah.html" data-page="sejarah.html">Sejarah</a><a href="media-sosial.html" data-page="media-sosial.html">Sosmed</a><a href="kontak.html" data-page="kontak.html">Email</a></nav>
+  <div class="nav-tools">
+    <button class="icon-btn" data-theme aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
+    <button class="icon-btn menu-toggle" data-menu aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<main>
+<section class="page-hero">
+ <div class="container reveal"><div class="eyebrow">Arba'in Nawawi</div><h1>Hadits Arba'in.</h1><p>Mukadimah, biografi Imam an-Nawawi, matan per bagian dengan arti dan penjelasan, riwayat pendukung, perawi beserta syarahnya, serta mutiara hikmah.</p></div>
+</section>
+<section class="section" style="padding-top:20px"><div class="container ab-stack" id="ab-root"></div></section>
+</main>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div>
+    <div class="footer-brand"><img class="footer-logo" src="assets/gradiend-logo.png" alt="GRADIEND"><div><strong>GRADIEND</strong><div>Generasi Dakwah Islam Enam Dua</div></div></div>
+    <p>Ruang digital Rohis SMAN 62 Jakarta untuk informasi kegiatan, artikel, dan fitur ibadah harian.</p>
+  </div>
+  <div>
+    <h4>Jelajah</h4>
+    <a href="jadwal-salat.html">Waktu Salat</a><br>
+    <a href="quran.html">Al-Qur'an</a><br>
+    <a href="tajwid.html">Tajwid</a><br>
+    <a href="asmaul-husna.html">Asmaul Husna</a><br>
+    <a href="doa.html">Doa-doa</a><br>
+    <a href="arbain-nawawi.html">Arba'in Nawawi</a><br>
+    <a href="tasbih.html">Tasbih</a>
+  </div>
+  <div>
+    <h4>Kontak</h4>
+    <p><i class="fa-solid fa-envelope"></i> rohissman62jkt@gmail.com</p>
+    <a href="media-sosial.html">Media Sosial</a>
+  </div>
+</div>
+<div class="container footer-bottom"><span>© 2026 GRADIEND — Rohis SMAN 62 Jakarta</span><span>GRADIEND 32</span></div>
+</footer>
+
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const I=window.ARBAIN_INTRO,D=window.ARBAIN||[],root=document.getElementById("ab-root"),e=escapeHtml;
+ if(!I){root.innerHTML='<div class="empty">Data belum tersedia.</div>';return}
+ const note=t=>`<div class="tw-note"><i class="fa-solid fa-circle-info"></i> ${e(t)}</div>`;
+ const hadits=d=>`<details class="ab-hadits"${d.no===1?" open":""}><summary><span class="ab-no">${d.no}</span> ${e(d.judul)}</summary><div class="ab-body">
+  <div class="ab-meta"><span>Perawi sahabat: ${e(d.sahabat)}</span><span>${e(d.mukharrij)}</span><span>Derajat: ${e(d.derajat)}</span></div>
+  <div class="ab-ar" lang="ar" dir="rtl">${e(d.pembuka)}</div><div class="ab-arti">${e(d.pembukaArti)}</div>
+  <h4>Matan per bagian</h4>${d.bagian.map((b,i)=>`<div class="ab-part"><div class="ab-ar" lang="ar" dir="rtl">${e(b.ar)}</div><div class="ab-arti"><strong>Artinya:</strong> ${e(b.arti)}</div><p><strong>Penjelasan:</strong> ${e(b.syarah)}</p></div>`).join("")}
+  <h4>Riwayat lain yang menjelaskan</h4>${d.riwayatLain.map(r=>`<div class="ab-mini">${e(r.teks)}<br><small>${e(r.sumber)}</small><br><em>${e(r.kaitan)}</em></div>`).join("")}
+  <h4>Perawi dalam sanad beserta syarahnya</h4><div class="ab-grid2">${d.perawi.map(p=>`<div class="ab-mini"><strong>${e(p.nama)}</strong><small>${e(p.peran)}</small><br>${e(p.syarah)}</div>`).join("")}</div>
+  <p class="helper" style="margin-top:8px">Kitab syarah: ${e(d.syarahKitab)}</p>
+  <h4>Faedah hadits</h4><ul>${d.faedah.map(f=>`<li>${e(f)}</li>`).join("")}</ul>
+  <h4>Mutiara &amp; catatan</h4>${d.fakta.map(f=>`<div class="tw-note"><strong>${e(f.j)}:</strong> ${e(f.t)}</div>`).join("")}
+ </div></details>`;
+ root.innerHTML=`
+ <div class="card ab-card"><h2>Mukadimah dan Penulis</h2>
+  <div class="ab-ar" lang="ar" dir="rtl">${e(I.mukadimah.ar)}</div><div class="ab-arti">${e(I.mukadimah.arti)}</div>${note(I.mukadimah.catatan)}
+  <h3 style="margin-top:18px">${e(I.penulis.nama)}</h3><p class="helper">${e(I.penulis.lengkap)}</p>${I.penulis.paragraf.map(p=>`<p>${e(p)}</p>`).join("")}</div>
+ <div class="card ab-card"><h2>${e(I.shalawat.judul)}</h2><p>${e(I.shalawat.intro)}</p><div class="ab-grid3">${I.shalawat.item.map(s=>`<div class="ab-mini"><strong><i class="fa-solid ${e(s.ikon)}"></i> Dari ${e(s.dari)}</strong>${e(s.isi)}</div>`).join("")}</div></div>
+ <div class="card ab-card"><h2>${e(I.konsep.judul)}</h2><p>${e(I.konsep.intro)}</p><div class="ab-grid2">${I.konsep.istilah.map(s=>`<div class="ab-mini"><strong>${e(s.n)}</strong>${e(s.d)}</div>`).join("")}</div><p style="margin-top:12px">${e(I.konsep.contoh)}</p>${note(I.konsep.catatan)}</div>
+ <h2 style="margin:10px 0 0">Matan dan Penjelasan</h2>${D.map(hadits).join("")}
+ <div class="notice">Terjemahan dan penjelasan ini ringkasan. Rujuklah kitab asli dan guru atau pembina Rohis untuk penelusuran lebih lanjut.</div>`;
+});
+</script>
+</body></html>

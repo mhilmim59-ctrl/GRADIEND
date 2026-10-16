@@ -12,6 +12,7 @@ event dan quote ditambahkan langsung lewat kode.
 - `quran.html` — Al-Qur'an (Arab berwarna tajwid, Latin, terjemahan Indonesia, tafsir per ayat, murottal)
 - `asmaul-husna.html` — 99 nama Allah (Arab, Latin, arti) dengan pencarian
 - `doa.html` — Kumpulan doa (harian, ibadah, perlindungan, ilmu, keluarga, ampunan, kesulitan) dengan Arab, Latin, arti, sumber, pencarian, dan tombol salin
+- `arbain-nawawi.html` — Arba'in Nawawi (mukadimah, biografi penulis, makna shalawat, konsep sanad/matan/perawi, matan per bagian, riwayat pendukung, perawi + syarah, mutiara hikmah)
 - `tajwid.html` — Panduan hukum tajwid (nun mati, mim mati, mad, qalqalah, alif lam, lam jalalah dan ra', makharijul huruf, tanda waqaf) dengan contoh ayat berwarna dan pencarian
 - `tasbih.html` — Tasbih digital
 - `sejarah.html`, `media-sosial.html`, `kontak.html`
@@ -57,6 +58,10 @@ Pemutar audio di `asmaul-husna.html` memutar satu berkas: `assets/audio/asmaul-h
 ## Doa-doa
 
 Isi halaman `doa.html` ada di `js/doa.js`. Untuk menambah doa, salin satu blok di `window.GRADIEND_DOA`, isi `kat` (salah satu id kategori), `judul`, `ar`, `latin`, `arti`, dan `sumber`. Pastikan teks Arab dan sumbernya benar sebelum ditambahkan.
+
+## Arba'in Nawawi
+
+Data ada di `js/arbain.js`: `ARBAIN_INTRO` (penulis, mukadimah, shalawat, konsep) dan `ARBAIN` (daftar hadits). Tambah hadits dengan menyalin satu blok di `window.ARBAIN`.
 
 ## Tajwid
 
