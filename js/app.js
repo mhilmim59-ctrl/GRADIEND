@@ -31,6 +31,11 @@
 
   /* ---------- UI umum ---------- */
   document.addEventListener("DOMContentLoaded", () => {
+    /* titik latar yang menyala mengikuti kursor (js/cursor-dots.js) */
+    const dots = document.createElement("script");
+    dots.src = "js/cursor-dots.js";
+    document.head.appendChild(dots);
+
     const dark = localStorage.getItem("gradiend_theme") === "dark";
     if (dark) document.body.classList.add("dark");
     document.querySelector("[data-theme]")?.addEventListener("click", () => {
