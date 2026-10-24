@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="js/config.js"></script>
 <script src="js/app.js"></script>
+<script src="js/prayer-times.js"></script>
 </head>
 <body class="shell">
 
@@ -29,19 +30,19 @@
 </header>
 
 <main>
-<section class="page-hero"><div class="container reveal"><div class="eyebrow">Ibadah harian</div><h1>Waktu salat.</h1><p>Ambil lokasi perangkat untuk mencari kabupaten/kota terdekat, lalu tampilkan jadwal salat dari data yang bersumber dari Kemenag RI.</p></div></section>
+<section class="page-hero"><div class="container reveal"><div class="eyebrow">Ibadah harian</div><h1>Waktu salat.</h1><p>Waktu salat dihitung langsung dari titik koordinat perangkat Anda, bukan dari kota terdekat, dengan kriteria Kemenag RI.</p></div></section>
 <section class="section" style="padding-top:25px">
  <div class="container">
   <div class="prayer-top">
    <div class="prayer-next reveal">
      <small>Salat berikutnya</small><h2 id="next-name">Memuat...</h2><div class="timer" id="timer">--:--:--</div>
-     <div class="prayer-location"><span class="pill" id="place">Mencari lokasi...</span><span class="pill" id="data-source">Sumber: Kemenag RI</span></div>
+     <div class="prayer-location"><span class="pill" id="place">Mencari lokasi...</span><span class="pill" id="data-source">Kriteria: Kemenag RI</span></div>
      <div class="actions"><button id="locate" class="btn btn-secondary"><i class="fa-solid fa-location-crosshairs"></i> Gunakan lokasi perangkat</button><a class="btn btn-secondary" href="https://bimasislam.kemenag.dev/jadwal-sholat" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Kemenag</a></div>
-     <p class="helper" style="margin-top:14px;color:#b8d5ca">Lokasi dipakai untuk menentukan wilayah terdekat. Jadwal mengikuti data wilayah, bukan menghitung ulang dengan rumus lokal.</p>
+     <p class="helper" style="margin-top:14px;color:#b8d5ca">Jadwal dihitung ulang dari koordinat GPS Anda (lintang, bujur, dan zona waktu perangkat), jadi bergeser mengikuti posisi Anda, bukan dibulatkan ke kota terdekat.</p>
    </div>
    <div id="prayers" class="prayer-grid reveal"></div>
   </div>
-  <div class="notice" style="margin-top:16px">Data jadwal yang ditampilkan berasal dari API yang mendokumentasikan sumber data Kemenag RI/Bimas Islam. Untuk kebutuhan ibadah, cek kembali halaman resmi Kemenag bila ada perbedaan wilayah atau tanggal.</div>
+  <div class="notice" style="margin-top:16px">Waktu dihitung dengan kriteria Kemenag RI (Subuh −20°, Isya −18°, Ashar mazhab Syafi'i, ditambah ihtiyat). Hasilnya bisa berbeda sekitar 1–2 menit dari tabel resmi Kemenag karena tabel resmi memakai titik koordinat kabupaten/kota. Untuk kebutuhan ibadah, cek kembali halaman resmi Kemenag bila perlu.</div>
  </div>
 </section>
 </main>
@@ -72,58 +73,105 @@
 
 <script>
 (() => {
- const fmtDate=d=>d.toISOString().slice(0,10);
+ const P = window.GRADIEND_PRAYER;
+ const cfg = (window.GRADIEND_CONFIG || {}).prayer || {};
  const names=[["imsak","Imsak"],["subuh","Subuh"],["terbit","Terbit"],["dhuha","Dhuha"],["dzuhur","Dzuhur"],["ashar","Ashar"],["maghrib","Maghrib"],["isya","Isya"]];
- let jadwal=null,nextKey=null,timer=null;
+ const WAJIB=["subuh","dzuhur","ashar","maghrib","isya"];
+ const LABEL=Object.fromEntries(names);
+ const KEY="gradiend_prayer_loc_v2";
+ const DEFAULT={lat:-6.2088,lng:106.8456,name:"Jakarta (lokasi bawaan)",acc:null,def:true};
+ let loc=null,today=null,nextKey=null,nextAt=null,timer=null,dayKey="";
+ const $=id=>document.getElementById(id);
+ const pad=n=>String(n).padStart(2,"0");
+ const dayOf=d=>`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+ const atTime=(d,mins)=>new Date(d.getFullYear(),d.getMonth(),d.getDate(),0,mins,0);
+ const tzLabel=o=>o===7?"WIB":o===8?"WITA":o===9?"WIT":"UTC"+(o>=0?"+":"")+o;
 
- function render(){
-   if(!jadwal)return;
-   document.getElementById("prayers").innerHTML=names.map(([k,l])=>`<div class="prayer-item ${k===nextKey?"active":""}"><span>${l}</span><b>${jadwal[k]||"--:--"}</b></div>`).join("");
+ // Hitung jadwal untuk tanggal tertentu pada koordinat aktif; zona waktu mengikuti perangkat
+ function calc(date){
+   const off=-new Date(date.getFullYear(),date.getMonth(),date.getDate(),12).getTimezoneOffset()/60;
+   return {t:P.compute(date.getFullYear(),date.getMonth()+1,date.getDate(),loc.lat,loc.lng,off,cfg),off};
  }
- function getNext(){
-   if(!jadwal)return;
-   const now=new Date(), cur=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
-   const candidates=names.filter(([k])=>k!=="imsak"&&jadwal[k]).map(([k,l])=>({k,l,t:(+jadwal[k].slice(0,2))*60+(+jadwal[k].slice(3,5))}));
-   let found=candidates.find(x=>x.t>cur);
-   if(!found)found=candidates[0];
-   nextKey=found?.k||null;
-   document.getElementById("next-name").textContent=found?("Salat "+found.l):"Selesai";
+ function renderGrid(){
+   if(!today)return;
+   $("prayers").innerHTML=names.map(([k,l])=>`<div class="prayer-item ${k===nextKey?"active":""}"><span>${l}</span><b>${P.hhmm(today.t[k])}</b></div>`).join("");
+ }
+ function renderPlace(){
+   const coord=`${loc.lat.toFixed(4)}, ${loc.lng.toFixed(4)}`;
+   $("place").textContent=loc.name||coord;
+   $("data-source").textContent=loc.def?"Ketuk tombol untuk lokasi tepat":`${coord}${loc.acc?` · ±${loc.acc} m`:""} · ${tzLabel(today?today.off:7)}`;
+ }
+ // Tentukan salat wajib berikutnya (jika Isya sudah lewat -> Subuh besok)
+ function refresh(){
+   if(!loc)return;
+   const now=new Date();
+   today=calc(now); dayKey=dayOf(now);
+   let found=null;
+   for(const k of WAJIB){const m=today.t[k];if(m==null)continue;const at=atTime(now,m);if(at>now){found={k,at};break}}
+   if(!found){const tm=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);const r=calc(tm);if(r.t.subuh!=null)found={k:"subuh",at:atTime(tm,r.t.subuh)}}
+   nextKey=found?found.k:null; nextAt=found?found.at:null;
+   $("next-name").textContent=found?"Salat "+LABEL[found.k]:"Tidak tersedia";
+   renderGrid(); renderPlace();
    clearInterval(timer);
-   const tick=()=>{const n=new Date();let target=(parseInt(jadwal[nextKey].slice(0,2))*3600+parseInt(jadwal[nextKey].slice(3,5))*60)-(n.getHours()*3600+n.getMinutes()*60+n.getSeconds());if(target<0)target+=86400;const h=Math.floor(target/3600),m=Math.floor(target%3600/60),s=target%60;document.getElementById("timer").textContent=`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;render()};tick();timer=setInterval(tick,1000);
+   const tick=()=>{
+     const n=new Date();
+     if(dayOf(n)!==dayKey||(nextAt&&nextAt<=n)){refresh();return}
+     if(!nextAt){$("timer").textContent="--:--:--";return}
+     const s=Math.max(0,Math.round((nextAt-n)/1000));
+     $("timer").textContent=`${pad(Math.floor(s/3600))}:${pad(Math.floor(s%3600/60))}:${pad(s%60)}`;
+   };
+   tick(); timer=setInterval(tick,1000);
  }
- async function fetchCity(keyword){
-   const q=encodeURIComponent(keyword);
-   const res=await fetch(`${GRADIEND.config.prayerApiBase}/kabkota/cari/${q}`);
-   const json=await res.json(); return json?.data?.[0]||null;
+
+ // Nama tempat hanya untuk tampilan; perhitungan waktu TIDAK bergantung padanya
+ async function placeName(lat,lng){
+   const ctrl=new AbortController(),to=setTimeout(()=>ctrl.abort(),7000);
+   try{
+     const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=14&accept-language=id`,{signal:ctrl.signal,headers:{"Accept":"application/json"}});
+     const a=(await r.json()).address||{};
+     const parts=[a.village||a.suburb||a.neighbourhood||a.quarter,a.city_district||a.municipality,a.city||a.town||a.county||a.state_district];
+     return [...new Set(parts.filter(Boolean).map(x=>x.replace(/^(Kecamatan|Kelurahan|Desa)\s+/i,"")))].join(", ")||null;
+   }catch(e){return null}finally{clearTimeout(to)}
  }
- async function fetchToday(id){
-   const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"Asia/Jakarta";
-   const res=await fetch(`${GRADIEND.config.prayerApiBase}/jadwal/${id}/today?tz=${encodeURIComponent(tz)}`);
-   const json=await res.json(); const days=json?.data?.jadwal||{}; const today=days[fmtDate(new Date())]||Object.values(days)[0]; return today||null;
+ // Ambil titik terbaik: pantau GPS beberapa detik, pakai akurasi terkecil
+ function bestFix(){
+   return new Promise((resolve,reject)=>{
+     if(!navigator.geolocation)return reject({code:0});
+     let best=null,wid=null,done=false,tm=null;
+     const end=(ok,err)=>{if(done)return;done=true;clearTimeout(tm);if(wid!==null)navigator.geolocation.clearWatch(wid);ok?resolve(ok):reject(err||{code:3})};
+     tm=setTimeout(()=>end(best),10000);
+     wid=navigator.geolocation.watchPosition(
+       p=>{if(!best||p.coords.accuracy<best.coords.accuracy)best=p;if(p.coords.accuracy<=50)end(best)},
+       e=>end(best,e),
+       {enableHighAccuracy:true,maximumAge:0,timeout:15000});
+   });
  }
- async function loadByKeyword(keyword){
-   const city=await fetchCity(keyword);if(!city)throw new Error("Kota tidak ditemukan");
-   const today=await fetchToday(city.id);if(!today)throw new Error("Jadwal hari ini tidak tersedia");
-   jadwal=today; document.getElementById("place").textContent=city.lokasi; getNext();
+ async function useLocation(auto){
+   const btn=$("locate");btn.disabled=true;btn.textContent="Mengambil lokasi...";
+   try{
+     const p=await bestFix();
+     const lat=p.coords.latitude,lng=p.coords.longitude,acc=Math.round(p.coords.accuracy);
+     loc={lat,lng,acc,name:null,def:false};
+     refresh();                       // jadwal langsung tampil dari koordinat
+     if(acc>1500)toast(`Akurasi lokasi rendah (±${acc} m). Aktifkan GPS/Wi-Fi atau coba di tempat terbuka.`);
+     const nm=await placeName(lat,lng);
+     if(loc&&loc.lat===lat&&loc.lng===lng){loc.name=nm;renderPlace()}
+     try{localStorage.setItem(KEY,JSON.stringify(loc))}catch(e){}
+     btn.innerHTML='<i class="fa-solid fa-location-crosshairs"></i> Perbarui lokasi';
+   }catch(e){
+     if(!auto)toast(e&&e.code===1?"Izin lokasi diperlukan. Aktifkan izin lokasi untuk situs ini.":"Lokasi belum bisa didapat. Pastikan GPS aktif lalu coba lagi.");
+     btn.innerHTML='<i class="fa-solid fa-location-crosshairs"></i> '+(auto?"Gunakan lokasi perangkat":"Coba lagi");
+   }
+   btn.disabled=false;
  }
- async function useLocation(){
-   if(!navigator.geolocation){toast("Browser tidak mendukung geolocation.");return}
-   const btn=document.getElementById("locate");btn.disabled=true;btn.textContent="Mengambil lokasi...";
-   navigator.geolocation.getCurrentPosition(async p=>{
-     try{
-       const lat=p.coords.latitude,lon=p.coords.longitude;
-       const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=10&accept-language=id`,{headers:{"Accept":"application/json"}});
-       const j=await r.json(); const a=j.address||{};
-       const keyword=a.city||a.town||a.municipality||a.county||a.state||"Jakarta";
-       document.getElementById("place").textContent=`${keyword} · GPS ${lat.toFixed(3)}, ${lon.toFixed(3)}`;
-       await loadByKeyword(keyword);
-     }catch(e){console.error(e);toast("Lokasi ditemukan, tetapi wilayah tidak bisa dicocokkan ke data jadwal.");}
-     btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-location-crosshairs"></i> Perbarui lokasi';
-   },()=>{toast("Izin lokasi diperlukan.");btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-location-crosshairs"></i> Coba lagi'},{enableHighAccuracy:true,timeout:12000,maximumAge:300000});
- }
- document.addEventListener("DOMContentLoaded",async()=>{
-   document.getElementById("locate").onclick=useLocation;
-   try{await loadByKeyword("Jakarta");setTimeout(useLocation,350)}catch(e){toast("Jadwal belum dapat dimuat.")}
+
+ document.addEventListener("DOMContentLoaded",()=>{
+   $("locate").onclick=()=>useLocation(false);
+   let saved=null;try{saved=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
+   loc=(saved&&isFinite(saved.lat)&&isFinite(saved.lng))?saved:DEFAULT;
+   refresh();                          // tampil dulu dari lokasi tersimpan / bawaan
+   setTimeout(()=>useLocation(true),300); // lalu perbarui dengan GPS
+   document.addEventListener("visibilitychange",()=>{if(!document.hidden)refresh()});
  });
 })();
 </script></body></html>
