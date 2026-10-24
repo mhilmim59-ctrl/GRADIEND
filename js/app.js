@@ -45,9 +45,9 @@
 #gd-pre.gd-out{opacity:0;visibility:hidden;transform:scale(1.04)}
 #gd-pre .gd-glow{position:absolute;width:min(70vw,520px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(239,217,142,.28),rgba(239,217,142,0) 65%);animation:gdBreath 2.4s ease-in-out infinite}
 #gd-pre .gd-box{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 22px}
-#gd-pre .gd-logo{position:relative;width:min(52vw,210px);overflow:hidden;opacity:0;animation:gdPop .9s cubic-bezier(.2,.9,.2,1.15) .1s forwards}
-#gd-pre .gd-logo img{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 28px rgba(0,0,0,.35))}
-#gd-pre .gd-logo:after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg);animation:gdShine 1.5s ease .9s 1}
+#gd-pre .gd-logo{position:relative;width:min(52vw,210px);opacity:0;animation:gdPop .9s cubic-bezier(.2,.9,.2,1.15) .1s forwards}
+#gd-pre .gd-logo img{display:block;width:100%;height:auto;animation:gdLogoGlow 2.4s ease-in-out .9s infinite;filter:drop-shadow(0 10px 28px rgba(0,0,0,.35))}
+@supports ((mask-image:url(x)) or (-webkit-mask-image:url(x))){#gd-pre .gd-logo:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 41%,rgba(255,255,255,.75) 50%,transparent 59%) 100% 0/250% 100% no-repeat;-webkit-mask:url("assets/gradiend-logo.png") center/100% 100% no-repeat;mask:url("assets/gradiend-logo.png") center/100% 100% no-repeat;animation:gdShine 1.4s ease .95s 1 both}}
 #gd-pre .gd-ar{margin-top:26px;font-family:Amiri,"Amiri Quran",serif;font-size:clamp(22px,5.4vw,30px);line-height:1.6;color:#f0d685;opacity:0;animation:gdUp .8s ease .55s forwards}
 #gd-pre .gd-tag{margin-top:4px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#cae6d7;font-weight:700;opacity:0;animation:gdUp .8s ease .8s forwards}
 #gd-pre .gd-bar{margin-top:26px;width:min(56vw,190px);height:3px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden;opacity:0;animation:gdUp .6s ease .9s forwards}
@@ -56,10 +56,11 @@
 html.gd-lock,html.gd-lock body{overflow:hidden}
 @keyframes gdPop{0%{opacity:0;transform:translateY(18px) scale(.82) rotate(-3deg)}100%{opacity:1;transform:none}}
 @keyframes gdUp{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:none}}
-@keyframes gdShine{0%{left:-60%}100%{left:130%}}
+@keyframes gdShine{0%{background-position:100% 0}100%{background-position:0 0}}
+@keyframes gdLogoGlow{0%,100%{filter:drop-shadow(0 10px 28px rgba(0,0,0,.35)) drop-shadow(0 0 6px rgba(239,217,142,.15))}50%{filter:drop-shadow(0 10px 28px rgba(0,0,0,.3)) drop-shadow(0 0 18px rgba(239,217,142,.55))}}
 @keyframes gdFill{0%{transform:scaleX(0)}100%{transform:scaleX(.92)}}
 @keyframes gdBreath{0%,100%{transform:scale(.9);opacity:.7}50%{transform:scale(1.08);opacity:1}}
-@media(prefers-reduced-motion:reduce){#gd-pre .gd-glow,#gd-pre .gd-logo:after{animation:none}#gd-pre .gd-logo,#gd-pre .gd-ar,#gd-pre .gd-tag,#gd-pre .gd-bar{opacity:1;animation:none}#gd-pre .gd-bar i{animation:none;transform:scaleX(1)}}`;
+@media(prefers-reduced-motion:reduce){#gd-pre .gd-glow,#gd-pre .gd-logo:after,#gd-pre .gd-logo img{animation:none}#gd-pre .gd-logo,#gd-pre .gd-ar,#gd-pre .gd-tag,#gd-pre .gd-bar{opacity:1;animation:none}#gd-pre .gd-bar i{animation:none;transform:scaleX(1)}}`;
     const el = document.createElement("div");
     el.id = "gd-pre";
     el.setAttribute("role", "status");
