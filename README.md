@@ -15,6 +15,7 @@ event dan quote ditambahkan langsung lewat kode.
 - `tajwid.html` — Panduan hukum tajwid (nun mati, mim mati, mad, qalqalah, alif lam, lam jalalah dan ra', makharijul huruf, tanda waqaf) dengan contoh ayat berwarna dan pencarian
 - `tasbih.html` — Tasbih digital
 - `sejarah.html`, `media-sosial.html`, `kontak.html`
+- `400.html`, `401.html`, `403.html`, `404.html`, `408.html`, `410.html`, `429.html`, `500.html`, `502.html`, `503.html`, `504.html` — halaman error bertema GRADIEND (lihat bagian *Halaman error*)
 
 ## Menambah event
 
@@ -82,3 +83,12 @@ Supabase tidak lagi dipakai. Project Supabase lama boleh dihapus.
 ## Data salat
 
 Halaman salat memakai geolocation browser lalu mencari kabupaten/kota di API yang mendokumentasikan sumber jadwal dari Kemenag RI.
+
+## Halaman error
+
+Setiap kode error punya halaman sendiri dengan tema GRADIEND (hijau-emas, mode terang/gelap, satu ayat yang sesuai, tombol Beranda/Kembali, dan pintasan ke fitur utama). Tampilannya diatur oleh blok `.err-*` di bagian bawah `css/style.css`.
+
+- **404** langsung dipakai otomatis oleh GitHub Pages, Netlify, Cloudflare Pages, dan Vercel bila `404.html` ada di akar situs.
+- Kode lain (400, 401, 403, 408, 410, 429, 5xx) baru tampil kalau server diatur untuk memakainya. Contoh nginx: `error_page 403 /403.html; error_page 500 502 503 504 /500.html;` dan Apache (`.htaccess`): `ErrorDocument 403 /403.html`. Hosting statis murni tidak bisa memicu kode selain 404, jadi halaman ini tetap bisa dibuka langsung lewat alamatnya.
+- Halaman error bisa muncul di alamat apa pun (misalnya `/a/b/c`), karena itu tiap berkasnya memasang `<base href>` lewat variabel `ROOT` di bagian `<head>`. Nilai bawaannya `"/"`. Kalau situs dipasang di subfolder (mis. `https://user.github.io/GRADIEND/`), ganti `ROOT` menjadi `"/GRADIEND/"` di semua berkas error.
+- Pastikan teks ayat di tiap halaman error sudah benar sebelum dipublikasikan.
