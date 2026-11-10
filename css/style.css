@@ -361,3 +361,15 @@ a.event-card{display:block;color:inherit}
 @keyframes errFloat{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-8px) rotate(-6deg)}}
 @keyframes errTwinkle{0%,100%{opacity:.35}50%{opacity:.85}}
 @media(max-width:680px){.err-wrap{padding:26px 0 52px}.err-card{padding:40px 18px 28px;border-radius:26px}.err-moon{width:44px;height:44px;right:18px;top:18px;box-shadow:inset -12px 4px 0 0 #f2dda0}.err-card .actions .btn{flex:1 1 100%}.err-ayat{padding:14px 15px}}
+
+
+/* ---------- FAQ / Tentang (beranda) ---------- */
+.faq{display:grid;gap:12px;max-width:880px}
+.faq-item{padding:0;overflow:hidden}
+.faq-item summary{cursor:pointer;list-style:none;padding:18px 22px;font-weight:800;line-height:1.5;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary:after{content:"+";flex:none;font-size:24px;line-height:1;color:var(--green);font-weight:700}
+.faq-item[open] summary:after{content:"\2212"}
+.faq-item p{margin:0;padding:0 22px 20px;line-height:1.85;color:var(--muted)}
+.dark .faq-item p{color:#a8c0b6}
+.dark .faq-item summary:after{color:#9be0bd}
