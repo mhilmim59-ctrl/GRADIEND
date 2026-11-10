@@ -2,6 +2,9 @@
 // Semua nilai di bawah bersifat publik.
 
 window.GRADIEND_CONFIG = {
+  // Alamat resmi situs (dipakai untuk canonical & data terstruktur artikel). Ganti jika memakai domain sendiri.
+  siteUrl: "https://gradiend.vercel.app",
+
   // Jadwal salat (sumber data: Kemenag RI)
   prayerApiBase: "https://api.myquran.com/v3/sholat",
   kemenagUrl: "https://bimasislam.kemenag.dev/jadwal-sholat",

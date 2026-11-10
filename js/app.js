@@ -24,7 +24,7 @@
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
 
   window.eventCard = (e, icon = "fa-mosque") => `<a class="card event-card" href="artikel.html?id=${encodeURIComponent(e.id)}">
-    <div class="event-cover">${e.image ? `<img src="${escapeHtml(e.image)}" alt="" loading="lazy">` : `<div class="cover-icon"><i class="fa-solid ${icon}"></i></div>`}</div>
+    <div class="event-cover">${e.image ? `<img src="${escapeHtml(e.image)}" alt="${escapeHtml(e.title)}" loading="lazy">` : `<div class="cover-icon"><i class="fa-solid ${icon}"></i></div>`}</div>
     <div class="event-body"><div class="meta">${escapeHtml(e.category || "Kegiatan")} · ${dateID(e.date)}</div><h3>${escapeHtml(e.title)}</h3><p>${escapeHtml(e.excerpt || "")}</p>
     <div class="author"><span class="avatar">${initials(e.author)}</span>${escapeHtml(e.author || "GRADIEND")}</div></div>
   </a>`;
