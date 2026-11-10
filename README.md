@@ -15,6 +15,7 @@ event dan quote ditambahkan langsung lewat kode.
 - `tajwid.html` — Panduan hukum tajwid (nun mati, mim mati, mad, qalqalah, alif lam, lam jalalah dan ra', makharijul huruf, tanda waqaf) dengan contoh ayat berwarna dan pencarian
 - `tasbih.html` — Tasbih digital
 - `sejarah.html`, `media-sosial.html`, `kontak.html`
+- `robots.txt`, `sitemap.xml`, `llms.txt` — berkas SEO (lihat bagian *SEO*)
 - `400.html`, `401.html`, `403.html`, `404.html`, `408.html`, `410.html`, `429.html`, `500.html`, `502.html`, `503.html`, `504.html` — halaman error bertema GRADIEND (lihat bagian *Halaman error*)
 
 ## Menambah event
@@ -79,6 +80,25 @@ dengan temuan sains. Datanya ada di `js/keajaiban.js` (dimuat hanya saat diketuk
 3. Setiap commit baru akan di-deploy otomatis.
 
 Supabase tidak lagi dipakai. Project Supabase lama boleh dihapus.
+
+## SEO
+
+Situs sudah disiapkan agar mudah ditemukan mesin pencari dan asisten AI (ChatGPT, Gemini, Claude, Perplexity, dll.):
+
+- Setiap halaman punya `<title>`, meta description, canonical, Open Graph/Twitter Card, dan data terstruktur JSON-LD (`WebSite`, `Organization`, `FAQPage`, `WebPage`, `BreadcrumbList`, `WebApplication`). Gambar pratinjau tautan: `assets/og-image.png` (1200×630).
+- `artikel.html?id=...` mengisi title, description, canonical, dan JSON-LD `Article` otomatis dari data di `js/events.js`.
+- Beranda punya bagian **Tentang / FAQ** yang terlihat dan identik dengan data `FAQPage`. Edit bersama-sama: teks di `index.html` dan JSON-LD di `<head>` harus sama.
+- `robots.txt` mengizinkan semua crawler (termasuk crawler AI) dan menunjuk ke `sitemap.xml`. `llms.txt` adalah ringkasan situs untuk AI.
+- Alamat situs ada di `js/config.js` (`siteUrl`). Jika pindah ke domain sendiri, ganti nilai itu, lalu ganti `https://gradiend.vercel.app` di semua berkas (`robots.txt`, `llms.txt`, meta tag di `<head>`) dan jalankan ulang skrip sitemap.
+- Halaman error (4xx/5xx) memakai `noindex` supaya tidak muncul di hasil pencarian.
+
+**Setiap menambah event**, perbarui sitemap lalu commit:
+
+```
+node scripts/generate-sitemap.js
+```
+
+**Setelah deploy:** buka Google Search Console (situs sudah terverifikasi lewat `googled7487f308570ca5c.html`), kirim `https://gradiend.vercel.app/sitemap.xml`, lalu minta pengindeksan untuk beranda. Daftarkan juga di Bing Webmaster Tools, karena ChatGPT dan beberapa asisten AI memakai indeks Bing. Pastikan fitur *Bot Protection / Attack Challenge Mode* di Vercel tidak memblokir crawler.
 
 ## Data salat
 

@@ -1,0 +1,30 @@
+# GRADIEND
+
+> GRADIEND (Generasi Dakwah Islam Enam Dua) adalah ruang digital Rohis (Rohani Islam) SMAN 62 Jakarta. Website gratis tanpa login untuk membaca Al-Qur'an dengan tajwid berwarna, melihat waktu salat sesuai lokasi, mempelajari Asmaul Husna, doa harian, dan tajwid, memakai tasbih digital, serta mengikuti event dan artikel kegiatan Rohis.
+
+Situs: https://gradiend.vercel.app/
+Bahasa: Indonesia
+Organisasi: Rohis SMAN 62 Jakarta (berdiri 1994)
+Kontak: rohissman62jkt@gmail.com · Instagram @rohis62_
+
+## Fitur utama
+
+- [Al-Qur'an](https://gradiend.vercel.app/quran.html): 114 surah dengan teks Arab, tajwid berwarna, transliterasi Latin, terjemahan Indonesia (Kemenag RI), tafsir per ayat, dan murottal.
+- [Waktu Salat](https://gradiend.vercel.app/jadwal-salat.html): waktu salat harian dihitung dari koordinat perangkat dengan kriteria Kemenag RI, plus hitung mundur salat berikutnya.
+- [Asmaul Husna](https://gradiend.vercel.app/asmaul-husna.html): 99 nama Allah dengan tulisan Arab, Latin, arti, pencarian, dan audio.
+- [Doa-doa](https://gradiend.vercel.app/doa.html): doa harian, ibadah, perlindungan, ilmu, keluarga, dan ampunan lengkap dengan Arab, Latin, arti, dan sumber.
+- [Tajwid](https://gradiend.vercel.app/tajwid.html): panduan hukum bacaan (nun mati, mim mati, mad, qalqalah, makharijul huruf, waqaf) dengan contoh ayat berwarna.
+- [Tasbih Digital](https://gradiend.vercel.app/tasbih.html): penghitung dzikir dengan target 33, 99, 100, atau bebas.
+
+## Tentang Rohis SMAN 62 Jakarta
+
+- [Event & Artikel](https://gradiend.vercel.app/event.html): dokumentasi kegiatan, kajian, dan acara Rohis.
+- [Sejarah](https://gradiend.vercel.app/sejarah.html): Rohis SMAN 62 Jakarta berdiri tahun 1994, dipelopori Agus Ramadhan.
+- [Media Sosial](https://gradiend.vercel.app/media-sosial.html): Instagram @rohis62_.
+- [Kontak](https://gradiend.vercel.app/kontak.html): email dan lokasi sekolah.
+
+## Sumber data
+
+- Teks Arab, Latin, terjemahan, tafsir, dan murottal Al-Qur'an: equran.id (bersumber dari Kemenag RI).
+- Data warna tajwid: Quran.com.
+- Kriteria waktu salat: Kemenag RI.

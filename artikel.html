@@ -7,7 +7,26 @@
 <link rel="icon" type="image/png" href="assets/iconlight.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" href="assets/icondark.png" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="assets/iconlight.png">
-<title>Artikel — GRADIEND</title>
+<title>Artikel Kegiatan Rohis SMAN 62 Jakarta | GRADIEND</title>
+<meta name="description" content="Baca artikel dokumentasi kegiatan dan event Rohis SMAN 62 Jakarta di GRADIEND.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="author" content="GRADIEND — Rohis SMAN 62 Jakarta">
+<meta name="theme-color" content="#0c6b4d">
+<meta name="application-name" content="GRADIEND">
+<meta name="geo.region" content="ID-JK"><meta name="geo.placename" content="Jakarta">
+<meta property="og:site_name" content="GRADIEND">
+<meta property="og:locale" content="id_ID">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Artikel Kegiatan Rohis SMAN 62 Jakarta | GRADIEND">
+<meta property="og:description" content="Baca artikel dokumentasi kegiatan dan event Rohis SMAN 62 Jakarta di GRADIEND.">
+<meta property="og:image" content="https://gradiend.vercel.app/assets/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="GRADIEND — Generasi Dakwah Islam Enam Dua, Rohis SMAN 62 Jakarta">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Artikel Kegiatan Rohis SMAN 62 Jakarta | GRADIEND">
+<meta name="twitter:description" content="Baca artikel dokumentasi kegiatan dan event Rohis SMAN 62 Jakarta di GRADIEND.">
+<meta name="twitter:image" content="https://gradiend.vercel.app/assets/og-image.png">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="js/config.js"></script>
@@ -62,10 +81,35 @@
 document.addEventListener("DOMContentLoaded",()=>{
  const id=new URLSearchParams(location.search).get("id"),box=document.getElementById("article-box");
  const data=id&&getEvents().find(e=>e.id===id);
- if(!data){box.innerHTML='<div class="empty">Artikel tidak ditemukan. <a href="event.html" style="color:var(--green);font-weight:800">Kembali ke daftar event</a></div>';return}
- document.title=data.title+" \u2014 GRADIEND";
+ const SITE=((window.GRADIEND_CONFIG||{}).siteUrl||location.origin).replace(/\/$/,"");
+ const setMeta=(sel,make,attr,val)=>{let el=document.head.querySelector(sel);if(!el){el=document.createElement(make[0]);for(const k in make[1])el.setAttribute(k,make[1][k]);document.head.appendChild(el)}el.setAttribute(attr,val)};
+ const metaName=(n,v)=>setMeta('meta[name="'+n+'"]',["meta",{name:n}],"content",v);
+ const metaProp=(n,v)=>setMeta('meta[property="'+n+'"]',["meta",{property:n}],"content",v);
+ if(!data){metaName("robots","noindex,follow");box.innerHTML='<div class="empty">Artikel tidak ditemukan. <a href="event.html" style="color:var(--green);font-weight:800">Kembali ke daftar event</a></div>';return}
+ /* SEO dinamis per artikel (title, description, canonical, Open Graph, JSON-LD Article) */
+ const pageTitle=data.title+" | GRADIEND";
+ const plain=(data.content||"").replace(/\s+/g," ").trim();
+ const desc=(data.excerpt||plain).slice(0,300);
+ const canon=SITE+"/artikel.html?id="+encodeURIComponent(data.id);
+ const imgAbs=data.image?(/^https?:/.test(data.image)?data.image:SITE+"/"+data.image.replace(/^\//,"")):SITE+"/assets/og-image.png";
+ document.title=pageTitle;
+ metaName("description",desc);
+ setMeta('link[rel="canonical"]',["link",{rel:"canonical"}],"href",canon);
+ metaProp("og:type","article");metaProp("og:title",pageTitle);metaProp("og:description",desc);metaProp("og:url",canon);metaProp("og:image",imgAbs);metaProp("og:site_name","GRADIEND");metaProp("og:locale","id_ID");
+ metaName("twitter:card","summary_large_image");metaName("twitter:title",pageTitle);metaName("twitter:description",desc);metaName("twitter:image",imgAbs);
+ const ld=document.createElement("script");ld.type="application/ld+json";
+ ld.textContent=JSON.stringify({"@context":"https://schema.org","@graph":[
+  {"@type":"Article","@id":canon+"#article","mainEntityOfPage":canon,"headline":data.title,"description":desc,"image":[imgAbs],"inLanguage":"id-ID",
+   "datePublished":data.date,"dateModified":data.date,"articleSection":data.category||"Kegiatan","wordCount":plain?plain.split(" ").length:0,
+   "author":{"@type":"Organization","name":data.author||"GRADIEND"},
+   "publisher":{"@type":"Organization","@id":SITE+"/#organization","name":"GRADIEND","logo":{"@type":"ImageObject","url":SITE+"/assets/gradiend-logo.png"}}},
+  {"@type":"BreadcrumbList","itemListElement":[
+   {"@type":"ListItem","position":1,"name":"Beranda","item":SITE+"/"},
+   {"@type":"ListItem","position":2,"name":"Event & Artikel","item":SITE+"/event.html"},
+   {"@type":"ListItem","position":3,"name":data.title,"item":canon}]}]});
+ document.head.appendChild(ld);
  const body=(data.content||"").split(/\r?\n\s*\r?\n/).filter(Boolean).map(x=>`<p>${escapeHtml(x.trim()).replace(/\r?\n/g,"<br>")}</p>`).join("");
- box.innerHTML=`<div class="article-cover">${data.image?`<img src="${escapeHtml(data.image)}" alt="">`:'<div class="cover-icon"><i class="fa-solid fa-mosque" style="position:absolute;inset:0;display:grid;place-items:center;font-size:120px;color:#f0f5e9"></i></div>'}</div>
+ box.innerHTML=`<div class="article-cover">${data.image?`<img src="${escapeHtml(data.image)}" alt="${escapeHtml(data.title)}">`:'<div class="cover-icon"><i class="fa-solid fa-mosque" style="position:absolute;inset:0;display:grid;place-items:center;font-size:120px;color:#f0f5e9"></i></div>'}</div>
  <div class="eyebrow" style="margin-top:25px">${escapeHtml(data.category||"Kegiatan")} \u00B7 ${dateID(data.date)}</div>
  <h1>${escapeHtml(data.title)}</h1><p class="lead">${escapeHtml(data.excerpt||"")}</p>
  <div class="article-info"><span><i class="fa-solid fa-user"></i> ${escapeHtml(data.author||"GRADIEND")}</span><span><i class="fa-solid fa-calendar"></i> ${dateID(data.date)}</span></div>

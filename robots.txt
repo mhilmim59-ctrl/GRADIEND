@@ -1,0 +1,38 @@
+# GRADIEND — Rohis SMAN 62 Jakarta
+# Semua mesin pencari dan crawler AI dipersilakan membaca situs ini.
+
+User-agent: *
+Allow: /
+
+# Crawler AI (pencarian & asisten) — diizinkan secara eksplisit
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://gradiend.vercel.app/sitemap.xml
