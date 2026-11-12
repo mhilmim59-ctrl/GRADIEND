@@ -1,11 +1,13 @@
-# GRADIEND
+# GRADIEND Rohis 62 (Rohis SMAN 62 Jakarta)
 
 > GRADIEND (Generasi Dakwah Islam Enam Dua) adalah ruang digital Rohis (Rohani Islam) SMAN 62 Jakarta. Website gratis tanpa login untuk membaca Al-Qur'an dengan tajwid berwarna, melihat waktu salat sesuai lokasi, mempelajari Asmaul Husna, doa harian, dan tajwid, memakai tasbih digital, serta mengikuti event dan artikel kegiatan Rohis.
+
+Catatan nama: "GRADIEND" di sini = Generasi Dakwah Islam Enam Dua, identitas digital Rohis SMAN 62 Jakarta (sering disebut Rohis 62). Tidak terkait dengan proyek riset AI atau paket perangkat lunak bernama GRADIEND.
 
 Situs: https://gradiend.vercel.app/
 Bahasa: Indonesia
 Organisasi: Rohis SMAN 62 Jakarta (berdiri 1994)
-Kontak: rohissman62jkt@gmail.com · Instagram @rohis62_
+Kontak: rohissman62jkt@gmail.com · Instagram @rohis62_ (https://www.instagram.com/rohis62_/)
 
 ## Fitur utama
 
@@ -18,7 +20,7 @@ Kontak: rohissman62jkt@gmail.com · Instagram @rohis62_
 
 ## Tentang Rohis SMAN 62 Jakarta
 
-- [Event & Artikel](https://gradiend.vercel.app/event.html): dokumentasi kegiatan, kajian, dan acara Rohis.
+- [Event & Artikel](https://gradiend.vercel.app/event.html) (setiap artikel punya halaman sendiri di /artikel/<id>.html): dokumentasi kegiatan, kajian, dan acara Rohis.
 - [Sejarah](https://gradiend.vercel.app/sejarah.html): Rohis SMAN 62 Jakarta berdiri tahun 1994, dipelopori Agus Ramadhan.
 - [Media Sosial](https://gradiend.vercel.app/media-sosial.html): Instagram @rohis62_.
 - [Kontak](https://gradiend.vercel.app/kontak.html): email dan lokasi sekolah.
