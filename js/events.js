@@ -18,6 +18,8 @@
                 tulis "assets/events/nama-file.jpg". Hapus baris ini jika tidak ada foto.
    - content  : isi artikel. Pakai tanda ` (backtick) di awal & akhir.
                 Satu baris kosong = paragraf baru.
+   - instagram: (opsional) tautan postingan/reel Instagram tentang event ini, mis.
+                "https://www.instagram.com/p/AbCdEfGhIjK/". Akan ditampilkan sebagai embed di artikel.
    - draft    : (opsional) tulis draft: true untuk menyembunyikan event sementara.
 
    CONTOH (ini masih berupa komentar — salin blok di bawah ke daftar, jangan diaktifkan di sini):
@@ -46,7 +48,7 @@ window.GRADIEND_EVENTS = [
   date: "2026-09-25",
   category: "Kegiatan",
   author: "GRADIEND Syiar",
-  excerpt: "Peringatan Maulid Nabi di SMAN 62 Jakarta melibatkan langsung anak-anak kelas 10 sebagai pantia.",
+  excerpt: "Peringatan Maulid Nabi di SMAN 62 Jakarta melibatkan langsung anak-anak kelas 10 sebagai panitia.",
   image: "assets/events/maulidgema.JPG",
   content: `Rohis SMAN 62 Jakarta baru saja mengadakan acara Peringatan Hari Besar Islam (PHBI) Maulid Nabi dengan tema "GEMA" (Generasi Meneladani Akhlak Rasulullah). Acara yang merupakan salah satu program kerja dari Divisi DKM ini alhamdulillah berjalan lancar, di mana para siswa berkumpul dan duduk bersama di lapangan sekolah untuk mengingat kembali perjuangan dakwah Rasulullah SAW dalam menyebarkan ajaran agama Islam, serta menyimak tausiyah yang dibawakan oleh Habib Muhammad bin Umar bin Toha Al Haddad.
 

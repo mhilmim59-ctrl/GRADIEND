@@ -23,18 +23,38 @@
     .slice()
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
 
-  window.eventCard = (e, icon = "fa-mosque") => `<a class="card event-card" href="artikel.html?id=${encodeURIComponent(e.id)}">
+  window.eventCard = (e, icon = "fa-mosque") => `<a class="card event-card" href="artikel/${encodeURIComponent(e.id)}.html">
     <div class="event-cover">${e.image ? `<img src="${escapeHtml(e.image)}" alt="${escapeHtml(e.title)}" loading="lazy">` : `<div class="cover-icon"><i class="fa-solid ${icon}"></i></div>`}</div>
     <div class="event-body"><div class="meta">${escapeHtml(e.category || "Kegiatan")} · ${dateID(e.date)}</div><h3>${escapeHtml(e.title)}</h3><p>${escapeHtml(e.excerpt || "")}</p>
     <div class="author"><span class="avatar">${initials(e.author)}</span>${escapeHtml(e.author || "GRADIEND")}</div></div>
   </a>`;
+
+  /* ---------- Instagram (data: js/config.js -> instagram) ---------- */
+  window.igParse = v => {
+    const m = String(v || "").match(/(?:instagram\.com\/)?(p|reels?|tv)\/([A-Za-z0-9_-]{5,})/);
+    return m ? { type: m[1] === "reels" ? "reel" : m[1], code: m[2] } : null;
+  };
+  window.igEmbed = (v, h = 560) => {
+    const p = igParse(v); if (!p) return "";
+    const url = `https://www.instagram.com/${p.type}/${p.code}/`;
+    return `<div class="ig-post"><iframe src="${url}embed" title="Postingan Instagram Rohis SMAN 62 Jakarta" loading="lazy" scrolling="no" allowtransparency="true" allowfullscreen style="height:${h}px"></iframe>
+      <a class="ig-open" href="${url}" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i> Lihat di Instagram</a></div>`;
+  };
+  window.renderInstagram = (box, limit = 6) => {
+    const ig = cfg.instagram || {};
+    const posts = (ig.posts || []).map(x => igEmbed(x)).filter(Boolean).slice(0, limit);
+    box.innerHTML = posts.join("") || `<a class="card ig-cta" href="${escapeHtml(ig.url || "https://www.instagram.com/rohis62_/")}" target="_blank" rel="me noopener">
+      <span class="ig-cta-icon"><i class="fa-brands fa-instagram"></i></span>
+      <span><b>@${escapeHtml(ig.username || "rohis62_")}</b><small>Dokumentasi kegiatan, pengumuman, dan kabar terbaru Rohis SMAN 62 Jakarta. Ketuk untuk membuka Instagram.</small></span>
+      <i class="fa-solid fa-arrow-up-right-from-square ig-cta-arrow"></i></a>`;
+  };
 
   /* ---------- animasi loading (hanya sekali per sesi, tanpa gambar/library tambahan) ---------- */
   // Mode lewat js/config.js -> preloader: "session" (default, sekali per sesi) | "always" | "off"
   const preMode = cfg.preloader || "session";
   let preActive = false;
   try {
-    preActive = preMode === "always" || (preMode === "session" && !sessionStorage.getItem("gradiend_intro"));
+    preActive = preMode === "always" || (preMode === "session" && !(() => { try { return sessionStorage.getItem("gradiend_intro"); } catch (e) { return null; } })());
   } catch (e) { preActive = preMode !== "off"; }
 
   if (preActive) {
@@ -94,12 +114,19 @@ html.gd-lock,html.gd-lock body{overflow:hidden}
 
   /* ---------- UI umum ---------- */
   document.addEventListener("DOMContentLoaded", () => {
-    const dark = localStorage.getItem("gradiend_theme") === "dark";
+    // Penyimpanan bisa diblokir (mode privat / browser dalam aplikasi): jangan sampai merusak halaman.
+    const store = {
+      get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }
+    };
+    const savedTheme = store.get("gradiend_theme");
+    const dark = savedTheme ? savedTheme === "dark" : !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
     if (dark) document.body.classList.add("dark");
     document.querySelector("[data-theme]")?.addEventListener("click", () => {
       document.body.classList.toggle("dark");
-      localStorage.setItem("gradiend_theme", document.body.classList.contains("dark") ? "dark" : "light");
+      store.set("gradiend_theme", document.body.classList.contains("dark") ? "dark" : "light");
     });
+    document.querySelectorAll("[data-ig-feed]").forEach(b => window.renderInstagram(b, parseInt(b.dataset.igLimit, 10) || 6));
     const nav = document.querySelector(".nav");
     document.querySelector("[data-menu]")?.addEventListener("click", () => nav?.classList.toggle("mobile-open"));
     document.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => nav?.classList.remove("mobile-open")));
