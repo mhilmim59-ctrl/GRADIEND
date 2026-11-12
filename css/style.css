@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Manrope:wght@400;500;600;700;800&display=swap');
+/* Font Google dimuat lewat tag link di head tiap halaman (lebih cepat) */
 /* Font resmi Kemenag (opsional): taruh berkas di assets/fonts/LPMQ-IsepMisbah.ttf, otomatis dipakai bila ada */
 @font-face{font-family:"LPMQ Isep Misbah";src:local("LPMQ Isep Misbah"),url("../assets/fonts/LPMQ-IsepMisbah.ttf") format("truetype");font-display:swap}
 
@@ -373,3 +373,57 @@ a.event-card{display:block;color:inherit}
 .faq-item p{margin:0;padding:0 22px 20px;line-height:1.85;color:var(--muted)}
 .dark .faq-item p{color:#a8c0b6}
 .dark .faq-item summary:after{color:#9be0bd}
+
+
+/* ================= SEO & Instagram (tambahan) ================= */
+/* kontras teks: lebih mudah dibaca (WCAG AA) */
+:root{--muted:#536860}
+body.dark{--muted:#9db5aa}
+.brand-tag{color:#5b7167}.meta,.prayer-item span{color:#587067}
+.dark .brand-tag,.dark .meta,.dark .prayer-item span{color:#9dbbb0}
+.helper{color:#5f746b}.dark .helper{color:#9db5aa}
+.article-info{color:#587067}.dark .article-info{color:#9dbbb0}
+.brand-tag,.eyebrow,.meta,.pill,.prayer-item span,.tf-title,.prayer-next small,.reader-audio small{font-size:11px}
+
+/* judul beranda: nama brand terbaca mesin pencari, slogan tetap besar */
+.hero h1 .kicker{display:inline-flex;font-size:11px;line-height:1.4;letter-spacing:.13em;margin:0 0 16px;color:var(--green)}
+.hero h1 .h1-main{display:block;color:inherit}
+.hero h1 .h1-main em{font-style:normal;color:var(--green)}
+.dark .hero h1 .h1-main em{color:#9be0bd}
+
+/* tentang Rohis 62 */
+.about-rohis{display:grid;grid-template-columns:.8fr 1.2fr;gap:34px;align-items:start}
+.about-text p{margin:0 0 14px;line-height:1.9;color:var(--muted)}
+.seo-about{padding:34px 0 10px}
+.seo-about .seo-about-inner{max-width:880px}
+.seo-about h2{font-size:clamp(22px,3vw,30px);letter-spacing:-.03em;margin:0 0 12px}
+.seo-about p{line-height:1.9;color:var(--muted);margin:0 0 12px}
+.seo-about ul{margin:0 0 12px;padding-left:20px;line-height:1.9;color:var(--muted)}
+.seo-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.seo-links a{display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.7);font-size:13px;font-weight:700;color:var(--green)}
+.dark .seo-links a{background:rgba(255,255,255,.05);color:#9be0bd;border-color:#1b4337}
+.seo-static{display:grid;gap:14px}
+.seo-static article{padding:18px 20px}
+.seo-static h3{margin:0 0 6px;font-size:17px}
+.seo-static p{margin:4px 0;line-height:1.8;color:var(--muted)}
+.seo-static .ar{font-family:'Amiri','Amiri Quran',serif;font-size:26px;line-height:1.9;color:var(--ink);text-align:right}
+.dark .seo-static .ar{color:#eaf5ef}
+.seo-surah{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.seo-surah a{display:block;padding:14px 16px}
+.seo-surah b{display:block}.seo-surah span{font-size:12px;color:var(--muted)}
+
+/* Instagram */
+.ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:18px}
+.ig-post{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 12px 32px rgba(8,70,49,.05)}
+.ig-post iframe{display:block;width:100%;border:0;background:#fff}
+.ig-open{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;font-size:13px;font-weight:800;color:var(--green);border-top:1px solid var(--line)}
+.dark .ig-post{background:#0a2b21;border-color:#1b4337}.dark .ig-open{color:#9be0bd;border-color:#1b4337}
+.ig-cta{grid-column:1/-1;display:flex;align-items:center;gap:18px;padding:22px 24px}
+.ig-cta b{display:block;font-size:18px}.ig-cta small{display:block;margin-top:4px;color:var(--muted);line-height:1.7;font-size:13px}
+.ig-cta-icon{flex:none;width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:30px;color:#fff;background:linear-gradient(45deg,#f9a63c,#e1306c 55%,#5b51d8)}
+.ig-cta-arrow{margin-left:auto;color:var(--green)}
+.share-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.article-ig{margin-top:30px;max-width:420px}
+.article-related{margin-top:44px}
+.article-related h2{font-size:22px;margin:0 0 16px}
+@media(max-width:860px){.about-rohis{grid-template-columns:1fr;gap:14px}.ig-cta{flex-direction:column;align-items:flex-start}.ig-cta-arrow{display:none}}
