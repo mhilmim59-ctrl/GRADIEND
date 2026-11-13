@@ -427,3 +427,57 @@ body.dark{--muted:#9db5aa}
 .article-related{margin-top:44px}
 .article-related h2{font-size:22px;margin:0 0 16px}
 @media(max-width:860px){.about-rohis{grid-template-columns:1fr;gap:14px}.ig-cta{flex-direction:column;align-items:flex-start}.ig-cta-arrow{display:none}}
+
+
+/* ================= Panduan wudhu & salat ================= */
+.ib-nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 28px}
+.ib-nav a{display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.75);font-size:13px;font-weight:800;color:var(--green)}
+.ib-nav a:hover{background:#e9f6ef}
+.dark .ib-nav a{background:rgba(255,255,255,.05);color:#9be0bd;border-color:#1b4337}
+.ib-block{margin:0 0 34px;scroll-margin-top:96px}
+.ib-h{font-size:clamp(22px,3vw,30px);letter-spacing:-.03em;margin:0 0 10px}
+.ib-h2{font-size:18px;margin:26px 0 10px}
+.ib-lead{line-height:1.9;color:var(--muted);margin:0 0 14px;max-width:880px}
+.ib-steps{list-style:none;margin:16px 0;padding:0;display:grid;gap:12px;counter-reset:ibstep}
+.ib-step{position:relative;padding:18px 20px 18px 66px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.78);counter-increment:ibstep}
+.ib-step:before{content:counter(ibstep);position:absolute;left:18px;top:17px;width:34px;height:34px;border-radius:12px;display:grid;place-items:center;font-weight:800;color:#fff;background:linear-gradient(135deg,#0c6b4d,#0a4d38)}
+.dark .ib-step{background:rgba(7,35,27,.78);border-color:#1a4135}
+.ib-step-head{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+.ib-step h4{margin:0;font-size:17px}
+.ib-step p{margin:0 0 6px;line-height:1.85;color:var(--muted)}
+.ib-tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.ib-rukun,.ib-wajib{background:#dff3e8;color:#0a5a3e}
+.ib-sunnah{background:#f6ecd0;color:#6b4e0a}
+.dark .ib-rukun,.dark .ib-wajib{background:#12392c;color:#9be0bd}.dark .ib-sunnah{background:#3a3014;color:#ecd48a}
+.ib-read{margin:12px 0 4px;padding:14px 16px;border-radius:16px;background:#f2f8f4;border:1px solid #dae9e2}
+.dark .ib-read{background:rgba(255,255,255,.04);border-color:#1b4337}
+.ib-read-label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.dark .ib-read-label{color:#9be0bd}
+.ib-ar{font-family:'Amiri','Amiri Quran',serif;font-size:clamp(22px,3.2vw,30px);line-height:2.1;text-align:right;color:var(--ink)}
+.dark .ib-ar{color:#eaf5ef}
+.ib-lat{font-style:italic;line-height:1.8;margin-top:4px}
+.ib-arti{line-height:1.8;color:var(--muted);margin-top:4px}
+.ib-src{font-size:12px;color:var(--muted);margin-top:6px}
+.ib-list{margin:8px 0 14px;padding-left:22px;line-height:1.9;color:var(--muted)}
+.ib-two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ib-table-wrap{overflow-x:auto;margin:12px 0 16px;border-radius:16px;border:1px solid var(--line)}
+.ib-table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+.ib-table th,.ib-table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+.ib-table th{background:#eaf4ee;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.ib-table tr:last-child td{border-bottom:0}
+.dark .ib-table th{background:#0f3226}
+.ib-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:14px;margin-top:14px}
+.ib-card{padding:18px 20px}
+.ib-card h4{margin:0 0 4px;font-size:17px}
+.ib-card .ib-meta{font-size:13px;font-weight:800;color:var(--green);margin-bottom:6px}
+.dark .ib-card .ib-meta{color:#9be0bd}
+.ib-card p{margin:6px 0;line-height:1.8;color:var(--muted);font-size:14px}
+.ib-card .ib-src{margin-top:8px}
+@media(max-width:760px){.ib-two{grid-template-columns:1fr}.ib-step{padding-left:56px}.ib-step:before{left:14px;width:30px;height:30px}}
+
+.ib-cards.wide{grid-template-columns:1fr}
+.ib-cards.wide .ib-steps{margin:10px 0 0}
+.ib-surat{margin:12px 0 4px;padding:12px 14px;border-radius:14px;background:#faf5e4;border:1px solid #efe3b8;font-size:14px;line-height:1.9;color:#5c4a12}
+.ib-surat a{color:var(--green);font-weight:800;text-decoration:underline}
+.ib-surat .ib-r{opacity:.85}
+.dark .ib-surat{background:rgba(236,212,138,.08);border-color:#3a3014;color:#ecd48a}.dark .ib-surat a{color:#9be0bd}

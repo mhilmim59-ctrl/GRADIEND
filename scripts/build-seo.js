@@ -92,6 +92,66 @@ step("tajwid", () => {
     ${(h.contoh || []).length ? `<ul>${h.contoh.map(c => `<li><span lang="ar" dir="rtl">${esc(c.ar)}</span> — ${esc(c.ket)}${c.ref ? ` (${esc(c.ref)})` : ""}</li>`).join("")}</ul>` : ""}</article>`).join("") + "</section>").join("") + "</div>");
 });
 
+
+/* ---------- 2b. panduan wudhu & salat (halaman jadwal-salat.html) ---------- */
+const IB = load("js/ibadah.js").GRADIEND_IBADAH || {};
+const ibRead = b => `<div class="ib-read">${b.label ? `<div class="ib-read-label">${esc(b.label)}</div>` : ""}<div class="ib-ar" lang="ar" dir="rtl">${esc(b.ar)}</div><div class="ib-lat">${esc(b.latin)}</div><div class="ib-arti">${esc(b.arti)}</div>${b.sumber ? `<div class="ib-src">${esc(b.sumber)}</div>` : ""}</div>`;
+const ibTag = j => `<span class="ib-tag ib-${esc(String(j).toLowerCase())}">${esc(j)}</span>`;
+const ibSteps = list => `<ol class="ib-steps">${(list || []).map(x => `<li class="ib-step"><div class="ib-step-head"><h4>${esc(x.judul)}</h4>${x.jenis ? ibTag(x.jenis) : ""}</div><p>${esc(x.isi)}</p>${(x.bacaan || []).map(ibRead).join("")}</li>`).join("")}</ol>`;
+const ibSurat = list => (list && list.length) ? `<div class="ib-surat"><b>Bacaan surat setelah Al-Fatihah:</b> ${list.map(x => `${x.r ? `<span class="ib-r">${esc(x.r)}</span> ` : ""}<a href="quran.html?s=${x.n}">${esc(x.nama)}</a>`).join(" · ")}</div>` : "";
+const ibUl = a => `<ul class="ib-list">${(a || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+const ibOl = a => `<ol class="ib-list">${(a || []).map(x => `<li>${esc(x)}</li>`).join("")}</ol>`;
+const ibTable = (head, rows) => `<div class="ib-table-wrap"><table class="ib-table"><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td>${i === 0 ? `<b>${esc(c)}</b>` : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+
+step("panduan wudhu & salat", () => {
+  if (!IB.wudhu) throw new Error("js/ibadah.js kosong");
+  const w = IB.wudhu, t = IB.tayammum, f = IB.fardu || [];
+  const html = `<section class="section" id="tata-cara" style="padding-top:10px"><div class="container">
+  <div class="section-head"><div><div class="eyebrow">Panduan ibadah</div><h2 class="section-title">Tata cara bersuci dan salat</h2><p class="section-sub">Dari wudhu, salat wajib, sampai salat sunnah, lengkap dengan bacaan Arab, Latin, dan artinya.</p></div></div>
+  <div class="notice">${esc(IB.catatan)}</div>
+  <nav class="ib-nav" aria-label="Isi panduan"><a href="#wudhu">Wudhu</a><a href="#tayammum">Tayammum</a><a href="#salat-wajib">Salat wajib</a><a href="#gerakan-salat">Urutan gerakan &amp; bacaan</a><a href="#dzikir-setelah-salat">Dzikir setelah salat</a><a href="#salat-sunnah">Salat sunnah</a></nav>
+
+  <article class="ib-block" id="wudhu"><h3 class="ib-h">1. Tata cara wudhu</h3><p class="ib-lead">${esc(w.intro)}</p>
+    ${ibSteps(w.langkah)}
+    <div class="ib-two"><div><h4 class="ib-h2">Rukun wudhu (6)</h4>${ibOl(w.rukun)}</div><div><h4 class="ib-h2">Sunnah wudhu</h4>${ibUl(w.sunnah)}</div></div>
+    <h4 class="ib-h2">Hal-hal yang membatalkan wudhu</h4>${ibUl(w.pembatal)}</article>
+
+  <article class="ib-block" id="tayammum"><h3 class="ib-h">2. Tata cara tayammum</h3><p class="ib-lead">${esc(t.intro)}</p>${ibSteps(t.langkah)}</article>
+
+  <article class="ib-block" id="salat-wajib"><h3 class="ib-h">3. Salat wajib lima waktu</h3>
+    <p class="ib-lead">Salat fardu lima waktu adalah rukun Islam yang kedua dan wajib bagi setiap muslim yang baligh dan berakal. Berikut jumlah rakaat, waktu, dan cara membacanya. Waktu hari ini sesuai lokasi Anda ada pada jadwal di bagian atas halaman.</p>
+    ${ibTable(["Salat", "Rakaat", "Waktu", "Bacaan"], f.map(x => [x.nama, `${x.rakaat} rakaat`, x.waktu, x.bacaan]))}
+    <h4 class="ib-h2">Lafal niat tiap salat</h4>
+    ${f.map(x => ibRead({ label: `Niat salat ${x.nama}`, ar: x.niat.ar, latin: x.niat.latin, arti: x.niat.arti })).join("")}
+    <p class="ib-lead" style="margin-top:12px">${esc(IB.keteranganNiat)}</p>
+    <div class="ib-two"><div><h4 class="ib-h2">Syarat sah salat</h4>${ibUl(IB.syarat)}</div><div><h4 class="ib-h2">Rukun salat (13)</h4>${ibOl(IB.rukunSalat)}</div></div>
+    <p class="ib-lead">${esc(IB.tuma)}</p>
+    <div class="ib-cards wide">
+      <div class="card ib-card" id="salat-jumat"><h4>${esc(IB.jumat.judul)}</h4><p>${esc(IB.jumat.isi)}</p>${(IB.jumat.niat || []).map(ibRead).join("")}${ibSurat(IB.jumat.surat)}</div>
+      <div class="card ib-card" id="salat-jenazah"><h4>${esc(IB.jenazah.judul)}</h4><p>${esc(IB.jenazah.isi)}</p>${(IB.jenazah.niat || []).map(ibRead).join("")}${ibSteps(IB.jenazah.langkah)}</div>
+    </div></article>
+
+  <article class="ib-block" id="gerakan-salat"><h3 class="ib-h">4. Urutan gerakan dan bacaan salat</h3>
+    <p class="ib-lead">Berikut urutan satu rakaat sampai salam, lengkap dengan bacaannya. Label <b>Rukun</b> berarti bagian yang menentukan sahnya salat, sedangkan <b>Sunnah</b> menyempurnakan salat.</p>
+    ${ibSteps(IB.gerakan)}
+    <h4 class="ib-h2">Susunan rakaat</h4>
+    <div class="ib-cards">${(IB.susunan || []).map(x => `<div class="card ib-card"><h4>${esc(x.judul)}</h4><p>${esc(x.isi)}</p></div>`).join("")}</div></article>
+
+  <article class="ib-block" id="dzikir-setelah-salat"><h3 class="ib-h">5. Dzikir setelah salat</h3><p class="ib-lead">${esc(IB.dzikir.intro)}</p>${(IB.dzikir.bacaan || []).map(ibRead).join("")}<p class="ib-lead" style="margin-top:12px">${esc(IB.dzikir.catatan)} <a href="doa.html" style="color:var(--green);font-weight:800">Lihat kumpulan doa</a></p></article>
+
+  <article class="ib-block" id="salat-sunnah"><h3 class="ib-h">6. Salat sunnah</h3><p class="ib-lead">${esc(IB.sunnahIntro)}</p>
+    <h4 class="ib-h2">Salat sunnah rawatib (mengiringi salat fardu)</h4>
+    ${ibTable(["Salat fardu", "Sebelum", "Sesudah"], (IB.rawatib || []).map(r => [r.waktu, r.sebelum, r.sesudah]))}
+    <p class="ib-lead">${esc(IB.rawatibKet)}</p>
+    <h4 class="ib-h2">Lafal niat salat rawatib</h4>
+    ${(IB.rawatibNiat || []).map(ibRead).join("")}${ibSurat(IB.rawatibSurat)}
+    <h4 class="ib-h2">Salat sunnah lainnya: niat dan bacaan</h4>
+    <p class="ib-lead">${esc(IB.niatCatatan)}</p>
+    <div class="ib-cards wide">${(IB.sunnah || []).map(x => `<div class="card ib-card" id="${esc(String(x.nama).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""))}"><h4>${esc(x.nama)}</h4><div class="ib-meta">${esc(x.rakaat)}</div><p><b>Waktu:</b> ${esc(x.waktu)}</p><p>${esc(x.isi)}</p>${(x.niat || []).map(ibRead).join("")}${ibSurat(x.surat)}${(x.bacaan || []).map(ibRead).join("")}<div class="ib-src">Dalil: ${esc(x.dalil)}</div></div>`).join("")}</div></article>
+  </div></section>`;
+  fill("jadwal-salat.html", "IBADAH", html);
+});
+
 /* ---------- 3. blok "Tentang halaman ini" + "Jelajahi juga" ---------- */
 const L = {
   quran: ["quran.html", "fa-book-quran", "Baca Al-Qur'an online"], tajwid: ["tajwid.html", "fa-spell-check", "Belajar tajwid"],
@@ -118,7 +178,8 @@ const ABOUT = {
     "Pastikan bacaan Arab dilafalkan dengan benar dan belajarlah langsung kepada guru atau pembina Rohis. Sumber hadis ditulis ringkas, jadi rujuklah kitab aslinya untuk penelusuran lebih lanjut."], "", ["ah", "quran", "tasbih", "salat"]),
   "jadwal-salat.html": about("Cara waktu salat dihitung", [
     "Waktu salat dihitung langsung dari koordinat perangkat Anda dengan kriteria Kemenag RI: Subuh pada sudut matahari 20° di bawah ufuk, Isya 18°, Asar menurut mazhab Syafi'i, dan waktu pengaman (ihtiyat) pada tiap waktu. Halaman ini menampilkan Imsak, Subuh, Terbit, Dhuha, Zuhur, Asar, Magrib, dan Isya beserta hitung mundur menuju salat berikutnya.",
-    "Jika izin lokasi tidak diberikan, halaman memakai Jakarta sebagai lokasi bawaan. Untuk pencocokan resmi, jadwal Kemenag RI dapat dilihat di situs Bimas Islam."], "", ["quran", "doa", "tasbih", "event"]),
+    "Jika izin lokasi tidak diberikan, halaman memakai Jakarta sebagai lokasi bawaan. Untuk pencocokan resmi, jadwal Kemenag RI dapat dilihat di situs Bimas Islam.",
+    "Di bagian bawah jadwal tersedia panduan lengkap tata cara wudhu, tayammum, salat wajib lima waktu beserta bacaannya, dzikir setelah salat, dan salat sunnah seperti rawatib, Dhuha, Tahajud, Witir, dan Tarawih."], "", ["quran", "doa", "tasbih", "event"]),
   "tasbih.html": about("Cara memakai tasbih digital", [
     "Pilih target 33, 99, 100, atau bebas, lalu ketuk lingkaran besar untuk menambah hitungan. Tombol kurang dan reset tersedia bila Anda salah menghitung. Hitungan tersimpan di perangkat Anda selama browser mengizinkan penyimpanan.",
     "Tasbih digital ini dibuat oleh Rohis 62 SMAN 62 Jakarta dan gratis tanpa login."], "", ["doa", "ah", "quran", "salat"]),

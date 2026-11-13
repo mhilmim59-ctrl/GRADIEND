@@ -90,6 +90,7 @@ Ringkasan lengkap dan langkah off-page ada di **[SEO-PANDUAN.md](SEO-PANDUAN.md)
 - **Satu halaman statis per event:** `artikel/<id>.html` (dibuat otomatis dari `js/events.js`). Alamat lama `artikel.html?id=...` tetap berfungsi.
 - `sitemap.xml` (halaman, 114 surah, semua artikel), `robots.txt` (crawler AI diizinkan), `llms.txt`.
 - `vercel.json`: menjalankan build SEO otomatis saat deploy, header keamanan, cache aset, dan pengalihan `/index.html` ke `/`.
+- **Panduan wudhu, tayammum, salat wajib, dan salat sunnah** di halaman Waktu Salat. Isinya ada di `js/ibadah.js` (edit di sana lalu commit; bagian HTML-nya dibuat otomatis oleh `scripts/build-seo.js`). Mintalah pembina Rohis memeriksa isinya sebelum diubah.
 - Instagram: bagian di beranda, embed postingan (isi `instagram.posts` di `js/config.js`), tombol di artikel, `rel="me"`.
 - Ikon persegi (`favicon.ico`, `assets/icon-192.png`, `icon-512.png`), `site.webmanifest`, kunci IndexNow.
 

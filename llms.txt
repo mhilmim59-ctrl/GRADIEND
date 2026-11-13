@@ -12,7 +12,7 @@ Kontak: rohissman62jkt@gmail.com · Instagram @rohis62_ (https://www.instagram.c
 ## Fitur utama
 
 - [Al-Qur'an](https://gradiend.vercel.app/quran.html): 114 surah dengan teks Arab, tajwid berwarna, transliterasi Latin, terjemahan Indonesia (Kemenag RI), tafsir per ayat, dan murottal.
-- [Waktu Salat](https://gradiend.vercel.app/jadwal-salat.html): waktu salat harian dihitung dari koordinat perangkat dengan kriteria Kemenag RI, plus hitung mundur salat berikutnya.
+- [Waktu Salat & Tata Cara Salat](https://gradiend.vercel.app/jadwal-salat.html): waktu salat harian dihitung dari koordinat perangkat dengan kriteria Kemenag RI, plus panduan tata cara wudhu, tayammum, salat wajib lima waktu (niat, rukun, urutan gerakan, bacaan Arab-Latin-arti), dzikir setelah salat, serta salat sunnah (rawatib, Dhuha, Tahajud, Witir, Tarawih, Tahiyyatul masjid, Istikharah, Id) dan salat Jumat serta jenazah, masing-masing dengan niat dan bacaan Arab-Latin-arti.
 - [Asmaul Husna](https://gradiend.vercel.app/asmaul-husna.html): 99 nama Allah dengan tulisan Arab, Latin, arti, pencarian, dan audio.
 - [Doa-doa](https://gradiend.vercel.app/doa.html): doa harian, ibadah, perlindungan, ilmu, keluarga, dan ampunan lengkap dengan Arab, Latin, arti, dan sumber.
 - [Tajwid](https://gradiend.vercel.app/tajwid.html): panduan hukum bacaan (nun mati, mim mati, mad, qalqalah, makharijul huruf, waqaf) dengan contoh ayat berwarna.
