@@ -47,6 +47,50 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://gradiend.vercel.app/fikih.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/dasar.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/thaharah.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/salat.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/jemaah.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/jenazah.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/zakat.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/puasa.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/haji.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/waris.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gradiend.vercel.app/fikih/kurban.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://gradiend.vercel.app/quran.html?s=1</loc>
     <priority>0.6</priority>
   </url>

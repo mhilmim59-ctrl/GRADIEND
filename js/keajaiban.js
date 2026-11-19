@@ -1,6 +1,6 @@
 /* =====================================================================
    FITUR TERSEMBUNYI — Keajaiban Al-Qur'an dan Sains
-   Dibuka dengan mengetuk teks "GRADIEND 32" di footer (dimuat saat diketuk).
+   Dibuka dengan mengetuk teks "Gradiend" di pojok kanan bawah footer (dimuat saat diketuk).
    Tiap topik: { judul, ikon, ar, terjemah, ref, sains, catatan }
    Tambah topik dengan menyalin satu blok lalu mengisinya.
    Ini tafsir ilmi (kaitan ayat dengan temuan sains), bukan tafsir baku.

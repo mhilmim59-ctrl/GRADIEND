@@ -131,12 +131,12 @@ html.gd-lock,html.gd-lock body{overflow:hidden}
     document.querySelector("[data-menu]")?.addEventListener("click", () => nav?.classList.toggle("mobile-open"));
     document.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => nav?.classList.remove("mobile-open")));
 
-    const current = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const current = /^\/fikih(\/|\.html$)/.test(location.pathname) ? "fikih.html" : (location.pathname.split("/").pop() || "index.html").toLowerCase();
     document.querySelectorAll(".nav-links a[data-page]").forEach(a => {
       if (a.dataset.page === current) a.classList.add("active");
     });
 
-    /* fitur tersembunyi: ketuk "GRADIEND 32" di footer -> js/keajaiban.js (dimuat saat dibutuhkan) */
+    /* fitur tersembunyi: ketuk teks "Gradiend" di pojok kanan bawah footer -> js/keajaiban.js (dimuat saat dibutuhkan) */
     const egg = document.querySelector(".footer-bottom span:last-child");
     if (egg) {
       egg.setAttribute("tabindex", "-1");

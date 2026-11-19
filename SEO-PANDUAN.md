@@ -25,6 +25,18 @@ Di semua tempat (website, Instagram, grup, tautan), tulis nama lengkap yang **ko
 
 Tulis artikel minimal 300 kata, pakai foto sendiri, dan sebutkan "Rohis SMAN 62 Jakarta" secara natural.
 
+
+## 3b. Menulis atau mengubah materi Fikih
+1. Buka `js/fikih/<bab>.js` di GitHub (ikon pensil). Contoh yang sudah jadi: `dasar.js` dan `thaharah.js`.
+2. Setiap topik berbentuk `{ id, judul, intinya, isi: [ ...blok... ] }`. Jenis blok: `p` (paragraf), `h` (subjudul), `ol` dan `ul` (daftar), `tabel`, `dalil` (Arab, arti, sumber), `box` (yang perlu diingat), `catatan` (perbedaan pendapat), `read` (niat/bacaan), `link`. Tebalkan dengan `**teks**`.
+3. Menambah bab baru: buat `js/fikih/<slug>.js` (slug sama dengan di `_index.js`). Bab tanpa berkas isi tampil "segera hadir".
+4. Topik yang belum disetujui pembina: tambahkan `draf: true` di topik itu agar tidak terbit.
+5. Isi `tinjauan` di `js/fikih/_index.js` (misalnya `"Ust. Fulan, 12 Januari 2027"`) agar nama pembina yang meninjau tampil di setiap bab.
+6. Commit. Vercel membangun ulang halaman otomatis.
+7. Isi panduan wudhu, tayamum, tata cara salat, dan salat sunnah (dengan niat dan bacaan) tetap diedit di `js/ibadah.js`. Isinya ditampilkan di Fikih lewat blok `{ t: "ib", k: "..." }` (kunci: `wudhu`, `tayammum`, `fardu`, `gerakan`, `dzikir`, `sunnah`, `jumat`, `jenazah`).
+8. Kalkulator zakat ada pada bab Zakat lewat blok `{ t: "kalkulator", k: "zakat" }`. Nisab dihitung dari harga emas yang diisi pengunjung (85 gram), jadi tidak ada angka harga yang perlu Anda perbarui. Bila ketentuan berubah (misalnya takaran fitrah), ubah di `js/fikih/zakat.js` dan skrip kalkulator di `scripts/build-seo.js` (cari `CALC_JS`).
+9. Kalkulator waris (bab Waris) memakai blok `{ t: "kalkulator", k: "waris" }`. Cakupannya sengaja dibatasi: pasangan, ayah, ibu, anak laki-laki, dan anak perempuan, dengan 'aul dan kasus Umariyyatain. Kasus yang butuh radd ditolak dengan pesan. Jangan menambah ahli waris lain tanpa tinjauan ahli faraid. Logikanya ada di `scripts/build-seo.js` (cari `WARIS_JS`).
+
 ## 4. Instagram (@rohis62_)
 **Di Instagram (dikerjakan manual):**
 - **Nama tampilan** (kolom Nama, ikut dicari): `Rohis 62 SMAN 62 Jakarta`

@@ -70,7 +70,7 @@ Ikon tab browser memakai `assets/iconlight.png` (tema terang) dan `assets/iconda
 
 ## Fitur tersembunyi
 
-Di footer semua halaman, teks "GRADIEND 32" bisa diketuk. Isinya "Keajaiban Al-Qur'an dan Sains", yaitu ayat yang sering dikaitkan
+Di footer semua halaman, teks "Gradiend" di pojok kanan bawah bisa diketuk. Isinya "Keajaiban Al-Qur'an dan Sains", yaitu ayat yang sering dikaitkan
 dengan temuan sains. Datanya ada di `js/keajaiban.js` (dimuat hanya saat diketuk). Tambah topik dengan menyalin satu blok di daftar tersebut.
 
 ## GitHub & Vercel
@@ -91,6 +91,7 @@ Ringkasan lengkap dan langkah off-page ada di **[SEO-PANDUAN.md](SEO-PANDUAN.md)
 - `sitemap.xml` (halaman, 114 surah, semua artikel), `robots.txt` (crawler AI diizinkan), `llms.txt`.
 - `vercel.json`: menjalankan build SEO otomatis saat deploy, header keamanan, cache aset, dan pengalihan `/index.html` ke `/`.
 - **Panduan wudhu, tayammum, salat wajib, dan salat sunnah** di halaman Waktu Salat. Isinya ada di `js/ibadah.js` (edit di sana lalu commit; bagian HTML-nya dibuat otomatis oleh `scripts/build-seo.js`). Mintalah pembina Rohis memeriksa isinya sebelum diubah.
+- **Menu Fikih** (`fikih.html` dan `fikih/<bab>.html`): materi fikih mazhab Syafi'i per bab. Daftar bab ada di `js/fikih/_index.js`; isi tiap bab ada di `js/fikih/<slug>.js` (misalnya `thaharah.js`). Bab yang berkas isinya ada otomatis terbit, bab lainnya tampil "segera hadir". Halamannya dibuat oleh `scripts/build-seo.js`.
 - Instagram: bagian di beranda, embed postingan (isi `instagram.posts` di `js/config.js`), tombol di artikel, `rel="me"`.
 - Ikon persegi (`favicon.ico`, `assets/icon-192.png`, `icon-512.png`), `site.webmanifest`, kunci IndexNow.
 
