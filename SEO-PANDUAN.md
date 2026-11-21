@@ -17,14 +17,13 @@ Di semua tempat (website, Instagram, grup, tautan), tulis nama lengkap yang **ko
 5. Vercel → Settings → Security: pastikan *Attack Challenge Mode* dan *Bot Protection* **mati**, agar crawler tidak diblokir.
 
 ## 3. Setiap menambah event
-1. Tambah blok di `js/events.js` (lihat petunjuk di file itu). Isi `excerpt` yang jelas, 1-2 kalimat.
-2. (Opsional) isi `instagram: "https://www.instagram.com/p/KODE/"` agar postingan IG ikut tampil di artikel.
-3. Jalankan `node scripts/build-seo.js` lalu commit. Di Vercel skrip ini jalan otomatis, tapi menjalankannya sendiri membuat Anda bisa memeriksa hasilnya.
-4. Setelah deploy: Search Console → Inspeksi URL → alamat `/artikel/<id>.html` → Minta pengindeksan.
+1. **Lewat Google Form** (lihat `integrasi-form/PANDUAN.md`): isi Form dengan kode pengurus yang benar. Atau buat berkas `data/events/<id>.json` secara manual di GitHub. Isi `excerpt` yang jelas, 1-2 kalimat.
+2. (Opsional) isi `instagram` dengan tautan postingan agar postingan IG ikut tampil di artikel.
+3. Vercel membangun ulang situs otomatis dan membuat halaman `/artikel/<id>.html`, sitemap, dan daftar event.
+4. Setelah deploy: Search Console, Inspeksi URL, alamat `/artikel/<id>.html`, lalu Minta pengindeksan.
 5. Bagikan artikelnya di Instagram dan grup WhatsApp (ada tombol Bagikan di tiap artikel).
 
 Tulis artikel minimal 300 kata, pakai foto sendiri, dan sebutkan "Rohis SMAN 62 Jakarta" secara natural.
-
 
 ## 3b. Menulis atau mengubah materi Fikih
 1. Buka `js/fikih/<bab>.js` di GitHub (ikon pensil). Contoh yang sudah jadi: `dasar.js` dan `thaharah.js`.

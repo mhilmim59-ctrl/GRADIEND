@@ -36,9 +36,43 @@ const IG = (cfg.instagram && cfg.instagram.url) || "https://www.instagram.com/ro
 const OG = SITE + "/assets/og-image.png";
 const ORG_ID = SITE + "/#organization", SITE_ID = SITE + "/#website";
 
-const events = (load("js/events.js").GRADIEND_EVENTS || [])
-  .filter(e => e && e.id && e.title && !e.draft)
-  .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+/* ---------- event: sumber data = data/events/*.json (dibuat dari Google Form atau manual) ---------- */
+const EVENT_CATS = ["Kajian", "Keislaman", "Sosial", "Kegiatan", "Lainnya"];
+function loadEvents() {
+  const dir = path.join(ROOT, "data/events");
+  fs.mkdirSync(dir, { recursive: true });
+  const out = [];
+  for (const f of fs.readdirSync(dir).filter(x => x.endsWith(".json")).sort()) {
+    try {
+      const e = JSON.parse(read("data/events/" + f));
+      const id = String(e.id || f.replace(/\.json$/, ""));
+      if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) throw new Error("id tidak valid (huruf kecil, angka, tanda minus)");
+      if (!String(e.title || "").trim()) throw new Error("judul kosong");
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(e.date))) throw new Error("tanggal harus berformat TAHUN-BULAN-TANGGAL");
+      if (e.draft === true) continue;
+      const ev = {
+        id, title: String(e.title).trim(), date: String(e.date),
+        category: EVENT_CATS.includes(e.category) ? e.category : "Kegiatan",
+        author: String(e.author || "GRADIEND").trim(), excerpt: String(e.excerpt || "").trim(),
+        content: String(e.content || "").replace(/\r\n/g, "\n").trim()
+      };
+      if (e.image) {
+        if (/^assets\/events\/[A-Za-z0-9._-]+$/.test(e.image) && fs.existsSync(path.join(ROOT, e.image))) ev.image = e.image;
+        else warn(`data/events/${f}: foto "${e.image}" tidak ditemukan, event tampil tanpa foto`);
+      }
+      if (e.instagram && /instagram\.com\/(p|reel|reels|tv)\//.test(e.instagram)) ev.instagram = String(e.instagram).trim();
+      out.push(ev);
+    } catch (err) { warn(`data/events/${f}: ${err.message} (dilewati)`); }
+  }
+  out.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  write("js/events.js", `/* BERKAS INI DIBUAT OTOMATIS oleh scripts/build-seo.js dari data/events/*.json.
+   Jangan diedit langsung. Untuk menambah atau mengubah event, ubah berkas di data/events/
+   atau isi Google Form event (lihat integrasi-form/PANDUAN.md). */
+window.GRADIEND_EVENTS = ${JSON.stringify(out, null, 2)};
+`);
+  return out;
+}
+const events = loadEvents();
 
 /* ---------- penanda di HTML: <!--NAMA:START--> ... <!--NAMA:END--> ---------- */
 function fill(file, name, content) {

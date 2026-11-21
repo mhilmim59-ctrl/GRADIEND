@@ -16,7 +16,7 @@
     clearTimeout(window.__toast); window.__toast = setTimeout(() => el.classList.remove("show"), 2800);
   };
 
-  /* ---------- event (data ada di js/events.js) ---------- */
+  /* ---------- event (data dibuat otomatis dari data/events/*.json ke js/events.js) ---------- */
   // Event yang tampil: bukan draft, diurutkan dari tanggal terbaru.
   window.getEvents = () => (window.GRADIEND_EVENTS || [])
     .filter(e => e && e.id && e.title && !e.draft)

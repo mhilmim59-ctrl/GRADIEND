@@ -15,14 +15,17 @@ event dan quote ditambahkan langsung lewat kode.
 - `tajwid.html` — Panduan hukum tajwid (nun mati, mim mati, mad, qalqalah, alif lam, lam jalalah dan ra', makharijul huruf, tanda waqaf) dengan contoh ayat berwarna dan pencarian
 - `tasbih.html` — Tasbih digital
 - `sejarah.html`, `media-sosial.html`, `kontak.html`
-- `robots.txt`, `sitemap.xml`, `llms.txt`, `vercel.json`, `scripts/`, `artikel/` — berkas SEO (lihat bagian *SEO*)
+- `data/events/` (data event), `integrasi-form/` (skrip dan panduan Google Form), `robots.txt`, `sitemap.xml`, `llms.txt`, `vercel.json`, `scripts/`, `artikel/` — berkas SEO (lihat bagian *SEO*)
 - `400.html`, `401.html`, `403.html`, `404.html`, `408.html`, `410.html`, `429.html`, `500.html`, `502.html`, `503.html`, `504.html` — halaman error bertema GRADIEND (lihat bagian *Halaman error*)
 
 ## Menambah event
 
-Buka `js/events.js`, salin contoh di bagian atas file ke dalam daftar `window.GRADIEND_EVENTS`, isi datanya, lalu commit.
-Foto cover (opsional) disimpan di `assets/events/` dan dipanggil dengan `image: "assets/events/nama-file.jpg"`.
-Event bisa disembunyikan sementara dengan `draft: true`.
+Setiap event adalah satu berkas di `data/events/<id>.json`. Ada dua cara membuatnya:
+
+1. **Otomatis dari Google Form** (disarankan): isi Form, dan event tampil di situs dalam beberapa menit. Cara memasangnya ada di `integrasi-form/PANDUAN.md`.
+2. **Manual:** di GitHub pilih *Add file*, *Create new file*, beri nama `data/events/<id>.json`, lalu isi seperti contoh di `integrasi-form/PANDUAN.md`.
+
+`js/events.js` dibuat otomatis dari berkas-berkas itu saat deploy, jadi **jangan diedit langsung**. Foto cover disimpan di `assets/events/` dan dipanggil dengan `"image": "assets/events/nama-file.jpg"`. Event dapat disembunyikan dengan `"draft": true`.
 
 ## Menambah quote
 
@@ -87,7 +90,7 @@ Ringkasan lengkap dan langkah off-page ada di **[SEO-PANDUAN.md](SEO-PANDUAN.md)
 
 - Meta tag per halaman (title, description, canonical, hreflang, Open Graph, Twitter Card) dan data terstruktur JSON-LD (`WebSite`, `Organization`, `FAQPage`, `Article`, `BreadcrumbList`, dst.). Judul memakai kata "Rohis 62" karena nama "GRADIEND" saja bentrok dengan proyek riset AI bernama sama.
 - **Konten statis untuk crawler:** doa, Asmaul Husna, tajwid, daftar 114 surah, dan daftar event ditulis ke dalam HTML oleh `scripts/build-seo.js`; di browser tetap diganti tampilan interaktif.
-- **Satu halaman statis per event:** `artikel/<id>.html` (dibuat otomatis dari `js/events.js`). Alamat lama `artikel.html?id=...` tetap berfungsi.
+- **Satu halaman statis per event:** `artikel/<id>.html` (dibuat otomatis dari `data/events/*.json`). Alamat lama `artikel.html?id=...` tetap berfungsi.
 - `sitemap.xml` (halaman, 114 surah, semua artikel), `robots.txt` (crawler AI diizinkan), `llms.txt`.
 - `vercel.json`: menjalankan build SEO otomatis saat deploy, header keamanan, cache aset, dan pengalihan `/index.html` ke `/`.
 - **Panduan wudhu, tayammum, salat wajib, dan salat sunnah** di halaman Waktu Salat. Isinya ada di `js/ibadah.js` (edit di sana lalu commit; bagian HTML-nya dibuat otomatis oleh `scripts/build-seo.js`). Mintalah pembina Rohis memeriksa isinya sebelum diubah.
